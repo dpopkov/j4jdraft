@@ -18,7 +18,7 @@ public class SimpleTreeImplTest {
         tree.add(1, 4);
         tree.add(4, 5);
         tree.add(5, 6);
-        Optional<Node<Integer>> found = tree.findBy(6);
+        var found = tree.findBy(6);
         assertThat(found.isPresent(), is(true));
         assertThat(found.get().getValue(), is(6));
     }
@@ -39,30 +39,23 @@ public class SimpleTreeImplTest {
         tree.add(3, 7);
         tree.add(3, 8);
         tree.add(7, 9);
-        Iterator<Integer> it = tree.iterator();
-        assertThat(it.hasNext(), is(true));
-        List<Integer> resultList = new ArrayList<>();
-        while (it.hasNext()) {
-            resultList.add(it.next());
+        int expected = 1;
+        for (Integer value : tree) {
+            assertThat(value, is(expected++));
         }
-        List<Integer> expected = List.of(1, 2, 3, 4, 5, 6, 7, 8, 9);
-        assertThat(resultList, is(expected));
     }
 
     @Test
-    public void whenAddDuplicateThenDoesNotContainDuplicate() {
-        boolean rst = tree.add(1, 2);
-        assertThat(rst, is(true));
-        rst = tree.add(1, 2);
-        assertThat(rst, is(false));
+    public void whenAddDuplicateThenDoesNotContainDuplicates() {
+        assertThat(tree.add(1, 2), is(true));
+        assertThat(tree.add(1, 2), is(false));
         Node<Integer> n = tree.findBy(1).orElseThrow();
         assertThat(n.getChildren().size(), is(1));
     }
 
     @Test
     public void whenAddToNonExistingParentThenDoesNotAdd() {
-        boolean rst = tree.add(22, 3);
-        assertThat(rst, is(false));
+        assertThat(tree.add(22, 3), is(false));
         Node<Integer> n = tree.findBy(1).orElseThrow();
         assertThat(n.getChildren().size(), is(0));
     }
