@@ -1,51 +1,26 @@
 package ru.j4jdraft.collections.stats;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 public class Analyzer {
 
     public Info diff(List<User> previous, List<User> current) {
-        int countAdded = 0;
-        int countDeleted = 0;
-        int countChanged = 0;
-        for (User user : current) {
-            boolean found = false;
-            for (User prev : previous) {
-                Equality eq = User.equals(prev, user);
-                if (eq == Equality.FULL) {
-                    found = true;
-                    break;
-                } else if (eq == Equality.BY_ID) {
-                    found = true;
-                    countChanged++;
-                    break;
-                }
+        Info info = new Info();
+        Map<Integer, User> idUsers = new HashMap<>();
+        current.forEach(user -> idUsers.put(user.id, user));
+        previous.forEach(prev -> {
+            User found = idUsers.get(prev.id);
+            if (found == null) {
+                info.deleted++;
+            } else if(!Objects.equals(found.name, prev.name)) {
+                info.changed++;
             }
-            if (!found) {
-                countAdded++;
-            }
-        }
-        for (User prev : previous) {
-            boolean deleted = true;
-            for (User user : current) {
-                Equality eq = User.equals(prev, user);
-                if (eq == Equality.BY_ID || eq == Equality.FULL) {
-                    deleted = false;
-                    break;
-                }
-            }
-            if (deleted) {
-                countDeleted++;
-            }
-        }
-        return new Info(countAdded, countChanged, countDeleted);
-    }
-
-    public enum Equality {
-        NO,
-        BY_ID,
-        FULL
+        });
+        info.added = current.size() - (previous.size() - info.deleted);
+        return info;
     }
 
     public static class User {
@@ -56,28 +31,11 @@ public class Analyzer {
             this.id = id;
             this.name = name;
         }
-
-        public static Equality equals(User u1, User u2) {
-            if (u1.id == u2.id) {
-                if (Objects.equals(u1.name, u2.name)) {
-                    return Equality.FULL;
-                } else {
-                    return Equality.BY_ID;
-                }
-            }
-            return Equality.NO;
-        }
     }
 
     public static class Info {
-        public final int added;
-        public final int changed;
-        public final int deleted;
-
-        public Info(int added, int changed, int deleted) {
-            this.added = added;
-            this.changed = changed;
-            this.deleted = deleted;
-        }
+        int added;
+        int changed;
+        int deleted;
     }
 }
