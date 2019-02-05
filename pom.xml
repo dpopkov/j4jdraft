@@ -15,6 +15,7 @@
   
   <modules>
     <module>chapter_005</module>
+    <module>chapter_006</module>
   </modules>
   
   <dependencies>
