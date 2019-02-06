@@ -13,9 +13,7 @@ public class ShowFileDemo {
             System.out.println("Usage: ShowFileDemo filename");
             return;
         }
-        InputStream input = null;
-        try {
-            input = new BufferedInputStream(new FileInputStream(args[0]));
+        try (InputStream input = new BufferedInputStream(new FileInputStream(args[0]))) {
             do {
                 int ch = input.read();
                 if (ch == -1) {
@@ -28,14 +26,6 @@ public class ShowFileDemo {
             System.out.println("Cannot open file");
         } catch (IOException e) {
             System.out.println("Error reading file");
-        } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (IOException e) {
-                    System.out.println("Error closing file");
-                }
-            }
         }
     }
 }
