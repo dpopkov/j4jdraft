@@ -4,8 +4,8 @@
 # Log file
 *.log
 
-# BlueJ files
-*.ctxt
+# Files in txt directory
+txt/*
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
