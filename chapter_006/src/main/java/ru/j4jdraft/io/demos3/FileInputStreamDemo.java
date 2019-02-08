@@ -1,5 +1,7 @@
 package ru.j4jdraft.io.demos3;
 
+import ru.j4jdraft.io.common.PathTools;
+
 import java.io.*;
 import java.nio.file.Paths;
 
@@ -9,7 +11,7 @@ import java.nio.file.Paths;
 public class FileInputStreamDemo {
     public static void main(String[] args) {
         String sourceRoot = Paths.get("chapter_006", "src", "main", "java").toString();
-        String path = pathToSourceFile(sourceRoot);
+        String path = PathTools.pathToSourceFile(sourceRoot, FileInputStreamDemo.class);
         try (InputStream input = new BufferedInputStream(new FileInputStream(path))) {
             int size;
             System.out.println("Total Available Bytes: " + (size = input.available()));
@@ -41,11 +43,5 @@ public class FileInputStreamDemo {
         } catch (IOException e) {
             System.out.println("I/O Error: " + e);
         }
-    }
-
-    private static String pathToSourceFile(String sourceRoot) {
-        return sourceRoot + File.separator
-                + FileInputStreamDemo.class.getName().replace(".", File.separator)
-                + ".java";
     }
 }
