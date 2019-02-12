@@ -7,6 +7,9 @@
 # Files in txt directory
 txt/*
 
+# Tmp classes
+Tmp*.java
+
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
