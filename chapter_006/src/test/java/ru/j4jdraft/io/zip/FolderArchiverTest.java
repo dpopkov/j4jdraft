@@ -14,7 +14,7 @@ import java.util.zip.*;
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.assertThat;
 
-public class ZipFolderTest {
+public class FolderArchiverTest {
     private static final String PROJECT_NAME = "project1";
     private static final String SOURCE_FOLDER = PROJECT_NAME;
     private static final String OUTPUT_FILE = PROJECT_NAME + ".zip";
@@ -41,7 +41,7 @@ public class ZipFolderTest {
         makeFile(expectedInZip, dir11, "File111.java", "public class File111 { public void bar() {} }");
         makeFile(expectedInZip, dir11, "file112.txt",
                 "A quick brown fox jumps over a lazy dog. A quick brown fox jumps over a lazy dog.");
-        Path zipArchive = new ZipFolder().compress(source, source.resolveSibling(OUTPUT_FILE), null);
+        Path zipArchive = new FolderArchiver().compress(source, source.resolveSibling(OUTPUT_FILE), null);
         assertThat(Files.exists(zipArchive), is(true));
         Map<String, Long> zippedFiles = putZipEntriesInfoToMap(zipArchive);
         assertThat(zippedFiles, is(expectedInZip));
@@ -55,7 +55,7 @@ public class ZipFolderTest {
         makeFile(expectedInZip, dir11, "File111.java", "public class File111 { public void bar() {} }");
         makeFile(null, dir11, "file112.txt",
                 "A quick brown fox jumps over a lazy dog. A quick brown fox jumps over a lazy dog.");
-        Path zipArchive = new ZipFolder().compress(source, source.resolveSibling(OUTPUT_FILE), List.of("xml", "txt"));
+        Path zipArchive = new FolderArchiver().compress(source, source.resolveSibling(OUTPUT_FILE), List.of("xml", "txt"));
         assertThat(Files.exists(zipArchive), is(true));
         Map<String, Long> zippedFiles = putZipEntriesInfoToMap(zipArchive);
         assertThat(zippedFiles, is(expectedInZip));

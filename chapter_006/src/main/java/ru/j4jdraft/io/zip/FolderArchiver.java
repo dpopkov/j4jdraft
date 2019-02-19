@@ -13,7 +13,7 @@ import java.util.zip.ZipOutputStream;
 /**
  * Contains methods for compressing folders.
  */
-public class ZipFolder {
+public class FolderArchiver {
     /**
      * Compresses the specified directory.
      * @param directory path to directory
