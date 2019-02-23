@@ -19,8 +19,9 @@ public class ChatTest {
         Talker human = new Talker(List.of("1-Hello", "quit"));
         Talker bot = new Talker(List.of("2-Goodbye"));
         new Chat(human, bot, output, logger).start();
+        var botResponse = List.of("2-Goodbye");
         var conversation = List.of("1-Hello", "2-Goodbye", "quit");
-        assertThat(output.getPhrases(), is(conversation));
+        assertThat(output.getPhrases(), is(botResponse));
         assertThat(logger.getPhrases(), is(conversation));
     }
 
@@ -29,13 +30,14 @@ public class ChatTest {
         Talker human = new Talker(List.of("1-Hello", "stop", "1-Quiet", "continue", "1-Loud", "quit"));
         Talker bot = new Talker(List.of("2-Hi", "2-Bye"));
         new Chat(human, bot, output, logger).start();
+        var botResponse = List.of("2-Hi", "2-Bye");
         var conversation = List.of("1-Hello", "2-Hi", "stop", "1-Quiet", "continue", "1-Loud", "2-Bye", "quit");
-        assertThat(output.getPhrases(), is(conversation));
+        assertThat(output.getPhrases(), is(botResponse));
         assertThat(logger.getPhrases(), is(conversation));
     }
 
     private static class Talker implements Supplier<String> {
-        private List<String> phrases;
+        private final List<String> phrases;
         private int index;
 
         public Talker(List<String> phrases) {
@@ -49,7 +51,7 @@ public class ChatTest {
     }
 
     private static class Listener implements Consumer<String> {
-        private List<String> phrases = new ArrayList<>();
+        private final List<String> phrases = new ArrayList<>();
 
         @Override
         public void accept(String s) {

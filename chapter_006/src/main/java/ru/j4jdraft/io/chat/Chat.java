@@ -4,10 +4,10 @@ import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 public class Chat {
-    private Supplier<String> talker1;
-    private Supplier<String> talker2;
-    private Consumer<String> output;
-    private Consumer<String> logger;
+    private final Supplier<String> talker1;
+    private final Supplier<String> talker2;
+    private final Consumer<String> output;
+    private final Consumer<String> logger;
 
     public Chat(Supplier<String> talker1, Supplier<String> talker2, Consumer<String> output, Consumer<String> logger) {
         this.talker1 = talker1;
@@ -21,7 +21,6 @@ public class Chat {
         boolean responding = true;
         while (running) {
             String phrase = talker1.get();
-            output.accept(phrase);
             logger.accept(phrase);
             if ("stop".equals(phrase)) {
                 responding = false;

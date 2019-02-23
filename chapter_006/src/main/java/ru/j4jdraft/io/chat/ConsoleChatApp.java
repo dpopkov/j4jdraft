@@ -1,0 +1,22 @@
+package ru.j4jdraft.io.chat;
+
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+
+public class ConsoleChatApp {
+    public static void main(String[] args) {
+        if (args.length != 2) {
+            System.out.println("Usage: java ConsoleChatApp inputFile logFile");
+            return;
+        }
+        Path input = Paths.get(args[0]);
+        Path log = Paths.get(args[1]);
+        ConsoleChat chat = new ConsoleChat(input, log);
+        try {
+            chat.start();
+        } catch (IOException e) {
+            System.out.println("I/O error: " + e);
+        }
+    }
+}
