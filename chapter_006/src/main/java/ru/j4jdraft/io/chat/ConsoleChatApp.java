@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * Main class that starts the console chat.
+ */
 public class ConsoleChatApp {
     public static void main(String[] args) {
         if (args.length != 2) {
