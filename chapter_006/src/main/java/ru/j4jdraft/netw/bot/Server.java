@@ -25,7 +25,7 @@ public class Server implements Runnable {
     public void run() {
         listening = true;
         try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            System.out.println("Listening on port " + portNumber);
+            System.out.println("Server is listening on port " + portNumber);
             while (listening) {
                 try (Socket incoming = serverSocket.accept()) {
                     Scanner in = new Scanner(incoming.getInputStream(), StandardCharsets.UTF_8);
@@ -42,12 +42,14 @@ public class Server implements Runnable {
                         } else {
                             String answer = oracle.reply(question);
                             out.println(answer);
+                            // TODO: server must be able to send multi-line responses (end with \n)
+//                            out.println();
                         }
                     }
                 }
             }
         } catch (IOException e) {
-            System.out.println("I/O error: " + e);
+            e.printStackTrace();
         }
         System.out.println("Server stopped.");
     }

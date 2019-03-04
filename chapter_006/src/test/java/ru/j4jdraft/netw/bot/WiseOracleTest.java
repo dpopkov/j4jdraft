@@ -25,7 +25,7 @@ public class WiseOracleTest {
     }
 
     @Test
-    public void whenRequestContainsNoKeyWordsThenDontKnow() {
+    public void whenRequestContainsNoKeyWordsThenResponseIsIDontKnow() {
         String question = "When was Python invented?";
         String answer = oracle.reply(question);
         assertThat(answer, is("I don't know"));

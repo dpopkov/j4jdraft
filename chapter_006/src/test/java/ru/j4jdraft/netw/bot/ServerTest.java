@@ -35,8 +35,16 @@ public class ServerTest {
                 Scanner in = new Scanner(socket.getInputStream())) {
             out.println("Test");
             String response = in.nextLine();
+            // TODO: server must send empty string to end response
             out.println("stop");
             assertThat(response, is("Test is ok."));
         }
     }
+
+    @Test
+    public void whenIOExceptionThenPrintsStackTraceToPrintStream() {
+        server = new Server(request -> "Test is ok.", PORT);
+    }
+
+    // TODO: test long responses
 }
