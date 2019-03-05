@@ -15,30 +15,38 @@ public class ServerTest {
     private static final String NL = Server.NL;
 
     @Test
+    public void whenStartAndByeThenStopsImmediately() throws IOException {
+        testServerResponse(
+                "bye" + NL,
+                "irrelevant",
+                String.join(NL, "Bye!", "", "")
+        );
+    }
+
+    @Test
     public void whenStartThenSendsAnswers() throws IOException {
-        String clientInput = String.join(NL,"Test", "bye", "");
-        ByteArrayInputStream in = new ByteArrayInputStream(clientInput.getBytes());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
-        Socket socket = mock(Socket.class);
-        when(socket.getInputStream()).thenReturn(in);
-        when(socket.getOutputStream()).thenReturn(out);
-        Server server = new Server(socket, request -> "Test is ok.");
-        server.start();
-        String expectedInput = String.join(NL,"Test is ok.", "", "Bye!", NL);
-        assertThat(out.toString(), is(expectedInput));
+        testServerResponse(
+                String.join(NL,"Test", "bye", ""),
+                "Test is ok.",
+                String.join(NL,"Test is ok.", "", "Bye!", "", "")
+        );
     }
 
     @Test
     public void whenStartThenCanSendMultilineMessages() throws IOException {
-        String clientInput = String.join(NL,"Hello", "bye", "");
-        ByteArrayInputStream in = new ByteArrayInputStream(clientInput.getBytes());
-        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        testServerResponse(
+                String.join(NL,"Hello", "BYE", ""),
+                String.join(NL ,"response line1", "response line2"),
+                String.join(NL,"response line1", "response line2", "", "Bye!", "", "")
+        );
+    }
+
+    private void testServerResponse(String clientInput, String response, String expectedResponse) throws IOException {
         Socket socket = mock(Socket.class);
-        when(socket.getInputStream()).thenReturn(in);
-        when(socket.getOutputStream()).thenReturn(out);
-        Server server = new Server(socket, request -> String.join(NL ,"response line1", "response line2"));
-        server.start();
-        String expectedInput = String.join(NL,"response line1", "response line2", "", "Bye!", NL);
-        assertThat(out.toString(), is(expectedInput));
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        when(socket.getOutputStream()).thenReturn(buffer);
+        when(socket.getInputStream()).thenReturn(new ByteArrayInputStream(clientInput.getBytes()));
+        new Server(socket, request -> response).start();
+        assertThat(buffer.toString(), is(expectedResponse));
     }
 }
