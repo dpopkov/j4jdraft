@@ -1,50 +1,44 @@
 package ru.j4jdraft.netw.bot;
 
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.TestRule;
-import org.junit.rules.Verifier;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.Scanner;
 
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class ServerTest {
-    private static final int PORT = 8000;
-    private Server server;
-
-    @Rule
-    public TestRule serverStopped = new Verifier() {
-        @Override
-        protected void verify() {
-            assertNotNull(server);
-            assertFalse(server.isListening());
-        }
-    };
+    private static final String NL = Server.NL;
 
     @Test
     public void whenStartThenSendsAnswers() throws IOException {
-        server = new Server(request -> "Test is ok.", PORT);
+        String clientInput = String.join(NL,"Test", "bye", "");
+        ByteArrayInputStream in = new ByteArrayInputStream(clientInput.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Socket socket = mock(Socket.class);
+        when(socket.getInputStream()).thenReturn(in);
+        when(socket.getOutputStream()).thenReturn(out);
+        Server server = new Server(socket, request -> "Test is ok.");
         server.start();
-        try (Socket socket = new Socket("localhost", PORT);
-                PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                Scanner in = new Scanner(socket.getInputStream())) {
-            out.println("Test");
-            String response = in.nextLine();
-            // TODO: server must send empty string to end response
-            out.println("stop");
-            assertThat(response, is("Test is ok."));
-        }
+        String expectedInput = String.join(NL,"Test is ok.", "", "Bye!", NL);
+        assertThat(out.toString(), is(expectedInput));
     }
 
     @Test
-    public void whenIOExceptionThenPrintsStackTraceToPrintStream() {
-        server = new Server(request -> "Test is ok.", PORT);
+    public void whenStartThenCanSendMultilineMessages() throws IOException {
+        String clientInput = String.join(NL,"Hello", "bye", "");
+        ByteArrayInputStream in = new ByteArrayInputStream(clientInput.getBytes());
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        Socket socket = mock(Socket.class);
+        when(socket.getInputStream()).thenReturn(in);
+        when(socket.getOutputStream()).thenReturn(out);
+        Server server = new Server(socket, request -> String.join(NL ,"response line1", "response line2"));
+        server.start();
+        String expectedInput = String.join(NL,"response line1", "response line2", "", "Bye!", NL);
+        assertThat(out.toString(), is(expectedInput));
     }
-
-    // TODO: test long responses
 }

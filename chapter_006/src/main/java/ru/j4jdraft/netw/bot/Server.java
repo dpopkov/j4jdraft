@@ -2,59 +2,38 @@ package ru.j4jdraft.netw.bot;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
-public class Server implements Runnable {
+public class Server {
+    public static final String NL = "\n";
+    public static final String END = NL + NL;
+
     private final Oracle oracle;
-    private final int portNumber;
-    private boolean listening;
+    private final Socket socket;
 
-    public Server(Oracle oracle, int portNumber) {
+    public Server(Socket socket, Oracle oracle) {
+        this.socket = socket;
         this.oracle = oracle;
-        this.portNumber = portNumber;
     }
 
-    public void start() {
-        new Thread(this).start();
-    }
-
-    @Override
-    public void run() {
-        listening = true;
-        try (ServerSocket serverSocket = new ServerSocket(portNumber)) {
-            System.out.println("Server is listening on port " + portNumber);
-            while (listening) {
-                try (Socket incoming = serverSocket.accept()) {
-                    Scanner in = new Scanner(incoming.getInputStream(), StandardCharsets.UTF_8);
-                    PrintWriter out = new PrintWriter(incoming.getOutputStream(), true, StandardCharsets.UTF_8);
-                    boolean serving = true;
-                    while (serving) {
-                        String question = in.nextLine();
-                        if (question.equalsIgnoreCase("stop")) {
-                            serving = false;
-                            listening = false;
-                        } else if (question.equalsIgnoreCase("bye")) {
-                            serving = false;
-                            out.println("Bye!");
-                        } else {
-                            String answer = oracle.reply(question);
-                            out.println(answer);
-                            // TODO: server must be able to send multi-line responses (end with \n)
-//                            out.println();
-                        }
-                    }
+    public void start() throws IOException {
+        try (Scanner in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
+             PrintWriter out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)) {
+            boolean serving = true;
+            while (serving) {
+                String question = in.nextLine();
+                if (question.equalsIgnoreCase("bye")) {
+                    serving = false;
+                    out.print("Bye!");
+                    out.print(END);
+                } else {
+                    String answer = oracle.reply(question);
+                    out.print(answer);
+                    out.print(END);
                 }
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-        System.out.println("Server stopped.");
-    }
-
-    public boolean isListening() {
-        return listening;
     }
 }
