@@ -7,8 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Map;
 
+import static ru.j4jdraft.netw.bot.Constants.PORT;
+
 public class WiseOracleServerApp {
-    private static final int PORT_NUMBER = 8000;
     private static final String XML_FILE = "/oracle_answers.xml";
 
     public static void main(String[] args) {
@@ -16,7 +17,7 @@ public class WiseOracleServerApp {
             DataLoader data = new DataLoader();
             data.loadFromXML(WiseOracleServerApp.class.getResourceAsStream(XML_FILE));
             Map<String, String> answers = data.getMap();
-            new WiseOracleServerApp().start(PORT_NUMBER, answers);
+            new WiseOracleServerApp().start(PORT, answers);
         } catch (IOException e) {
             e.printStackTrace();
         }

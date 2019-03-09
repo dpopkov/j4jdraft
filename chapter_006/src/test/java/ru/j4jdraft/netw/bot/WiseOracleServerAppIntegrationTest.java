@@ -10,17 +10,16 @@ import java.util.Scanner;
 
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
+import static ru.j4jdraft.netw.bot.Constants.PORT;
 
 public class WiseOracleServerAppIntegrationTest {
-    private static final int PORT_NUMBER = 8000;
-
     @Test
     public void whenStartWithAnswersThenSendsAnswers() throws IOException {
         Map<String, String> answers = Map.of("KeyWord1", " Answer1", "KeyWord2", "Answer2");
         WiseOracleServerApp app = new WiseOracleServerApp();
         new Thread(() -> {
             try {
-                app.start(PORT_NUMBER, answers);
+                app.start(PORT, answers);
             } catch (IOException e) {
                 e.printStackTrace();
                 fail();
@@ -41,7 +40,7 @@ public class WiseOracleServerAppIntegrationTest {
 
     private String receiveResponse(String request) throws IOException {
         String response;
-        try (Socket socket = new Socket("localhost", PORT_NUMBER);
+        try (Socket socket = new Socket("localhost", PORT);
              OutputStream out = socket.getOutputStream();
              Scanner in = new Scanner(socket.getInputStream())
         ) {

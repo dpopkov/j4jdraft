@@ -8,10 +8,12 @@ import java.util.Scanner;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class Client {
-    public static final String NL = "\n";
-    private static final String STOP = "bye";
+import static ru.j4jdraft.netw.bot.Constants.*;
 
+/**
+ * Client that allows to send questions and receive responses using a socket.
+ */
+public class Client {
     private final Socket socket;
     private final Supplier<String> questions;
     private final Consumer<String> responseConsumer;
@@ -47,7 +49,7 @@ public class Client {
                     }
                 }
                 responseConsumer.accept(builder.toString());
-                if (question.equalsIgnoreCase(STOP)) {
+                if (question.equalsIgnoreCase(EXIT_WORD)) {
                     speaking = false;
                 }
             }

@@ -10,14 +10,13 @@ import java.net.Socket;
 import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
+import static ru.j4jdraft.netw.bot.Constants.*;
 
 public class ServerTest {
-    private static final String NL = Server.NL;
-
     @Test
     public void whenStartAndByeThenStopsImmediately() throws IOException {
         testServerResponse(
-                "bye" + NL,
+                EXIT_WORD + NL,
                 "irrelevant",
                 String.join(NL, "Bye!", "", "")
         );
@@ -26,7 +25,7 @@ public class ServerTest {
     @Test
     public void whenStartThenSendsAnswers() throws IOException {
         testServerResponse(
-                String.join(NL,"Test", "bye", ""),
+                String.join(NL,"Test", EXIT_WORD, ""),
                 "Test is ok.",
                 String.join(NL,"Test is ok.", "", "Bye!", "", "")
         );
@@ -35,7 +34,7 @@ public class ServerTest {
     @Test
     public void whenStartThenCanSendMultilineMessages() throws IOException {
         testServerResponse(
-                String.join(NL,"Hello", "BYE", ""),
+                String.join(NL,"Hello", EXIT_WORD, ""),
                 String.join(NL ,"response line1", "response line2"),
                 String.join(NL,"response line1", "response line2", "", "Bye!", "", "")
         );

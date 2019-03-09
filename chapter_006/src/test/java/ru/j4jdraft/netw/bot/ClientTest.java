@@ -14,9 +14,9 @@ import static org.hamcrest.core.Is.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-public class ClientTest {
-    private static final String NL = Client.NL;
+import static ru.j4jdraft.netw.bot.Constants.*;
 
+public class ClientTest {
     @Test
     public void whenStartThenReceivesResponses() throws IOException {
         testClientReception(

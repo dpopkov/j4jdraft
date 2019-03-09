@@ -6,9 +6,10 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
+import static ru.j4jdraft.netw.bot.Constants.*;
+
 public class Server {
-    public static final String NL = "\n";
-    public static final String END = NL + NL;
+    private static final String END = NL + NL;
 
     private final Oracle oracle;
     private final Socket socket;
@@ -24,16 +25,20 @@ public class Server {
             boolean serving = true;
             while (serving) {
                 String question = in.nextLine();
-                if (question.equalsIgnoreCase("bye")) {
+                if (question.equalsIgnoreCase(EXIT_WORD)) {
                     serving = false;
-                    out.print("Bye!");
-                    out.print(END);
+                    send(out, "Bye!");
                 } else {
                     String answer = oracle.reply(question);
-                    out.print(answer);
-                    out.print(END);
+                    send(out, answer);
                 }
             }
         }
+    }
+
+    private void send(PrintWriter out, String message) {
+        out.print(message);
+        out.print(END);
+        out.flush();
     }
 }
