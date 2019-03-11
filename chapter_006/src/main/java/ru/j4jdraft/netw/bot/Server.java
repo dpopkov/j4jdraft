@@ -8,15 +8,30 @@ import java.util.Scanner;
 
 import static ru.j4jdraft.netw.bot.Constants.*;
 
+/**
+ * Serves requests using an open socket.
+ */
 public class Server {
+    /** Oracle providing responses. */
     private final Oracle oracle;
+    /** Socket used to receive and send data. */
     private final Socket socket;
 
+    /**
+     * Constructs the server using the specified open socket and oracle.
+     * @param socket open socket
+     * @param oracle oracle providing responses
+     */
     public Server(Socket socket, Oracle oracle) {
         this.socket = socket;
         this.oracle = oracle;
     }
 
+    /**
+     * Starts the sequence of receiving requests and sending responses.
+     * The sequence ends when {@link Constants#EXIT_WORD} request is received.
+     * @throws IOException if I/O error occurs when creating I/O streams for the socket or the socket is not connected
+     */
     public void start() throws IOException {
         try (Scanner in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)) {
@@ -34,6 +49,11 @@ public class Server {
         }
     }
 
+    /**
+     * Sends the specified message to the output writer.
+     * @param out output writer
+     * @param message a message that may consist of several lines
+     */
     private void send(PrintWriter out, String message) {
         out.print(message);
         out.print(END);

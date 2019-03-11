@@ -10,6 +10,10 @@ import static ru.j4jdraft.netw.bot.Constants.*;
  * Allows to enter requests in command line interface (CLI) and receive responses from a server.
  */
 public class ClientCliApp {
+    /**
+     * Main method starting the application.
+     * @param args not used
+     */
     public static void main(String[] args) {
         try {
             Socket socket = new Socket("localhost", PORT);

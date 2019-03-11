@@ -11,19 +11,33 @@ import java.util.function.Supplier;
 import static ru.j4jdraft.netw.bot.Constants.*;
 
 /**
- * Client that allows to send questions and receive responses using a socket.
+ * Client that allows to send questions and receive responses using an open socket.
  */
 public class Client {
+    /** Client socket that is used for getting I/O streams. */
     private final Socket socket;
+    /** Supplier of requests. */
     private final Supplier<String> questions;
+    /** Consumer of responses. */
     private final Consumer<String> responseConsumer;
 
+    /**
+     * Creates the client initialized with the specified socket.
+     * @param socket open socket
+     * @param questions source of questions
+     * @param responseConsumer destination for received responses
+     */
     public Client(Socket socket, Supplier<String> questions, Consumer<String> responseConsumer) {
         this.socket = socket;
         this.questions = questions;
         this.responseConsumer = responseConsumer;
     }
 
+    /**
+     * Starts the sequence of sending and receiving messages.
+     * The sequence ends when the client sends {@link Constants#EXIT_WORD} message.
+     * @throws IOException if I/O error occurs when creating I/O streams for the socket or the socket is not connected
+     */
     public void start() throws IOException {
         try (Scanner in = new Scanner(socket.getInputStream(), StandardCharsets.UTF_8);
              PrintWriter out = new PrintWriter(socket.getOutputStream(), true, StandardCharsets.UTF_8)) {
@@ -36,11 +50,11 @@ public class Client {
                 out.flush();
                 builder.setLength(0);
                 String line;
-                boolean inline = true;
-                while (inline && in.hasNextLine()) {
+                boolean inResponse = true;
+                while (inResponse && in.hasNextLine()) {
                     line = in.nextLine();
                     if (line.isEmpty()) {
-                        inline = false;
+                        inResponse = false;
                     } else {
                         if (builder.length() > 0) {
                             builder.append(NL);
