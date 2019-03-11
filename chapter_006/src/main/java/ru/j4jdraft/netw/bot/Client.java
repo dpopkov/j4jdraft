@@ -37,7 +37,7 @@ public class Client {
                 builder.setLength(0);
                 String line;
                 boolean inline = true;
-                while (in.hasNextLine() && inline) {
+                while (inline && in.hasNextLine()) {
                     line = in.nextLine();
                     if (line.isEmpty()) {
                         inline = false;

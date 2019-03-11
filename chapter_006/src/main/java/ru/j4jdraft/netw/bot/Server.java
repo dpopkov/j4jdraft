@@ -9,8 +9,6 @@ import java.util.Scanner;
 import static ru.j4jdraft.netw.bot.Constants.*;
 
 public class Server {
-    private static final String END = NL + NL;
-
     private final Oracle oracle;
     private final Socket socket;
 
