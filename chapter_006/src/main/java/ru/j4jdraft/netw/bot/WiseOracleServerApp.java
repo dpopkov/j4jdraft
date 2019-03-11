@@ -1,7 +1,5 @@
 package ru.j4jdraft.netw.bot;
 
-// TODO: add logger
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
