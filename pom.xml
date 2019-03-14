@@ -16,6 +16,7 @@
   <modules>
     <module>chapter_005</module>
     <module>chapter_006</module>
+    <module>find</module>
   </modules>
   
   <dependencies>
