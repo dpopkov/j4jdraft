@@ -26,6 +26,11 @@ public class Args {
             "-r", () -> searchBy = SearchBy.REGEX
     );
 
+    /**
+     * Creates an instance of arguments.
+     * @param args command line arguments
+     * @throws IllegalArgumentException if arguments are invalid
+     */
     public Args(String[] args) {
         this.args = args;
         parse();
