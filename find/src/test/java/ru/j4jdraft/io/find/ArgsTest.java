@@ -32,6 +32,11 @@ public class ArgsTest {
         new Args(splitArguments("-z result.txt"));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void whenArgsWithoutArgumentsThenThrowException() {
+        new Args(new String[0]);
+    }
+
     private void assertArgs(Args args, String directory, String name, SearchBy searchBy, String output) {
         assertThat(args.getDirectory().toAbsolutePath().normalize(),
                 is(Paths.get(directory).toAbsolutePath().normalize()));

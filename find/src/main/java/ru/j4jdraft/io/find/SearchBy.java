@@ -8,13 +8,16 @@ public enum SearchBy {
     FULL("full"),
     /** Search using regular expression. */
     REGEX("regex");
-
+    /** Syntax used in this type of search. */
     private final String syntax;
 
     SearchBy(String syntax) {
         this.syntax = syntax;
     }
 
+    /**
+     * @return syntax used in this type of search
+     */
     public String getSyntax() {
         return syntax;
     }
