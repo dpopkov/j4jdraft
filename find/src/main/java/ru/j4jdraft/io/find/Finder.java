@@ -7,6 +7,7 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
 import java.util.function.BiPredicate;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Searches files by a specified criteria.
@@ -42,6 +43,10 @@ public class Finder {
             var pathMatcher = startDir.getFileSystem().getPathMatcher(searchBy.getSyntax() + ":" + name);
             matcher = (path, a) -> pathMatcher.matches(path.getFileName());
         }
-        return Files.find(startDir, maxDepth, matcher).collect(Collectors.toList());
+        List<Path> result;
+        try (Stream<Path> pathStream = Files.find(startDir, maxDepth, matcher)) {
+            result = pathStream.collect(Collectors.toList());
+        }
+        return result;
     }
 }

@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Settings for I/O tests.
+ */
 public class TestingSettings {
     private final static Properties props = new Properties();
 

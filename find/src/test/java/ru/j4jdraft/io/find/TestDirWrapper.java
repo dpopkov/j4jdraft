@@ -10,11 +10,19 @@ import java.nio.file.Path;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
+/**
+ * Wrapper for directory that is used for I/O tests.
+ * Invoke {@link TestDirWrapper#clean()} after I/O tests are completed.
+ */
 public class TestDirWrapper {
     private Path path;
 
     public TestDirWrapper() throws IOException {
-        if (TestingSettings.testDirProvider().equals("Jimfs")) {
+        this(false);
+    }
+
+    public TestDirWrapper(boolean defaultFileSystemOnly) throws IOException {
+        if (!defaultFileSystemOnly && TestingSettings.testDirProvider().equals("Jimfs")) {
             path = Jimfs.newFileSystem(Configuration.unix()).getPath("testDir");
             Files.createDirectory(path);
         } else {
@@ -26,6 +34,10 @@ public class TestDirWrapper {
         return path;
     }
 
+    /**
+     * Deletes the testing directory tree.
+     * @throws IOException if an I/O occurs
+     */
     public void clean() throws IOException {
         Files.walkFileTree(path, new SimpleFileVisitor<>() {
             @Override
