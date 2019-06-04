@@ -2,9 +2,8 @@ package ru.j4jdraft.db;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.j4jdraft.tracker.JdbcHelper;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.sql.*;
 import java.util.Properties;
 
@@ -14,7 +13,7 @@ public class SqlStorage {
     private static final String DEFAULT_URL = "jdbc:postgresql://localhost:5432/carstorage";
 
     public static void main(String[] args) {
-        Properties props = readProperties();
+        Properties props = JdbcHelper.readProperties(PROPERTIES_FILENAME);
         try (Connection conn = DriverManager.getConnection(props.getProperty("url", DEFAULT_URL), props)) {
             select(conn);
             update(conn, "Liftback", 2);
@@ -75,22 +74,5 @@ public class SqlStorage {
             String name = rs.getString("name");
             System.out.printf("%d | %s%n", id, name);
         }
-    }
-
-    private static Properties readProperties() {
-        Properties props = new Properties();
-        try {
-            InputStream in = SqlStorage.class.getClassLoader().getResourceAsStream(PROPERTIES_FILENAME);
-            if (in != null) {
-                props.load(in);
-            } else {
-                log.error("Cannot load DB properties file: " + PROPERTIES_FILENAME);
-                System.exit(-1);
-            }
-        } catch (IOException e) {
-            log.error(e.getMessage(), e);
-            System.exit(-1);
-        }
-        return props;
     }
 }
