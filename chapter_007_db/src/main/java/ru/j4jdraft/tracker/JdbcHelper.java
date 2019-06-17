@@ -148,6 +148,10 @@ public class JdbcHelper {
         return props;
     }
 
+    public static JdbcHelper defaultHelper() {
+        return new JdbcHelper(readProperties(PROPERTIES_FILENAME));
+    }
+
     public static void main(String[] args) {
         String dbName = "test1";
         if (args.length == 1) {
