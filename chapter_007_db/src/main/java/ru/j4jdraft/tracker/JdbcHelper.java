@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 /**
- * Contains helper methods to create, populate and open connection to a database.
+ * Contains helper methods to create, delete, populate and open connection to a database.
  */
 public class JdbcHelper {
     public static final String PROPERTIES_FILENAME = "db.properties";
@@ -69,6 +69,17 @@ public class JdbcHelper {
             st.addBatch(sql);
         }
         st.executeBatch();
+    }
+
+    /**
+     * Deletes the specified database.
+     * @param pgConnection connection to the postgres database
+     * @param dbName name of the database
+     */
+    public void dropDb(Connection pgConnection, String dbName) throws SQLException {
+        String sql = "drop database if exists " + dbName;
+        Statement st = pgConnection.createStatement();
+        st.execute(sql);
     }
 
     /**

@@ -47,4 +47,15 @@ public class JdbcHelperTest {
         verify(stmt, times(2)).addBatch(anyString());
         verify(stmt).executeBatch();
     }
+
+    @Test
+    public void testDropDb() throws SQLException {
+        Connection conn = mock(Connection.class);
+        Statement stmt = mock(Statement.class);
+        when(conn.createStatement()).thenReturn(stmt);
+
+        JdbcHelper helper = new JdbcHelper(mock(Properties.class));
+        helper.dropDb(conn, "database_name");
+        verify(stmt).execute("drop database if exists database_name");
+    }
 }
