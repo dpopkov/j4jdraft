@@ -9,7 +9,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("SqlResolve")
+@SuppressWarnings({"SqlResolve", "SqlWithoutWhere"})
 public class TrackerSQL implements ITracker, AutoCloseable {
     static final String ADD_ITEM = "insert into item (name, description, created) values (?, ?, ?)";
     static final String REPLACE_ITEM = "update item set name = ?, description = ?, created = ? WHERE id = ?";
@@ -17,6 +17,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     static final String FIND_ALL = "select id, name, description, created from item";
     static final String FIND_BY_NAME = "select id, name, description, created from item where name = ?";
     static final String FIND_BY_ID = "select id, name, description, created from item where id = ?";
+    static final String DELETE_ALL = "delete from item";
 
     private static final Logger log = LoggerFactory.getLogger(TrackerSQL.class);
 
@@ -130,6 +131,11 @@ public class TrackerSQL implements ITracker, AutoCloseable {
             items.add(item);
         }
         return items;
+    }
+
+    public void deleteAll() throws SQLException {
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate(DELETE_ALL);
     }
 
     @Override
