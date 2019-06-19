@@ -40,10 +40,11 @@ public class JdbcHelper {
      * @throws SQLException if a database access error occurs
      */
     public boolean dbExists(Connection pgConnection, String dbName) throws SQLException {
-        PreparedStatement ps = pgConnection.prepareStatement(CHECK_DB_SQL);
-        ps.setString(1, dbName);
-        ResultSet result = ps.executeQuery();
-        return result.next();
+        try (PreparedStatement ps = pgConnection.prepareStatement(CHECK_DB_SQL)) {
+            ps.setString(1, dbName);
+            ResultSet result = ps.executeQuery();
+            return result.next();
+        }
     }
 
     /**
@@ -54,8 +55,9 @@ public class JdbcHelper {
      */
     public void createDb(Connection pgConnection, String dbName) throws SQLException {
         String createDbSql = "create database " + dbName;
-        Statement st = pgConnection.createStatement();
-        st.execute(createDbSql);
+        try (Statement st = pgConnection.createStatement()) {
+            st.execute(createDbSql);
+        }
     }
 
     /**
@@ -64,11 +66,12 @@ public class JdbcHelper {
      * @param sqlStatements sql statements to populate the database
      */
     public void populateDb(Connection dbConnection, List<String> sqlStatements) throws SQLException {
-        Statement st = dbConnection.createStatement();
-        for (String sql : sqlStatements) {
-            st.addBatch(sql);
+        try (Statement st = dbConnection.createStatement()) {
+            for (String sql : sqlStatements) {
+                st.addBatch(sql);
+            }
+            st.executeBatch();
         }
-        st.executeBatch();
     }
 
     /**
@@ -78,8 +81,9 @@ public class JdbcHelper {
      */
     public void dropDb(Connection pgConnection, String dbName) throws SQLException {
         String sql = "drop database if exists " + dbName;
-        Statement st = pgConnection.createStatement();
-        st.execute(sql);
+        try (Statement st = pgConnection.createStatement()) {
+            st.execute(sql);
+        }
     }
 
     /**

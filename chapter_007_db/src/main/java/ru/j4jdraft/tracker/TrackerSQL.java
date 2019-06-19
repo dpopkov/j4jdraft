@@ -29,8 +29,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     @Override
     public Item add(Item item) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(ADD_ITEM, Statement.RETURN_GENERATED_KEYS);
+        try (PreparedStatement ps = connection.prepareStatement(ADD_ITEM, Statement.RETURN_GENERATED_KEYS)) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDesc());
             ps.setLong(3, item.getCreated());
@@ -51,8 +50,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     @Override
     public boolean replace(String id, Item item) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(REPLACE_ITEM);
+        try (PreparedStatement ps = connection.prepareStatement(REPLACE_ITEM)) {
             ps.setString(1, item.getName());
             ps.setString(2, item.getDesc());
             ps.setLong(3, item.getCreated());
@@ -67,8 +65,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     @Override
     public boolean delete(String id) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(DELETE_ITEM);
+        try (PreparedStatement ps = connection.prepareStatement(DELETE_ITEM)) {
             ps.setInt(1, Integer.parseInt(id));
             ps.executeUpdate();
             return true;
@@ -80,8 +77,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     @Override
     public List<Item> findAll() {
-        try {
-            PreparedStatement ps = connection.prepareStatement(FIND_ALL);
+        try (PreparedStatement ps = connection.prepareStatement(FIND_ALL)) {
             return queryItems(ps);
         } catch (SQLException e) {
             log.error(e.getMessage(), e);
@@ -91,8 +87,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     @Override
     public List<Item> findByName(String name) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(FIND_BY_NAME);
+        try (PreparedStatement ps = connection.prepareStatement(FIND_BY_NAME)) {
             ps.setString(1, name);
             return queryItems(ps);
         } catch (SQLException e) {
@@ -103,8 +98,7 @@ public class TrackerSQL implements ITracker, AutoCloseable {
 
     @Override
     public Item findById(String id) {
-        try {
-            PreparedStatement ps = connection.prepareStatement(FIND_BY_ID);
+        try (PreparedStatement ps = connection.prepareStatement(FIND_BY_ID)) {
             ps.setInt(1, Integer.parseInt(id));
             List<Item> items = queryItems(ps);
             if (items.size() == 1) {
@@ -134,8 +128,9 @@ public class TrackerSQL implements ITracker, AutoCloseable {
     }
 
     public void deleteAll() throws SQLException {
-        Statement stmt = connection.createStatement();
-        stmt.executeUpdate(DELETE_ALL);
+        try (Statement stmt = connection.createStatement()) {
+            stmt.executeUpdate(DELETE_ALL);
+        }
     }
 
     @Override

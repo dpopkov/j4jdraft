@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 @Ignore("Do not run unless it is necessary to test integration with PostgreSQL")
 public class JdbcHelperIntegrationTest {
 
-    public static final String DB_NAME = "db_test_42";
+    public static final String DB_NAME = "test_item_tracker";
 
     @SuppressWarnings("TryFinallyCanBeTryWithResources")
     @Test
