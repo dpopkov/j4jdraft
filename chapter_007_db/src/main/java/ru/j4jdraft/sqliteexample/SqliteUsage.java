@@ -1,4 +1,4 @@
-package ru.j4jdraft.sqlite;
+package ru.j4jdraft.sqliteexample;
 
 import java.io.File;
 import java.nio.file.Path;
