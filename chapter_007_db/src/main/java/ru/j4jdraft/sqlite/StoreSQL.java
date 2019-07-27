@@ -24,10 +24,12 @@ public class StoreSQL implements AutoCloseable {
             stmt.executeUpdate("delete from entry");
         }
         try (PreparedStatement insert = connection.prepareStatement("insert into entry (field) values (?)")) {
+            connection.setAutoCommit(false);
             for (int i = 1; i <= size; i++) {
                 insert.setInt(1, i);
                 insert.executeUpdate();
             }
+            connection.commit();
         }
     }
 
