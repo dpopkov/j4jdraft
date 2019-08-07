@@ -3,6 +3,9 @@ package ru.j4jdraft.sqlite;
 import java.nio.file.Path;
 import java.util.List;
 
+/**
+ * Stores entries in an XML file.
+ */
 public class StoreXML {
     private Path target;
 

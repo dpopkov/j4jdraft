@@ -4,10 +4,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Stores and retrieves database records.
+ * The instance of {@code StoreSQL} should be instantiated within try-with-resources block.
+ */
 @SuppressWarnings("SqlResolve")
 public class StoreSQL implements AutoCloseable {
     private Connection connection;
 
+    /** Constructs the instance and opens connection according to the specified config. */
     public StoreSQL(Config config) throws SQLException {
         connection = DriverManager.getConnection(config.get("url"));
     }
@@ -30,6 +35,9 @@ public class StoreSQL implements AutoCloseable {
                 insert.executeUpdate();
             }
             connection.commit();
+        } catch (SQLException e) {
+            connection.rollback();
+            throw e;
         }
     }
 
@@ -49,6 +57,7 @@ public class StoreSQL implements AutoCloseable {
         return entries;
     }
 
+    /** Closes the connection. */
     @Override
     public void close() throws Exception {
         if (connection != null && !connection.isClosed()) {
