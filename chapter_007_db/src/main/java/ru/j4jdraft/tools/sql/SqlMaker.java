@@ -16,14 +16,17 @@ public class SqlMaker {
         return sb.toString();
     }
 
-    public String insertLines(String table, String[] fields, String dataLines) {
+    public String insertLines(String table, String[] fields, String[] dataLines) {
         StringBuilder sb = new StringBuilder();
-        String[] lines = dataLines.split(LINE_DIVIDER);
-        for (String line : lines) {
+        for (String line : dataLines) {
             insertToBuilder(sb, table, fields, line);
             sb.append(System.lineSeparator());
         }
         return sb.toString();
+    }
+
+    public String insertLines(String table, String[] fields, String dataLines) {
+        return insertLines(table, fields, dataLines.split(LINE_DIVIDER));
     }
 
     private void insertToBuilder(StringBuilder sb, String table, String[] fields, String data) {

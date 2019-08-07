@@ -14,7 +14,7 @@ public class StoreSQL implements AutoCloseable {
 
     /**
      * If the database contains any records then deletes all records.
-     * Then generates the specified number of records in the database.
+     * Then generates the specified number of records.
      * @param size number of records
      */
     @SuppressWarnings("SqlWithoutWhere")
