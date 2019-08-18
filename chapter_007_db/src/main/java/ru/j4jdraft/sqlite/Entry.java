@@ -1,7 +1,18 @@
 package ru.j4jdraft.sqlite;
 
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement(name = "entry")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Entry {
-    private final int field;
+    private int field;
+
+    /** Default constructor is used by XML binding. */
+    @SuppressWarnings("unused")
+    public Entry() {
+    }
 
     public Entry(int field) {
         this.field = field;
