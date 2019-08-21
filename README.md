@@ -1,4 +1,4 @@
-# j4jdraft
+# j4jdraft - черновой репозиторий
 
 #### VM options для запуска проектов JavaFX на JDK 11
 

@@ -31,3 +31,4 @@ target/
 
 # Database files
 db/
+!chapter_007_db/db/
