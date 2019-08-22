@@ -89,7 +89,7 @@ public class JdbcHelper {
     /**
      * Ensures that the specified database exists, or creates and fills it with data.
      * @param dbName name of the database
-     * @param scriptName name of the script containing sql statements to insert data to the database
+     * @param scriptName name of the script containing sql statements to insert data to the database or null
      * @throws SQLException if a database access error occurs
      * @throws IOException if an I/O error occurs
      */
@@ -101,10 +101,12 @@ public class JdbcHelper {
                 createDb(pgConnection, dbName);
             }
         }
-        try (InputStream in = JdbcHelper.class.getClassLoader().getResourceAsStream(scriptName);
-             Connection dbConnection = DriverManager.getConnection(baseUrl + dbName, properties)) {
-            List<String> sqlList = new SqlReader().readSqlStatements(in);
-            populateDb(dbConnection, sqlList);
+        if (scriptName != null) {
+            try (InputStream in = JdbcHelper.class.getClassLoader().getResourceAsStream(scriptName);
+                 Connection dbConnection = DriverManager.getConnection(baseUrl + dbName, properties)) {
+                List<String> sqlList = new SqlReader().readSqlStatements(in);
+                populateDb(dbConnection, sqlList);
+            }
         }
     }
 
@@ -112,7 +114,7 @@ public class JdbcHelper {
      * Ensures that the specified database exists, or creates and fills it with data,
      * then opens the connection to the database.
      * @param dbName database name
-     * @param scriptName name of the script containing sql statements to insert data to the database
+     * @param scriptName name of the script containing sql statements to insert data to the database or null
      * @return connection to existing database
      * @throws SQLException if a database access error occurs
      * @throws IOException if an I/O error occurs
@@ -126,7 +128,7 @@ public class JdbcHelper {
             }
         }
         Connection dbConnection = DriverManager.getConnection(baseUrl + dbName, properties);
-        if (populate) {
+        if (populate && scriptName != null) {
             try (InputStream in = JdbcHelper.class.getClassLoader().getResourceAsStream(scriptName)) {
                 List<String> sqlList = new SqlReader().readSqlStatements(in);
                 populateDb(dbConnection, sqlList);

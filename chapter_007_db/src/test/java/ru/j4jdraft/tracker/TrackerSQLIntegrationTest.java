@@ -17,17 +17,16 @@ import static org.junit.Assert.*;
 @Ignore("Do not run unless it is necessary to test integration with PostgreSQL")
 public class TrackerSQLIntegrationTest {
     private static final String DB_NAME = "test_item_tracker";
-    private static final String SCRIPT_NAME = "sql/createItemTracker.sql";
     private static final JdbcHelper JDBC_HELPER = JdbcHelper.defaultHelper();
 
     @BeforeClass
     public static void prepareDb() throws IOException, SQLException {
-        JDBC_HELPER.ensureDbExists(DB_NAME, SCRIPT_NAME);
+        JDBC_HELPER.ensureDbExists(DB_NAME, null);
     }
 
     @Test
     public void whenAddItemsThenFindsAddedItems() throws Exception {
-        try (Connection conn = ConnectionRollback.create(JDBC_HELPER.connectToExistingDb(DB_NAME, SCRIPT_NAME))) {
+        try (Connection conn = ConnectionRollback.create(JDBC_HELPER.connectToExistingDb(DB_NAME, null))) {
             TrackerSQL tracker = new TrackerSQL(conn);
             Item item1 = new Item("name11", "desc1", 1L);
             Item item2 = new Item("name11", "desc2", 2L);
@@ -54,7 +53,7 @@ public class TrackerSQLIntegrationTest {
 
     @Test
     public void whenUpdateDataThenChangesPersist() throws Exception {
-        try (Connection conn = ConnectionRollback.create(JDBC_HELPER.connectToExistingDb(DB_NAME, SCRIPT_NAME))) {
+        try (Connection conn = ConnectionRollback.create(JDBC_HELPER.connectToExistingDb(DB_NAME, null))) {
             TrackerSQL tracker = new TrackerSQL(conn);
             Item item1 = new Item("name21", "desc1", 1L);
             Item item2 = new Item("name22", "desc2", 2L);
