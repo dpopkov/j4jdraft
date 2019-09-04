@@ -19,6 +19,7 @@
     <module>chapter_006</module>
     <module>find</module>
     <module>chapter_007_db</module>
+    <module>sqlruparser</module>
   </modules>
   
   <dependencies>
