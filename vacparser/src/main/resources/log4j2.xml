@@ -9,6 +9,9 @@
         <Logger name="ru.j4jdraft" level="warn" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
+        <Logger name="ru.j4jdraft.howto.jsoup" level="info" additivity="false">
+            <AppenderRef ref="Console"/>
+        </Logger>
         <Logger name="org.quartz" level="info" additivity="false">
             <AppenderRef ref="Console"/>
         </Logger>
