@@ -7,6 +7,9 @@
 # Files in txt directory
 txt/*
 
+# Files in tmp directory
+tmp/*
+
 # Tmp classes
 Tmp*.java
 
