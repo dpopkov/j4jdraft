@@ -34,4 +34,5 @@ public class DbStorage implements Storage {
     public Vacancy findLast() {
         return null;
     }
+
 }

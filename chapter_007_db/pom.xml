@@ -35,12 +35,6 @@
     </profiles>
 
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
-        <dependency>
-            <groupId>postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.1-901-1.jdbc4</version>
-        </dependency>
         <dependency>
             <groupId>ru.job4j</groupId>
             <artifactId>chapter_002</artifactId>

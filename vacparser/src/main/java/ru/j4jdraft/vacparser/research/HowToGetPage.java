@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -18,13 +20,15 @@ public class HowToGetPage {
             query = args[0];
         }
         HttpResponse<String> response = request(query);
-        String path = "tmp/tmp.html";
+        String path = "tmp/tmp2.html";
         save(response.body(), path);
         System.out.println("Saved to " + path);
     }
 
     private static HttpResponse<String> request(String query) throws IOException, InterruptedException {
-        HttpRequest request = HttpRequest.newBuilder(URI.create(query)).GET().build();
+        HttpRequest request = HttpRequest.newBuilder(URI.create(query))
+                .GET()
+                .build();
         HttpResponse<String> response = HttpClient.newHttpClient().send(request, HttpResponse.BodyHandlers.ofString());
         System.out.println("Query: " + query);
         System.out.println("Status code: " + response.statusCode());
@@ -32,6 +36,6 @@ public class HowToGetPage {
     }
 
     private static void save(String text, String path) throws IOException {
-        Files.writeString(Paths.get(path), text);
+        Files.writeString(Paths.get(path), text, Charset.forName("windows-1251"));
     }
 }

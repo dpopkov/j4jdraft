@@ -17,8 +17,8 @@ public class VacanciesScraper implements Job {
 
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
-        JobDataMap dataMap = context.getJobDetail().getJobDataMap();
-        DbConnector connector = (DbConnector) dataMap.get("dbConnector");
+        AppSettings settings = (AppSettings) context.getJobDetail().getJobDataMap().get("appSettings");
+        DbConnector connector = new DbConnector(settings);
         Connection connection = null;
         try {
             connection = connector.connect();
@@ -33,7 +33,7 @@ public class VacanciesScraper implements Job {
         если не первый, то собираются все новые объявления с последнего запуска.
          */
 
-            final String siteUrl = dataMap.getString("siteUrl");
+            final String siteUrl = settings.siteUrl();
             // Получить 1-ю страницу
             PageLoader loader = new PageLoader();
             Document page = loader.loadFrom(siteUrl);

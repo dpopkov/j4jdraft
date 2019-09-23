@@ -8,8 +8,8 @@ public class Vacancy {
     private int id;
     /** Name or title of the vacancy. */
     private String name;
-    /** Text of the vacancy. */
-    private String text;
+    /** Description of the vacancy. */
+    private String description;
     /** Link to the vacancy. */
     private String link;
     /** Number of milliseconds which represents time of the vacancy's creation */

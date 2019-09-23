@@ -5,17 +5,13 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DbConnector {
-    private final String url;
-    private final String user;
-    private final String password;
+    private final AppSettings settings;
 
-    public DbConnector(String url, String user, String password) {
-        this.url = url;
-        this.user = user;
-        this.password = password;
+    public DbConnector(AppSettings settings) {
+        this.settings = settings;
     }
 
     public Connection connect() throws SQLException {
-        return DriverManager.getConnection(url, user, password);
+        return DriverManager.getConnection(settings.jdbcUrl(), settings.jdbcUser(), settings.jdbcPassword());
     }
 }

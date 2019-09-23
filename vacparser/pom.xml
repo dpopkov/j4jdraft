@@ -11,6 +11,27 @@
 
     <artifactId>vacparser</artifactId>
 
+    <profiles>
+        <profile>
+            <id>test</id>
+            <properties>
+                <db.url>jdbc:postgresql://localhost:5432/test_vacparser</db.url>
+                <db.username>postgres</db.username>
+                <db.password>password</db.password>
+                <db.driver>org.postgresql.Driver</db.driver>
+            </properties>
+        </profile>
+        <profile>
+            <id>production</id>
+            <properties>
+                <db.url>jdbc:postgresql://localhost:5432/vacparser</db.url>
+                <db.username>postgres</db.username>
+                <db.password>password</db.password>
+                <db.driver>org.postgresql.Driver</db.driver>
+            </properties>
+        </profile>
+    </profiles>
+
     <dependencies>
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
@@ -24,4 +45,29 @@
             <version>1.12.1</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.liquibase</groupId>
+                <artifactId>liquibase-maven-plugin</artifactId>
+                <version>3.7.0</version>
+                <configuration>
+                    <changeLogFile>${basedir}/db/master.xml</changeLogFile>
+                    <url>${db.url}</url>
+                    <driver>${db.driver}</driver>
+                    <username>${db.username}</username>
+                    <password>${db.password}</password>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>update</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>

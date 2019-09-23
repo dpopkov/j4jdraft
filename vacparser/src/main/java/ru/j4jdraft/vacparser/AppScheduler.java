@@ -11,32 +11,29 @@ public class AppScheduler {
     private static final String TRIGGER_NAME = "vacparserTrigger";
     private static final String GROUP = "vacparserGroup";
 
-    private Job job;
-    private String siteUrl;
-    private DbConnector connector;
+    private final Class <? extends Job> jobClass;
+    private final AppSettings appSettings;
 
-    public AppScheduler(Job job, String siteUrl, DbConnector connector) {
-        this.job = job;
-        this.siteUrl = siteUrl;
-        this.connector = connector;
+    public AppScheduler(Class <? extends Job> jobClass, AppSettings appSettings) {
+        this.jobClass = jobClass;
+        this.appSettings = appSettings;
     }
 
-    public void schedule(String cronExpression) throws SchedulerException {
+    public void start() throws SchedulerException {
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
-        Scheduler scheduler = schedulerFactory.getScheduler();
-        scheduler.start();
+        Scheduler quartzScheduler = schedulerFactory.getScheduler();
+        quartzScheduler.start();
         JobDataMap dataMap = new JobDataMap();
-        dataMap.put("dbConnector", connector);
-        dataMap.put("siteUrl", siteUrl);
-        JobDetail jobDetail = JobBuilder.newJob(job.getClass())
+        dataMap.put("appSettings", appSettings);
+        JobDetail jobDetail = JobBuilder.newJob(jobClass)
                 .withIdentity(JOB_NAME, GROUP)
-                .setJobData(dataMap)
+                .usingJobData(dataMap)
                 .build();
         CronTrigger trigger = TriggerBuilder.newTrigger()
                 .withIdentity(TRIGGER_NAME, GROUP)
-                .withSchedule(CronScheduleBuilder.cronSchedule(cronExpression))
+                .withSchedule(CronScheduleBuilder.cronSchedule(appSettings.cronTime()))
                 .forJob(JOB_NAME, GROUP)
                 .build();
-        scheduler.scheduleJob(jobDetail, trigger);
+        quartzScheduler.scheduleJob(jobDetail, trigger);
     }
 }
