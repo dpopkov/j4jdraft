@@ -3,6 +3,7 @@ package ru.j4jdraft.vacparser;
 import java.sql.Connection;
 import java.util.List;
 
+// todo: write tests and implement
 public class DbStorage implements Storage {
     private Connection connection;
 
@@ -16,8 +17,8 @@ public class DbStorage implements Storage {
     }
 
     @Override
-    public Vacancy add(List<Vacancy> vacancies) {
-        return null;
+    public void addAll(List<Vacancy> vacancies) {
+
     }
 
     @Override
@@ -34,5 +35,4 @@ public class DbStorage implements Storage {
     public Vacancy findLast() {
         return null;
     }
-
 }

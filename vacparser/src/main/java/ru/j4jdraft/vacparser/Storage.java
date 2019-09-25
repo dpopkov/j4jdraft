@@ -5,7 +5,7 @@ import java.util.List;
 public interface Storage {
     Vacancy add(Vacancy vacancy);
 
-    Vacancy add(List<Vacancy> vacancies);
+    void addAll(List<Vacancy> vacancies);
 
     List<Vacancy> findAll();
 

@@ -1,16 +1,21 @@
 package ru.j4jdraft.vacparser;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.quartz.Job;
-import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.IOException;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.List;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Optional;
+import java.util.function.Predicate;
 
 public class VacanciesScraper implements Job {
     private static final Logger LOG = LoggerFactory.getLogger(VacanciesScraper.class);
@@ -18,44 +23,35 @@ public class VacanciesScraper implements Job {
     @Override
     public void execute(JobExecutionContext context) throws JobExecutionException {
         AppSettings settings = (AppSettings) context.getJobDetail().getJobDataMap().get("appSettings");
-        DbConnector connector = new DbConnector(settings);
         Connection connection = null;
         try {
-            connection = connector.connect();
+            connection = DriverManager.getConnection(settings.jdbcUrl(), settings.jdbcUser(), settings.jdbcPassword());
             Storage storage = new DbStorage(connection);
-            // Можно сохранить время запуска в БД
-            // если оно там есть, значит запуск не первый и нужно скачивать только новые
+            String pageUrl = settings.siteUrl();
 
-            // Вопрос: какие вакансии считаются новыми, каков критерий
+            LocalDateTime temporalBoundary;
+            Vacancy lastVacancy = storage.findLast();
+            if (lastVacancy != null) {
+                temporalBoundary = lastVacancy.getCreated();
+            } else {
+                int nextYear = LocalDate.now().plusYears(1L).getYear();
+                temporalBoundary = LocalDateTime.of(nextYear, 1, 1, 0, 0);
+            }
 
-        /*
-        Если запуск первый, то собираются все объявления с начала года,
-        если не первый, то собираются все новые объявления с последнего запуска.
-         */
+            Predicate<Vacancy> predicateByTime = vacancy -> vacancy.getCreated().isAfter(temporalBoundary);
+            PageProcessor processor = new PageProcessor(storage, predicateByTime);
 
-            final String siteUrl = settings.siteUrl();
-            // Получить 1-ю страницу
-            PageLoader loader = new PageLoader();
-            Document page = loader.loadFrom(siteUrl);
-
-            // Все действия по обработке страницы и сохранению вакансий из нее в БД
-            // могут быть инкапсулированы в класс PageProcessor(storage, критерийОстановки)
-            // method: boolean process(page); OR Optional<nextPageUrl> process(page)
-
-            // получить из страницы вакансии
-            PageParser parser = new PageParser(page);
-            List<Vacancy> vacancies = parser.vacancies();
-
-            // сохранить вакансии в БД
-            storage.add(vacancies);
-
-            // Проверить нужно ли обрабатывать следующую страницу
-
-            // из страницы получить адрес следующей
-            String pageUrl = parser.nextPageUrl();
-
+            Document page = Jsoup.connect(pageUrl).get();
+            Optional<String> result = processor.process(page);
+            while (result.isPresent()) {
+                pageUrl = result.get();
+                page = Jsoup.connect(pageUrl).get();
+                result = processor.process(page);
+            }
         } catch (SQLException e) {
             LOG.error("Database error", e);
+        } catch (IOException e) {
+            LOG.error("Error downloading page", e);
         } finally {
             if (connection != null) {
                 try {
