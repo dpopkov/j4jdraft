@@ -25,7 +25,7 @@ public class VacanciesScraper implements Job {
         AppSettings settings = (AppSettings) context.getJobDetail().getJobDataMap().get("appSettings");
         Connection connection = null;
         try {
-            connection = DriverManager.getConnection(settings.jdbcUrl(), settings.jdbcUser(), settings.jdbcPassword());
+            connection = DbHelper.getConnection(settings);
             Storage storage = new DbStorage(connection);
             String pageUrl = settings.siteUrl();
 

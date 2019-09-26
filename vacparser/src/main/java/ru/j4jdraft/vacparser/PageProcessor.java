@@ -2,6 +2,7 @@ package ru.j4jdraft.vacparser;
 
 import org.jsoup.nodes.Document;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +28,7 @@ public class PageProcessor {
      * @param page
      * @return
      */
-    public Optional<String> process(Document page) {
+    public Optional<String> process(Document page) throws SQLException {
         PageParser parser = new PageParser(page);
         List<Vacancy> vacancies = parser.vacancies();
         boolean stop = false;

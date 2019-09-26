@@ -1,10 +1,17 @@
 package ru.j4jdraft.vacparser;
 
-import java.sql.Connection;
+import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 // todo: write tests and implement
+@SuppressWarnings("SqlResolve")
 public class DbStorage implements Storage {
+    public static final String ADD_VACANCY = "insert into vacancy (name, description, link, created) values (?, ?, ?, ?)";
+    public static final String FIND_BY_ID = "select id, name, description, link, created from vacancy where id = ?";
+    public static final String FIND_BY_NAME = "select id, name, description, link, created from vacancy where name = ?";
+    public static final String SELECT_ALL = "select id, name, description, link, created from vacancy";
+
     private Connection connection;
 
     public DbStorage(Connection connection) {
@@ -12,27 +19,95 @@ public class DbStorage implements Storage {
     }
 
     @Override
-    public Vacancy add(Vacancy vacancy) {
+    public Vacancy add(Vacancy vacancy) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(ADD_VACANCY, Statement.RETURN_GENERATED_KEYS)) {
+            stmt.setString(1, vacancy.getName());
+            stmt.setString(2, vacancy.getDescription());
+            stmt.setString(3, vacancy.getLink());
+            stmt.setTimestamp(4, Timestamp.valueOf(vacancy.getCreated()));
+            stmt.executeUpdate();
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) {
+                int id = keys.getInt(1);
+                vacancy.setId(id);
+                return vacancy;
+            }
+        }
         return null;
     }
 
     @Override
-    public void addAll(List<Vacancy> vacancies) {
-
+    public void addAll(List<Vacancy> vacancies) throws SQLException {
+        connection.setAutoCommit(false);
+        try (PreparedStatement stmt = connection.prepareStatement(ADD_VACANCY, Statement.RETURN_GENERATED_KEYS)) {
+            for (Vacancy vacancy : vacancies) {
+                stmt.setString(1, vacancy.getName());
+                stmt.setString(2, vacancy.getDescription());
+                stmt.setString(3, vacancy.getLink());
+                stmt.setTimestamp(4, Timestamp.valueOf(vacancy.getCreated()));
+                stmt.addBatch();
+                ResultSet keys = stmt.getGeneratedKeys(); // todo: research how to get IDs !!!
+                if (keys.next()) {
+                    int id = keys.getInt(1);
+                    vacancy.setId(id);
+                }
+            }
+            stmt.executeBatch();
+            connection.commit();    // todo: Process this commit in ConnectionRollback proxy !!!
+        }
     }
 
     @Override
-    public List<Vacancy> findAll() {
-        return null;
+    public List<Vacancy> findAll() throws SQLException {
+        List<Vacancy> vacancies = new ArrayList<>();
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet result = stmt.executeQuery(SELECT_ALL);
+            while (result.next()) {
+                Vacancy vacancy = getCurrentVacancy(result);
+                vacancies.add(vacancy);
+            }
+        }
+        return vacancies;
     }
 
     @Override
-    public Vacancy findByName(String name) {
-        return null;
+    public Vacancy findByName(String name) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME)) {
+            stmt.setString(1, name);
+            ResultSet result = stmt.executeQuery();
+            return getVacancy(result);
+        }
+    }
+
+    @Override
+    public Vacancy findById(int id) throws SQLException {
+        try (PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
+            stmt.setInt(1, id);
+            ResultSet result = stmt.executeQuery();
+            return getVacancy(result);
+        }
     }
 
     @Override
     public Vacancy findLast() {
         return null;
+    }
+
+    private Vacancy getVacancy(ResultSet rs) throws SQLException {
+        if (rs.next()) {
+            return getCurrentVacancy(rs);
+        }
+        return null;
+    }
+
+    private Vacancy getCurrentVacancy(ResultSet rs) throws SQLException {
+        int id = rs.getInt("id");
+        String name = rs.getString("name");
+        String description = rs.getString("description");
+        String link = rs.getString("link");
+        Timestamp timestamp = rs.getTimestamp("created");
+        Vacancy vacancy = new Vacancy(name, description, link, timestamp.toLocalDateTime());
+        vacancy.setId(id);
+        return vacancy;
     }
 }
