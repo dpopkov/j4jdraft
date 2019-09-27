@@ -5,8 +5,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 /**
- * Connection which rollbacks all commits.
- * It is used for integration tests.
+ * Connection which ignores and rollbacks all commits.
+ * It is supposed to be used in integration tests.
  */
 public class ConnectionRollback {
     public static Connection create(Connection connection) throws SQLException {
@@ -19,7 +19,7 @@ public class ConnectionRollback {
                     if ("close".equals(method.getName())) {
                         connection.rollback();
                         connection.close();
-                    } else {
+                    } else if (!"commit".equals(method.getName())) {
                         result = method.invoke(connection, args);
                     }
                     return result;

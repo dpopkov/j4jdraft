@@ -47,10 +47,30 @@ public class DbStorageIntegrationTest {
             Storage storage = new DbStorage(connection);
             Vacancy vacancy1 = new Vacancy("Java trainee 1", "Skills: Java", "link", DATE_TIME);
             Vacancy vacancy2 = new Vacancy("Java trainee 2", "Skills: Java", "link", DATE_TIME);
-            List<Vacancy> vacancies = List.of(vacancy1, vacancy2);
+            Vacancy vacancy3 = new Vacancy("Java trainee 3", "Skills: Java", "link", DATE_TIME);
+            List<Vacancy> vacancies = List.of(vacancy3, vacancy2, vacancy1);
             storage.addAll(vacancies);
             List<Vacancy> found = storage.findAll();
-            assertThat(found, Matchers.hasItems(vacancy1, vacancy2));
+            assertThat(found, Matchers.hasItems(vacancy1, vacancy2, vacancy3));
+            assertThat(storage.findById(vacancy1.getId()), is(vacancy1));
+            assertThat(storage.findById(vacancy2.getId()), is(vacancy2));
+            assertThat(storage.findById(vacancy3.getId()), is(vacancy3));
+        }
+    }
+
+    @Test
+    public void whenFindLastThenReturnsItemWithTheLastCreationTime() throws SQLException {
+        try (Connection connection = ConnectionRollback.create(DbHelper.getConnection(CONFIG))) {
+            Storage storage = new DbStorage(connection);
+            LocalDateTime dayBefore = DATE_TIME.minusDays(1L);
+            LocalDateTime dayAfter = DATE_TIME.plusDays(1L);
+            Vacancy vacancy1 = new Vacancy("Java trainee 1", "Skills: Java", "link", dayBefore);
+            Vacancy vacancy2 = new Vacancy("Java trainee 2", "Skills: Java", "link", dayAfter);
+            Vacancy vacancy3 = new Vacancy("Java trainee 3", "Skills: Java", "link", DATE_TIME);
+            List<Vacancy> vacancies = List.of(vacancy3, vacancy2, vacancy1);
+            storage.addAll(vacancies);
+            Vacancy last = storage.findLast();
+            assertThat(last, is(vacancy2));
         }
     }
 }

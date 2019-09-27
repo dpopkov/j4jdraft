@@ -14,5 +14,5 @@ public interface Storage {
 
     Vacancy findById(int id) throws SQLException;
 
-    Vacancy findLast();
+    Vacancy findLast() throws SQLException;
 }

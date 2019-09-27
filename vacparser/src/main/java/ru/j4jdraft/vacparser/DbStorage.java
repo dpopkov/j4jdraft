@@ -4,15 +4,16 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-// todo: write tests and implement
 @SuppressWarnings("SqlResolve")
 public class DbStorage implements Storage {
     public static final String ADD_VACANCY = "insert into vacancy (name, description, link, created) values (?, ?, ?, ?)";
-    public static final String FIND_BY_ID = "select id, name, description, link, created from vacancy where id = ?";
-    public static final String FIND_BY_NAME = "select id, name, description, link, created from vacancy where name = ?";
-    public static final String SELECT_ALL = "select id, name, description, link, created from vacancy";
+    public static final String SELECT_VACANCY = "select id, name, description, link, created from vacancy";
+    public static final String FIND_BY_ID = SELECT_VACANCY + " where id = ?";
+    public static final String FIND_BY_NAME = SELECT_VACANCY + " where name = ?";
+    public static final String SELECT_ALL = SELECT_VACANCY;
+    public static final String FIND_LAST = SELECT_VACANCY + " order by created desc limit 1";
 
-    private Connection connection;
+    private final Connection connection;
 
     public DbStorage(Connection connection) {
         this.connection = connection;
@@ -21,10 +22,7 @@ public class DbStorage implements Storage {
     @Override
     public Vacancy add(Vacancy vacancy) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(ADD_VACANCY, Statement.RETURN_GENERATED_KEYS)) {
-            stmt.setString(1, vacancy.getName());
-            stmt.setString(2, vacancy.getDescription());
-            stmt.setString(3, vacancy.getLink());
-            stmt.setTimestamp(4, Timestamp.valueOf(vacancy.getCreated()));
+            setVacancyFields(stmt, vacancy);
             stmt.executeUpdate();
             ResultSet keys = stmt.getGeneratedKeys();
             if (keys.next()) {
@@ -41,19 +39,18 @@ public class DbStorage implements Storage {
         connection.setAutoCommit(false);
         try (PreparedStatement stmt = connection.prepareStatement(ADD_VACANCY, Statement.RETURN_GENERATED_KEYS)) {
             for (Vacancy vacancy : vacancies) {
-                stmt.setString(1, vacancy.getName());
-                stmt.setString(2, vacancy.getDescription());
-                stmt.setString(3, vacancy.getLink());
-                stmt.setTimestamp(4, Timestamp.valueOf(vacancy.getCreated()));
+                setVacancyFields(stmt, vacancy);
                 stmt.addBatch();
-                ResultSet keys = stmt.getGeneratedKeys(); // todo: research how to get IDs !!!
+            }
+            stmt.executeBatch();
+            ResultSet keys = stmt.getGeneratedKeys();
+            for (Vacancy vacancy : vacancies) {
                 if (keys.next()) {
                     int id = keys.getInt(1);
                     vacancy.setId(id);
                 }
             }
-            stmt.executeBatch();
-            connection.commit();    // todo: Process this commit in ConnectionRollback proxy !!!
+            connection.commit();
         }
     }
 
@@ -89,8 +86,18 @@ public class DbStorage implements Storage {
     }
 
     @Override
-    public Vacancy findLast() {
-        return null;
+    public Vacancy findLast() throws SQLException {
+        try (Statement stmt = connection.createStatement()) {
+            ResultSet result = stmt.executeQuery(FIND_LAST);
+            return getVacancy(result);
+        }
+    }
+
+    private void setVacancyFields(PreparedStatement stmt, Vacancy vacancy) throws SQLException {
+        stmt.setString(1, vacancy.getName());
+        stmt.setString(2, vacancy.getDescription());
+        stmt.setString(3, vacancy.getLink());
+        stmt.setTimestamp(4, Timestamp.valueOf(vacancy.getCreated()));
     }
 
     private Vacancy getVacancy(ResultSet rs) throws SQLException {
