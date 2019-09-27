@@ -18,6 +18,11 @@ public class Vacancy {
     /** Time of the vacancy's creation */
     private LocalDateTime created;
 
+    public Vacancy(String name, String link) {
+        this.name = name;
+        this.link = link;
+    }
+
     public Vacancy(String name, String description, String link, LocalDateTime created) {
         this.name = name;
         this.description = description;

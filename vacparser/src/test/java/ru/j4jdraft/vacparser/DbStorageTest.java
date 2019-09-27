@@ -1,5 +1,6 @@
 package ru.j4jdraft.vacparser;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.sql.Connection;
@@ -13,6 +14,7 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static ru.j4jdraft.vacparser.DbStorage.ADD_VACANCY;
 
+@Ignore
 public class DbStorageTest {
     private static final LocalDateTime NOW = LocalDateTime.now();
 

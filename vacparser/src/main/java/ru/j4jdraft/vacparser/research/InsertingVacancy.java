@@ -17,8 +17,6 @@ public class InsertingVacancy {
     private static final AppSettings CONFIG = new AppSettings("test_vacparser_01_app.properties");
     private static final LocalDateTime NOW = LocalDateTime.now();
 
-    // todo: check how to insert vacancy
-
     public static void main(String[] args) {
         try (Connection conn = DbHelper.getConnection(CONFIG)) {
             Vacancy vacancy = new Vacancy("Bob2", "Java trainee", "example.com", NOW);
@@ -36,12 +34,8 @@ public class InsertingVacancy {
                 vacancy.setId(id);
                 System.out.println("Inserted with id = " + id);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
-
-    // todo: check how to insert list of vacancies and get IDs
-
 }

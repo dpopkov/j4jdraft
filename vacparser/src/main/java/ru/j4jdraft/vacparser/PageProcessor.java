@@ -15,10 +15,15 @@ import java.util.function.Predicate;
  * Сохраняет вакансии в БД.
  */
 public class PageProcessor {
-    private Storage storage;
-    private Predicate<Vacancy> predicateByTime;
+    private static final int SKIP_ROWS = 4;
 
-    public PageProcessor(Storage storage, Predicate<Vacancy> predicateByTime) {
+    private Storage storage;
+    // todo: change predicateByTime to LocalDateTime
+    private Predicate<Vacancy> predicateByTime;
+    // todo: add predicateByName to constructor
+    private Predicate<String> predicateByName;
+
+    public PageProcessor(Storage storage,  Predicate<Vacancy> predicateByTime) {
         this.storage = storage;
         this.predicateByTime = predicateByTime;
     }
@@ -29,8 +34,11 @@ public class PageProcessor {
      * @return
      */
     public Optional<String> process(Document page) throws SQLException {
-        PageParser parser = new PageParser(page);
-        List<Vacancy> vacancies = parser.vacancies();
+        ForumPageParser parser = new ForumPageParser(page);
+        List<Vacancy> vacancies = parser.parse(SKIP_ROWS);
+
+        // todo: filter for 'Java' using predicateByName and get data from vacancies pages
+
         boolean stop = false;
         List<Vacancy> filtered = new ArrayList<>();
         for (Vacancy vacancy : vacancies) {
