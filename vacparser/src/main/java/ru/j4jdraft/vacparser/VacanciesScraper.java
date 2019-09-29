@@ -38,8 +38,9 @@ public class VacanciesScraper implements Job {
                 temporalBoundary = LocalDateTime.of(nextYear, 1, 1, 0, 0);
             }
 
-            Predicate<Vacancy> predicateByTime = vacancy -> vacancy.getCreated().isAfter(temporalBoundary);
-            PageProcessor processor = new PageProcessor(storage, predicateByTime);
+            Predicate<Vacancy> skipByTime = vacancy -> !vacancy.getCreated().isAfter(temporalBoundary);
+            Predicate<String> passByName = name -> name.contains("Java") && !name.toLowerCase().contains("script");
+            PageProcessor processor = new PageProcessor(storage, passByName, skipByTime);
 
             Document page = Jsoup.connect(pageUrl).get();
             Optional<String> result = processor.process(page);

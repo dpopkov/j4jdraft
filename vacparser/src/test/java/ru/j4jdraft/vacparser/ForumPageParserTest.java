@@ -4,30 +4,21 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class ForumPageParserTest {
-
     public static final String TEST_PAGE = "html/forum_page_test.html";
-//    public static final String TEST_PAGE_APS_PATH = "C:\\data\\dev\\job4j\\projects\\j4jdraft\\tmp\\page1_stripped_3vacs.html";
     public static final String CHARSET_NAME = "windows-1251";
 
     @Test
     public void whenParseThenCanFindAllVacancies() throws IOException, URISyntaxException {
-        /*File file = new File(TEST_PAGE_APS_PATH);
-        Document doc = Jsoup.parse(file, CHARSET_NAME);*/
-
-        Document doc = Jsoup.parse(loadResourceAsString(TEST_PAGE));
+        Document doc = Jsoup.parse(ResourceReader.read(TEST_PAGE, Charset.forName(CHARSET_NAME)));
         ForumPageParser parser = new ForumPageParser(doc);
         List<Vacancy> vacancies = parser.parse(0);
         assertThat(vacancies.size(), is(2));
@@ -41,22 +32,10 @@ public class ForumPageParserTest {
 
     @Test
     public void whenNextPageUrlThenReturnsLinkToPageAfterCurrent() throws IOException, URISyntaxException {
-        /*File file = new File(TEST_PAGE_APS_PATH);
-        Document doc = Jsoup.parse(file, CHARSET_NAME);*/
-
-        Document doc = Jsoup.parse(loadResourceAsString(TEST_PAGE));
+        Document doc = Jsoup.parse(ResourceReader.read(TEST_PAGE, Charset.forName(CHARSET_NAME)));
         ForumPageParser parser = new ForumPageParser(doc);
         String nextPageLink = parser.nextPageUrl();
         String expected = "https://www.sql.ru/forum/job-offers/2";
         assertThat(nextPageLink, is(expected));
-    }
-
-    private String loadResourceAsString(String name) throws URISyntaxException, IOException {
-        URL url = getClass().getClassLoader().getResource(name);
-        if (url != null) {
-            return Files.readString(Paths.get(url.toURI()), Charset.forName(CHARSET_NAME));
-        } else {
-            throw new IllegalArgumentException("Cannot load resource: " + name);
-        }
     }
 }

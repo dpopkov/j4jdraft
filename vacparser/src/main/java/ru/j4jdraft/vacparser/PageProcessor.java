@@ -1,7 +1,9 @@
 package ru.j4jdraft.vacparser;
 
+import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 
+import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,20 +14,20 @@ import java.util.function.Predicate;
 /**
  * Получает из страницы вакансии,
  * отфильтровывает их.
- * Сохраняет вакансии в БД.
+ * Отправляет вакансии в хранилище.
  */
 public class PageProcessor {
     private static final int SKIP_ROWS = 4;
 
     private Storage storage;
-    // todo: change predicateByTime to LocalDateTime
-    private Predicate<Vacancy> predicateByTime;
-    // todo: add predicateByName to constructor
-    private Predicate<String> predicateByName;
+    private Predicate<Vacancy> skipByTime;
+    private Predicate<String> passByName;
+    private VacancyPageParser vacancyPageParser = new VacancyPageParser();
 
-    public PageProcessor(Storage storage,  Predicate<Vacancy> predicateByTime) {
+    public PageProcessor(Storage storage, Predicate<String> passByName, Predicate<Vacancy> skipByTime) {
         this.storage = storage;
-        this.predicateByTime = predicateByTime;
+        this.passByName = passByName;
+        this.skipByTime = skipByTime;
     }
 
     /**
@@ -33,22 +35,23 @@ public class PageProcessor {
      * @param page
      * @return
      */
-    public Optional<String> process(Document page) throws SQLException {
+    public Optional<String> process(Document page) throws SQLException, IOException {
         ForumPageParser parser = new ForumPageParser(page);
         List<Vacancy> vacancies = parser.parse(SKIP_ROWS);
-
-        // todo: filter for 'Java' using predicateByName and get data from vacancies pages
-
-        boolean stop = false;
+        boolean finishProcessing = false;
         List<Vacancy> filtered = new ArrayList<>();
         for (Vacancy vacancy : vacancies) {
-            if (predicateByTime.test(vacancy)) {
-                stop = true;
-            } else if (storage.findByName(vacancy.getName()) == null) {
+            if (skipByTime.test(vacancy)) {
+                finishProcessing = true;
+            } else if (passByName.test(vacancy.getName()) && storage.findByName(vacancy.getName()) == null) {
                 filtered.add(vacancy);
             }
         }
+        for (Vacancy vacancy : filtered) {
+            Document vacancyDoc = Jsoup.connect(vacancy.getLink()).get();
+            vacancyPageParser.parseAndFill(vacancyDoc, vacancy);
+        }
         storage.addAll(filtered);
-        return stop ? Optional.empty() : Optional.of(parser.nextPageUrl());
+        return finishProcessing ? Optional.empty() : Optional.of(parser.nextPageUrl());
     }
 }

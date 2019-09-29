@@ -1,17 +1,22 @@
 package ru.j4jdraft.vacparser.research;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import ru.j4jdraft.vacparser.ForumPageParser;
+import ru.j4jdraft.vacparser.Vacancy;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Properties;
 
-public class HowToGetPage {
+public class SaveVacancyPage {
     public static void main(String[] args) throws IOException, InterruptedException {
         Properties props = new Properties();
         props.load(HowToGetPage.class.getResourceAsStream("/vacparser_app.properties"));
@@ -19,9 +24,19 @@ public class HowToGetPage {
         if (args.length == 1) {
             query = args[0];
         }
-        HttpResponse<String> response = request(query);
-        String path = "tmp/tmp3.html";
-        save(response.body(), path);
+
+        Document page = Jsoup.connect(query).get();
+        ForumPageParser parser = new ForumPageParser(page);
+        List<Vacancy> vacancies = parser.parse(4);
+        Vacancy vacancy = vacancies.get(0);
+        String name = vacancy.getName();
+        System.out.println("name = " + name);
+        String href = vacancy.getLink();
+        System.out.println("href = " + href);
+
+        final String path = "tmp/vac_page.html";
+        HttpResponse<String> response = request(href);
+        save(response.body(), "tmp/vac_page.html");
         System.out.println("Saved to " + path);
     }
 

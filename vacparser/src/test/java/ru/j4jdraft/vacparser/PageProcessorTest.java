@@ -8,10 +8,13 @@ public class PageProcessorTest {
 
     @Test
     public void whenProcessDocumentThenReturnsNextPageUrl() {
-
+        // todo: implement
     }
 
     @Test
-    public void whenProcessDocumentThenSavesFilteredVacancies() {
+    public void whenProcessDocumentThenAddsFilteredVacanciesToStorage() {
+        // todo: implement
     }
+
+    // todo: test skip and pass predicates
 }
