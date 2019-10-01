@@ -1,70 +1,71 @@
 package ru.j4jdraft.vacparser;
 
-import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.junit.Before;
 import org.junit.Test;
+import ru.j4jdraft.vacparser.model.ForumPage;
 import ru.j4jdraft.vacparser.model.Vacancy;
 import ru.j4jdraft.vacparser.parsers.ForumPageParser;
 import ru.j4jdraft.vacparser.storage.Storage;
 
-import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
+import java.util.function.Predicate;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 public class ForumPageProcessorTest {
-    public static final String TEST_PAGE = "html/forum_page_test.html";
+    private static final int SKIP_ROWS = 4;
 
-    @Test
-    public void whenProcessDocumentThenGetsAllVacancies() {
-        // todo: implement
+    private ForumPage forumPage;
+    private Vacancy vacJava1;
+    private Vacancy vacJava2;
+
+    @Before
+    public void setupPage() {
+        forumPage = new ForumPage();
+        vacJava1 = new Vacancy("Java", "link1");
+        Vacancy vacJs = new Vacancy("JavaScript", "link2");
+        vacJava2 = new Vacancy("Java", "link3");
+        forumPage.setVacancies(List.of(vacJava1, vacJs, vacJava2));
+        forumPage.setNextPage("nextPageUrl");
     }
 
     @Test
-    public void whenProcessDocumentThenReturnsNextPageUrl() throws IOException, SQLException {
-        // todo: НУЖНА СХЕМА ТЕСТИРОВАНИЯ КОМПОНЕНТОВ
-        /*
-        Результат работы:
-        1) из документа получены вакансии,
-
-        2.1) в хранилище идут только отфильтрованные и заполненные вакансии
-        2.2) в хранилище не попадают вакансии дубликаты
-        2.3) отфильтрованные вакансии получают данные в доп.поля
-
-        3.1) если док-т не выходит за врем.границу, то возвращается след.адрес
-        3.2) если документ выходит за временную границу, то не возвращается
-
-        Нужно замокать:
-        Storage - verify что туда отправлены только ожидаемые вакансии,
-        ForumPageParser - должен возращать рез-т пригодный для этого теста
-
-
-
-         */
-
-        Storage storage = mock(Storage.class);
+    public void whenProcessDocumentThenAddsFilteredByNameVacanciesToStorage() throws SQLException {
+        Document fakeDoc = mock(Document.class);
         ForumPageParser pageParser = mock(ForumPageParser.class);
-        // todo: make page loader return documents for vacancies
-        Function<String, Optional<Document>> pageLoader = url -> Optional.empty();
-        Consumer<Vacancy> vacancyLoader = v -> {};
+        when(pageParser.parse(fakeDoc, SKIP_ROWS)).thenReturn(forumPage);
+        Storage storage = mock(Storage.class);
+        when(storage.findByName(anyString())).thenReturn(null);
+        ForumPageProcessor processor = new ForumPageProcessor(storage, pageParser,
+                "Java"::equals, vac -> false, vac -> {});
 
-        ForumPageProcessor processor = new ForumPageProcessor(storage, pageParser, s -> true, v -> true,
-                vacancyLoader);
-        String html = ResourceReader.readWin1251(TEST_PAGE);
-        Document forumPage = Jsoup.parse(html);
-        Optional<String> result = processor.process(forumPage);
-        assertThat(result.orElse("dummy"), is("https://www.sql.ru/forum/job-offers/2"));
+        List<Vacancy> expectedFiltered = List.of(vacJava1, vacJava2);
+        Optional<String> result = processor.process(fakeDoc);
+        assertThat(result.orElse("other"), is("nextPageUrl"));
+        verify(pageParser).parse(fakeDoc, SKIP_ROWS);
+        verify(storage).addAll(expectedFiltered);
     }
 
     @Test
-    public void whenProcessDocumentThenAddsFilteredVacanciesToStorage() {
-        // todo: implement
-    }
+    public void whenProcessDocumentThenAddsFilteredByDateVacanciesToStorage() throws SQLException {
+        Document fakeDoc = mock(Document.class);
+        ForumPageParser pageParser = mock(ForumPageParser.class);
+        when(pageParser.parse(fakeDoc, SKIP_ROWS)).thenReturn(forumPage);
+        Storage storage = mock(Storage.class);
+        when(storage.findByName(anyString())).thenReturn(null);
+        Predicate<Vacancy> skipByTime = vac -> vac == vacJava2;
+        ForumPageProcessor processor = new ForumPageProcessor(storage, pageParser,
+                "Java"::equals, skipByTime, vac -> {});
 
-    // todo: test skip and pass predicates
+        List<Vacancy> expectedFiltered = List.of(vacJava1);
+        Optional<String> result = processor.process(fakeDoc);
+        assertThat(result.isPresent(), is(false));
+        verify(pageParser).parse(fakeDoc, SKIP_ROWS);
+        verify(storage).addAll(expectedFiltered);
+    }
 }

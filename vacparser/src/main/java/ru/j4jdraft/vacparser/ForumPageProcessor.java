@@ -15,7 +15,6 @@ import java.util.Optional;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-// todo: write tests
 /**
  * Получает из страницы вакансии,
  * обрабатывает их используя переданные предикаты.
@@ -41,17 +40,13 @@ public class ForumPageProcessor {
     }
 
     /**
-     * Сохраняет вакансии с переданной страницы и возвращает адрес следующей страницы.
-     * @param forumPageDoc
-     * @return
+     * Gets, filters and saves to storage the vacancies from the specified forum page document.
+     * @param forumPageDoc document representing the processed forum page
+     * @return optional result that may contain link to next forum page
      */
     public Optional<String> process(Document forumPageDoc) throws SQLException {
-
-        /* Getting vacancies */
         ForumPage forumPage = pageParser.parse(forumPageDoc, SKIP_ROWS);
         List<Vacancy> allVacancies = forumPage.getVacancies();
-
-        /* Filtering vacancies */
         boolean finishProcessing = false;
         List<Vacancy> filtered = new ArrayList<>();
         for (Vacancy vacancy : allVacancies) {
@@ -61,13 +56,9 @@ public class ForumPageProcessor {
                 filtered.add(vacancy);
             }
         }
-
-        /* Filling vacancies */
         for (Vacancy vacancy : filtered) {
             vacancyLoader.accept(vacancy);
         }
-
-        /* Storing vacancies */
         storage.addAll(filtered);
         if (finishProcessing) {
             LOG.info("Finishing processing");

@@ -15,6 +15,8 @@ public class DocumentLoader implements Function<String, Optional<Document>> {
     @Override
     public Optional<Document> apply(String url) {
         try {
+            // todo: decide whether to use any sleeping before the connect (robot rule)
+            // todo: may be use timestamp of the last load and compare with minimal time span between loads
             Document document = Jsoup.connect(url).get();
             return Optional.of(document);
         } catch (IOException e) {
