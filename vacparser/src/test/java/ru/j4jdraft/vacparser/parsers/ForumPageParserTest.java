@@ -1,12 +1,13 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.parsers;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
+import ru.j4jdraft.vacparser.ResourceReader;
+import ru.j4jdraft.vacparser.model.ForumPage;
+import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
@@ -14,13 +15,13 @@ import static org.junit.Assert.*;
 
 public class ForumPageParserTest {
     public static final String TEST_PAGE = "html/forum_page_test.html";
-    public static final String CHARSET_NAME = "windows-1251";
 
     @Test
-    public void whenParseThenCanFindAllVacancies() throws IOException, URISyntaxException {
-        Document doc = Jsoup.parse(ResourceReader.read(TEST_PAGE, Charset.forName(CHARSET_NAME)));
-        ForumPageParser parser = new ForumPageParser(doc);
-        List<Vacancy> vacancies = parser.parse(0);
+    public void whenParseThenCanFindAllVacancies() throws IOException {
+        Document doc = Jsoup.parse(ResourceReader.readWin1251(TEST_PAGE));
+        ForumPageParser parser = new ForumPageParser();
+        ForumPage forumPage = parser.parse(doc,0);
+        List<Vacancy> vacancies = forumPage.getVacancies();
         assertThat(vacancies.size(), is(2));
         Vacancy vacancy1 = vacancies.get(0);
         assertThat(vacancy1.getName(), is("SQL разработчик в отчетность (Москва)"));
@@ -31,10 +32,11 @@ public class ForumPageParserTest {
     }
 
     @Test
-    public void whenNextPageUrlThenReturnsLinkToPageAfterCurrent() throws IOException, URISyntaxException {
-        Document doc = Jsoup.parse(ResourceReader.read(TEST_PAGE, Charset.forName(CHARSET_NAME)));
-        ForumPageParser parser = new ForumPageParser(doc);
-        String nextPageLink = parser.nextPageUrl();
+    public void whenNextPageUrlThenReturnsLinkToPageAfterCurrent() throws IOException {
+        Document doc = Jsoup.parse(ResourceReader.readWin1251(TEST_PAGE));
+        ForumPageParser parser = new ForumPageParser();
+        ForumPage forumPage = parser.parse(doc,0);
+        String nextPageLink = forumPage.getNextPage();
         String expected = "https://www.sql.ru/forum/job-offers/2";
         assertThat(nextPageLink, is(expected));
     }

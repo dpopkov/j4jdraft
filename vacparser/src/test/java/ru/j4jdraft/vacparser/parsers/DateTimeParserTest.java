@@ -1,7 +1,6 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.parsers;
 
 import org.junit.Test;
-
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;

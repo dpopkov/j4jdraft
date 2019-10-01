@@ -2,8 +2,8 @@ package ru.j4jdraft.vacparser.research;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import ru.j4jdraft.vacparser.ForumPageParser;
-import ru.j4jdraft.vacparser.Vacancy;
+import ru.j4jdraft.vacparser.parsers.ForumPageParser;
+import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.io.IOException;
 import java.net.URI;
@@ -26,8 +26,8 @@ public class SaveVacancyPage {
         }
 
         Document page = Jsoup.connect(query).get();
-        ForumPageParser parser = new ForumPageParser(page);
-        List<Vacancy> vacancies = parser.parse(4);
+        ForumPageParser parser = new ForumPageParser();
+        List<Vacancy> vacancies = parser.parse(page, 4).getVacancies();
         Vacancy vacancy = vacancies.get(0);
         String name = vacancy.getName();
         System.out.println("name = " + name);

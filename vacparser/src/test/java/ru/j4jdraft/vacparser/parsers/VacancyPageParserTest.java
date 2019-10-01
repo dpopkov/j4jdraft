@@ -1,12 +1,13 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.parsers;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
+import ru.j4jdraft.vacparser.ResourceReader;
+import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
-import java.nio.charset.Charset;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.*;
@@ -14,11 +15,10 @@ import static org.junit.Assert.*;
 
 public class VacancyPageParserTest {
     private static final String TEST_PAGE = "html/vacancy_page_test.html";
-    private static final String CHARSET_NAME = "windows-1251";
 
     @Test
-    public void whenFillFromDocumentThenVacancyReceivesContentForFields() throws IOException, URISyntaxException {
-        String html = ResourceReader.read(TEST_PAGE, Charset.forName(CHARSET_NAME));
+    public void whenFillFromDocumentThenVacancyReceivesContentForFields() throws IOException {
+        String html = ResourceReader.readWin1251(TEST_PAGE);
         Document doc = Jsoup.parse(html);
         VacancyPageParser parser = new VacancyPageParser();
         Vacancy vacancy = new Vacancy("name", "link");

@@ -1,7 +1,8 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.storage;
 
 import org.junit.Ignore;
 import org.junit.Test;
+import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -12,7 +13,7 @@ import java.time.LocalDateTime;
 import static java.sql.Statement.RETURN_GENERATED_KEYS;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
-import static ru.j4jdraft.vacparser.DbStorage.ADD_VACANCY;
+import static ru.j4jdraft.vacparser.storage.DbStorage.ADD_VACANCY;
 
 @Ignore
 public class DbStorageTest {

@@ -4,13 +4,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.j4jdraft.TmpResearch;
 import ru.j4jdraft.vacparser.AppSettings;
-import ru.j4jdraft.vacparser.DbHelper;
-import ru.j4jdraft.vacparser.Vacancy;
+import ru.j4jdraft.vacparser.storage.DbHelper;
+import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.sql.*;
 import java.time.LocalDateTime;
 
-import static ru.j4jdraft.vacparser.DbStorage.ADD_VACANCY;
+import static ru.j4jdraft.vacparser.storage.DbStorage.ADD_VACANCY;
 
 public class InsertingVacancy {
     private static final Logger LOG = LoggerFactory.getLogger(TmpResearch.class);

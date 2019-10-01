@@ -1,4 +1,6 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.storage;
+
+import ru.j4jdraft.vacparser.AppSettings;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

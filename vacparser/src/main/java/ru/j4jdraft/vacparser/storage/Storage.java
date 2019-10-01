@@ -1,4 +1,6 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.storage;
+
+import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.sql.SQLException;
 import java.util.List;
