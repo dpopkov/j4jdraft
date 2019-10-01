@@ -6,14 +6,13 @@ import org.slf4j.LoggerFactory;
 import ru.j4jdraft.vacparser.model.ForumPage;
 import ru.j4jdraft.vacparser.model.Vacancy;
 import ru.j4jdraft.vacparser.parsers.ForumPageParser;
-import ru.j4jdraft.vacparser.parsers.VacancyPageParser;
 import ru.j4jdraft.vacparser.storage.Storage;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Function;
+import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 // todo: write tests
@@ -29,17 +28,16 @@ public class ForumPageProcessor {
     private Storage storage;
     private Predicate<Vacancy> skipByTime;
     private Predicate<String> passByName;
-    private Function<String, Optional<Document>> documentLoader;
+    private Consumer<Vacancy> vacancyLoader;
     private ForumPageParser pageParser;
-    private VacancyPageParser vacancyPageParser = new VacancyPageParser();
 
-    public ForumPageProcessor(Storage storage, Function<String, Optional<Document>> documentLoader,
-                              ForumPageParser pageParser, Predicate<String> passByName, Predicate<Vacancy> skipByTime) {
+    public ForumPageProcessor(Storage storage, ForumPageParser pageParser, Predicate<String> passByName,
+                              Predicate<Vacancy> skipByTime, Consumer<Vacancy> vacancyLoader) {
         this.storage = storage;
-        this.documentLoader = documentLoader;
         this.pageParser = pageParser;
         this.passByName = passByName;
         this.skipByTime = skipByTime;
+        this.vacancyLoader = vacancyLoader;
     }
 
     /**
@@ -65,14 +63,8 @@ public class ForumPageProcessor {
         }
 
         /* Filling vacancies */
-        // todo: create VacancyContentSupplier instead of documentLoader
         for (Vacancy vacancy : filtered) {
-            Optional<Document> loadResult = documentLoader.apply(vacancy.getLink());
-            if (loadResult.isPresent()) {
-                vacancyPageParser.parseAndFill(loadResult.get(), vacancy);
-            } else {
-                LOG.warn("Could not load information for vacancy: {}\n{}", vacancy.getName(), vacancy.getLink());
-            }
+            vacancyLoader.accept(vacancy);
         }
 
         /* Storing vacancies */

@@ -7,11 +7,13 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Function;
 
-public class DocumentLoader {
+public class DocumentLoader implements Function<String, Optional<Document>> {
     private static final Logger LOG = LoggerFactory.getLogger(DocumentLoader.class);
 
-    public Optional<Document> load(String url) {
+    @Override
+    public Optional<Document> apply(String url) {
         try {
             Document document = Jsoup.connect(url).get();
             return Optional.of(document);

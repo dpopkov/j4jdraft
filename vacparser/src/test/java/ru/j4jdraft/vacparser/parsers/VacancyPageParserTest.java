@@ -7,7 +7,6 @@ import ru.j4jdraft.vacparser.ResourceReader;
 import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 
 import static org.hamcrest.Matchers.*;

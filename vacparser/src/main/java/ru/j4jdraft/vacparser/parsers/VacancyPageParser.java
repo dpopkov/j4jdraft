@@ -3,7 +3,6 @@ package ru.j4jdraft.vacparser.parsers;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import ru.j4jdraft.vacparser.model.Vacancy;
-import ru.j4jdraft.vacparser.parsers.DateTimeParser;
 
 import java.time.LocalDateTime;
 import java.util.regex.Matcher;

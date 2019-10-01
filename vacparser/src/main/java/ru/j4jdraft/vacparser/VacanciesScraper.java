@@ -6,6 +6,7 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.j4jdraft.vacparser.parsers.VacancyPageParser;
 import ru.j4jdraft.vacparser.storage.DbHelper;
 import ru.j4jdraft.vacparser.storage.DbStorage;
 import ru.j4jdraft.vacparser.model.Vacancy;
@@ -37,16 +38,18 @@ public class VacanciesScraper implements Job {
             Predicate<Vacancy> skipByTime = vacancy -> !vacancy.getCreated().isAfter(temporalBoundary);
             Predicate<String> passByName = name -> name.contains("Java") && !name.toLowerCase().contains("script");
             DocumentLoader loader = new DocumentLoader();
-            ForumPageProcessor processor = new ForumPageProcessor(storage, loader::load,
-                    new ForumPageParser(), passByName, skipByTime);
+            VacancyPageParser vacParser = new VacancyPageParser();
+            ForumPageProcessor processor = new ForumPageProcessor(storage, new ForumPageParser(), passByName,
+                    skipByTime, new VacancyContentLoader(loader, vacParser)
+            );
 
-            Optional<Document> loaded = loader.load(pageUrl);
+            Optional<Document> loaded = loader.apply(pageUrl);
             if (loaded.isPresent()) {
                 Document forumPage = loaded.get();
                 Optional<String> parsedLink = processor.process(forumPage);
                 while (parsedLink.isPresent()) {
                     pageUrl = parsedLink.get();
-                    loaded = loader.load(pageUrl);
+                    loaded = loader.apply(pageUrl);
                     if (loaded.isPresent()) {
                         forumPage = loaded.get();
                         parsedLink = processor.process(forumPage);
