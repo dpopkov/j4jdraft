@@ -48,18 +48,25 @@ public class ForumPageProcessor {
         ForumPage forumPage = pageParser.parse(forumPageDoc, SKIP_ROWS);
         List<Vacancy> allVacancies = forumPage.getVacancies();
         boolean finishProcessing = false;
-        List<Vacancy> filtered = new ArrayList<>();
+        List<Vacancy> filteredByName = new ArrayList<>();
         for (Vacancy vacancy : allVacancies) {
-            if (skipByTime.test(vacancy)) {
-                finishProcessing = true;
-            } else if (passByName.test(vacancy.getName()) && storage.findByName(vacancy.getName()) == null) {
-                filtered.add(vacancy);
+            if (passByName.test(vacancy.getName()) && storage.findByName(vacancy.getName()) == null) {
+                filteredByName.add(vacancy);
             }
         }
-        for (Vacancy vacancy : filtered) {
+        for (Vacancy vacancy : filteredByName) {
             vacancyLoader.accept(vacancy);
         }
-        storage.addAll(filtered);
+        List<Vacancy> filteredByTime = new ArrayList<>();
+        for (Vacancy vacancy : filteredByName) {
+            if (skipByTime.test(vacancy)) {
+                LOG.trace("Skipping at vacancy {}", vacancy);
+                finishProcessing = true;
+            } else {
+                filteredByTime.add(vacancy);
+            }
+        }
+        storage.addAll(filteredByTime);
         if (finishProcessing) {
             LOG.info("Finishing processing");
             return Optional.empty();

@@ -36,7 +36,11 @@ public class VacanciesScraper implements Job {
             Storage storage = new DbStorage(connection);
             String pageUrl = settings.siteUrl();
             LocalDateTime temporalBoundary = calculateDateTimeLimit(storage);
+            LOG.info("Using temporal boundary {}", temporalBoundary);
             Predicate<Vacancy> skipByTime = vacancy -> {
+
+                // todo: change skipping to skip by modification time
+
                 boolean after = vacancy.getCreated().isAfter(temporalBoundary);
                 return !after;
             };

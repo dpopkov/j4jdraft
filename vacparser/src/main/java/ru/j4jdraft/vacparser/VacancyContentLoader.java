@@ -27,7 +27,9 @@ public class VacancyContentLoader implements Consumer<Vacancy> {
 
     @Override
     public void accept(Vacancy vacancy) {
-        Optional<Document> loadResult = documentLoader.apply(vacancy.getLink());
+        String link = vacancy.getLink();
+        LOG.trace("Loading content for vacancy at {}", link);
+        Optional<Document> loadResult = documentLoader.apply(link);
         if (loadResult.isPresent()) {
             vacancyParser.parseAndFill(loadResult.get(), vacancy);
         } else {

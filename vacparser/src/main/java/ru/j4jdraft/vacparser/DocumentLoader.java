@@ -43,7 +43,6 @@ public class DocumentLoader implements Function<String, Optional<Document>> {
             long min = minDelay - elapsed;
             long max = maxDelay - elapsed;
             long delay = min + random.nextInt((int) (max - min));
-            LOG.info("Crawl delay for {} ms", delay);
             try {
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
