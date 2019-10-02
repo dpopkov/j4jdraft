@@ -14,5 +14,6 @@ public class AppSettingsTest {
         assertThat(settings.jdbcUser(), is("user"));
         assertThat(settings.jdbcPassword(), is("123"));
         assertThat(settings.cronTime(), is("0 1 2 * * ?"));
+        assertThat(settings.crawlDelay(), is(1234));
     }
 }

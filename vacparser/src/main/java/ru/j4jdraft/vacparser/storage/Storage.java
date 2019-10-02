@@ -5,6 +5,9 @@ import ru.j4jdraft.vacparser.model.Vacancy;
 import java.sql.SQLException;
 import java.util.List;
 
+/**
+ * Storage of vacancies that can perform operations of adding and finding vacancies.
+ */
 public interface Storage {
     Vacancy add(Vacancy vacancy) throws SQLException;
 
