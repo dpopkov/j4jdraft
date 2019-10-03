@@ -6,7 +6,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-//@SuppressWarnings("SqlResolve")
+/**
+ * Represents vacancy database.
+ */
 public class DbStorage implements Storage {
     public static final String ADD_VACANCY =
             "insert into vacancy (name, description, link, created, modified) values (?, ?, ?, ?, ?)";
@@ -16,12 +18,23 @@ public class DbStorage implements Storage {
     public static final String SELECT_ALL = SELECT_VACANCY;
     public static final String FIND_LAST = SELECT_VACANCY + " order by modified desc limit 1";
 
+    /** An open connection with a database. */
     private final Connection connection;
 
+    /**
+     * Creates database storage using the specified open connection.
+     * @param connection open connection
+     */
     public DbStorage(Connection connection) {
         this.connection = connection;
     }
 
+    /**
+     * Adds the specified vacancy to the storage.
+     * @param vacancy vacancy object
+     * @return vacancy object whose id is assigned
+     * @throws SQLException if database error occurs
+     */
     @Override
     public Vacancy add(Vacancy vacancy) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(ADD_VACANCY, Statement.RETURN_GENERATED_KEYS)) {
@@ -37,6 +50,11 @@ public class DbStorage implements Storage {
         return null;
     }
 
+    /**
+     * Adds all the specified vacancies to the storage.
+     * @param vacancies list of vacancies
+     * @throws SQLException if database error occurs
+     */
     @Override
     public void addAll(List<Vacancy> vacancies) throws SQLException {
         connection.setAutoCommit(false);
@@ -57,6 +75,11 @@ public class DbStorage implements Storage {
         }
     }
 
+    /**
+     * Finds all vacancies in the storage.
+     * @return list of found vacancies
+     * @throws SQLException if database error occurs
+     */
     @Override
     public List<Vacancy> findAll() throws SQLException {
         List<Vacancy> vacancies = new ArrayList<>();
@@ -70,6 +93,12 @@ public class DbStorage implements Storage {
         return vacancies;
     }
 
+    /**
+     * Tries to find a vacancy the the specified name.
+     * @param name name of the vacancy
+     * @return found vacancy or null
+     * @throws SQLException if database error occurs
+     */
     @Override
     public Vacancy findByName(String name) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_BY_NAME)) {
@@ -79,6 +108,12 @@ public class DbStorage implements Storage {
         }
     }
 
+    /**
+     * Tries to find a vacancy the the specified id.
+     * @param id id of the vacancy
+     * @return found vacancy or null
+     * @throws SQLException if database error occurs
+     */
     @Override
     public Vacancy findById(int id) throws SQLException {
         try (PreparedStatement stmt = connection.prepareStatement(FIND_BY_ID)) {
@@ -88,6 +123,12 @@ public class DbStorage implements Storage {
         }
     }
 
+    /**
+     * Tries to find last vacancy in the storage.
+     * The vacancy with the last modification time is considered the last vacancy.
+     * @return last vacancy object or null if the storage is empty
+     * @throws SQLException if database error occurs
+     */
     @Override
     public Vacancy findLast() throws SQLException {
         try (Statement stmt = connection.createStatement()) {
@@ -96,6 +137,7 @@ public class DbStorage implements Storage {
         }
     }
 
+    /** Sets fields of the prepared statement. */
     private void setVacancyFields(PreparedStatement stmt, Vacancy vacancy) throws SQLException {
         stmt.setString(1, vacancy.getName());
         stmt.setString(2, vacancy.getDescription());
@@ -104,6 +146,7 @@ public class DbStorage implements Storage {
         stmt.setTimestamp(5, Timestamp.valueOf(vacancy.getModified()));
     }
 
+    /** Helps to receive vacancy object from the result set containing only one row. */
     private Vacancy getVacancy(ResultSet rs) throws SQLException {
         if (rs.next()) {
             return getCurrentVacancy(rs);
@@ -111,6 +154,7 @@ public class DbStorage implements Storage {
         return null;
     }
 
+    /** Returns vacancy object using the info from the current row of the result set. */
     private Vacancy getCurrentVacancy(ResultSet rs) throws SQLException {
         int id = rs.getInt("id");
         String name = rs.getString("name");

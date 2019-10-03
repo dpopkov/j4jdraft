@@ -11,13 +11,18 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
+/**
+ * Parser of forum page documents.
+ */
 public class ForumPageParser {
     private final DateTimeParser dateTimeParser = new DateTimeParser();
 
     /**
-     * Парсит страницу форума и возвращает результат в виде списка вакансий и ссылки на следующую страницу.
-     * @param document document representing forum page
-     * @param skipRows number of rows on the page that should be skipped
+     * Parses the specified forum page document and returns as a result a list of vacancies and next page link.
+     * Returned vacancies contain only name, link and creation time.
+     * Other vacancy info should be received from vacancy pages.
+     * @param document document that represents forum page
+     * @param skipRows number of rows on the page that should be skipped because they don't contain vacancy info
      * @return forum page object
      */
     public ForumPage parse(Document document, int skipRows) {
@@ -29,6 +34,7 @@ public class ForumPageParser {
         return forumPage;
     }
 
+    /** Skips specified number of rows and then parses vacancies in the specified document. */
     private List<Vacancy> parseVacancies(Document document, int skipRows) {
         LinkedHashMap<String, Vacancy> map = new LinkedHashMap<>();
         Element table = document.selectFirst("#content-wrapper-forum > table.forumTable > tbody");
@@ -48,6 +54,7 @@ public class ForumPageParser {
         return new ArrayList<>(map.values());
     }
 
+    /** Parses the URL of the next forum page. */
     private String parseNextPageUrl(Document document) {
         Element pages = document.selectFirst("#content-wrapper-forum > table:nth-child(6) > tbody > tr > td:nth-child(1)");
         Element currentPage = pages.selectFirst("b");

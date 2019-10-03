@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
- * Loads vacancy content.
+ * Downloads vacancy content.
  */
 public class VacancyContentLoader implements Consumer<Vacancy> {
     private static final Logger LOG = LoggerFactory.getLogger(VacancyContentLoader.class);
@@ -19,12 +19,19 @@ public class VacancyContentLoader implements Consumer<Vacancy> {
     private final Function<String, Optional<Document>> documentLoader;
     private final VacancyPageParser vacancyParser;
 
+    /**
+     * Initializes the content loader with document loader and vacancy parser.
+     */
     public VacancyContentLoader(Function<String, Optional<Document>> documentLoader,
                                 VacancyPageParser vacancyParser) {
         this.documentLoader = documentLoader;
         this.vacancyParser = vacancyParser;
     }
 
+    /**
+     * Receives the vacancy's document and uses parser to supply the vacancy with additional info.
+     * @param vacancy the processed vacancy
+     */
     @Override
     public void accept(Vacancy vacancy) {
         String link = vacancy.getLink();

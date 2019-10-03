@@ -8,14 +8,22 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+/**
+ * Application settings.
+ */
 public class AppSettings {
     private static final Logger LOG = LoggerFactory.getLogger(AppSettings.class);
     private static final int DEFAULT_CRAWL_DELAY = 2000;
 
-    private final Properties properties = new Properties();
+    private final Properties properties;
 
+    /**
+     * Initializes application settings with properties loaded from the specified file.
+     * The file must be accessible on the class path.
+     * @param fileName name of resource file that contains properties.
+     */
     public AppSettings(String fileName) {
-        loadFrom(fileName);
+        properties = loadFrom(fileName);
     }
 
     public String siteUrl() {
@@ -50,11 +58,13 @@ public class AppSettings {
         }
     }
 
-    private void loadFrom(String propName) {
+    private Properties loadFrom(String propName) {
         try {
             InputStream input = Main.class.getClassLoader().getResourceAsStream(propName);
             if (input != null) {
+                Properties properties = new Properties();
                 properties.load(input);
+                return properties;
             } else {
                 throw new IllegalArgumentException("Cannot read properties file: " + propName);
             }

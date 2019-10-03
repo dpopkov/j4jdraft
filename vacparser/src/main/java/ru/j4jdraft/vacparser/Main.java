@@ -5,10 +5,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.j4jdraft.vacparser.util.AppSettings;
 
+/**
+ * Main class that starts the scheduler using application settings.
+ */
 public class Main {
     private static final String DEFAULT_PROP_NAME = "vacparser_app.properties";
     private static final Logger LOG = LoggerFactory.getLogger(Main.class);
 
+    /**
+     * Loads settings and starts scheduler.
+     * @param args first argument may contain name of properties resource file
+     */
     public static void main(String[] args) {
         String propName = DEFAULT_PROP_NAME;
         if (args.length > 0) {

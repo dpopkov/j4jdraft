@@ -16,9 +16,9 @@ import java.util.function.Consumer;
 import java.util.function.Predicate;
 
 /**
- * Получает из страницы вакансии,
- * обрабатывает их используя переданные предикаты.
- * Отправляет вакансии в хранилище.
+ * Performs forum page processing.
+ * Uses supplied predicates to filter the vacancies received from the forum page
+ * then submits the filtered vacancies to storage.
  */
 public class ForumPageProcessor {
     private static final Logger LOG = LoggerFactory.getLogger(ForumPageProcessor.class);
@@ -30,6 +30,14 @@ public class ForumPageProcessor {
     private final Consumer<Vacancy> vacancyLoader;
     private final ForumPageParser pageParser;
 
+    /**
+     * Initializes the processor.
+     * @param storage vacancy storage
+     * @param pageParser parser that should parse forum page
+     * @param passByName predicate that any vacancy name should pass
+     * @param skipByTime predicate that is used for skipping vacancies by time and stopping the processing
+     * @param vacancyLoader vacancy consumer that will load additional vacancy content
+     */
     public ForumPageProcessor(Storage storage, ForumPageParser pageParser, Predicate<String> passByName,
                               Predicate<Vacancy> skipByTime, Consumer<Vacancy> vacancyLoader) {
         this.storage = storage;
@@ -41,7 +49,7 @@ public class ForumPageProcessor {
 
     /**
      * Gets, filters and saves to storage the vacancies from the specified forum page document.
-     * @param forumPageDoc document representing the processed forum page
+     * @param forumPageDoc document that represents the forum page
      * @return optional result that may contain link to next forum page
      */
     public Optional<String> process(Document forumPageDoc) throws SQLException {

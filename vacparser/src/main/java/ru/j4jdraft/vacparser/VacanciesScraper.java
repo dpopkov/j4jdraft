@@ -46,8 +46,7 @@ public class VacanciesScraper implements Job {
             DocumentLoader loader = new DocumentLoader(settings.crawlDelay());
             VacancyPageParser vacParser = new VacancyPageParser();
             ForumPageProcessor processor = new ForumPageProcessor(storage, new ForumPageParser(), passByName,
-                    skipByTime, new VacancyContentLoader(loader, vacParser)
-            );
+                    skipByTime, new VacancyContentLoader(loader, vacParser));
 
             Optional<Document> loadedDoc = loader.apply(pageUrl);
             if (loadedDoc.isPresent()) {
@@ -90,8 +89,8 @@ public class VacanciesScraper implements Job {
         LocalDateTime temporalBoundary;
         Vacancy lastVacancy = storage.findLast();
         if (lastVacancy == null) {
-            int prevYear = LocalDate.now().minusYears(1L).getYear();
-            temporalBoundary = LocalDateTime.of(prevYear, 12, 31, 23, 59, 59);
+            int previousYear = LocalDate.now().minusYears(1L).getYear();
+            temporalBoundary = LocalDateTime.of(previousYear, 12, 31, 23, 59, 59);
         } else {
             temporalBoundary = lastVacancy.getCreated();
         }

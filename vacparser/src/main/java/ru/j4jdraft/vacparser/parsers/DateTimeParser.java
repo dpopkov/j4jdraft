@@ -5,12 +5,24 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
+/**
+ * Parser of date time input.
+ * Examples of allowed formats:<br>
+ * 3 май 19, 19:53<br>
+ * сегодня, 09:03<br>
+ * вчера, 09:03
+ */
 public class DateTimeParser {
-    private static final int YEAR_PREFIX = LocalDate.now().getYear() / 100;
-    private static final List<String> MONTHS = List.of(
+    public static final List<String> MONTHS = List.of(
             "янв", "фев", "мар", "апр", "май", "июн", "июл", "авг", "сен", "окт", "ноя", "дек"
     );
+    private static final int YEAR_PREFIX = LocalDate.now().getYear() / 100;
 
+    /**
+     * Parses the specified date time input.
+     * @param dateTime date time as in the examples in this {@link DateTimeParser} class comment
+     * @return date time without time zone
+     */
     public LocalDateTime parse(String dateTime) {
         String[] tokens = dateTime.split(", ");
         if (tokens.length != 2) {
@@ -21,6 +33,7 @@ public class DateTimeParser {
         return LocalDateTime.of(date, time);
     }
 
+    /** Parses date input. */
     private LocalDate parseDate(String dateString) {
         String[] tokens = dateString.split(" ");
         if (tokens.length == 3) {
@@ -41,7 +54,7 @@ public class DateTimeParser {
         throw new IllegalArgumentException("Illegal date format: " + dateString);
     }
 
-
+    /** Parses month input. The month must be one of the strings in {@link #MONTHS} array. */
     private int parseMonth(String month) {
         int idx = MONTHS.indexOf(month);
         if (idx == -1) {

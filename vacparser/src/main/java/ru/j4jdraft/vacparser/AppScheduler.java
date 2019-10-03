@@ -7,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import ru.j4jdraft.vacparser.util.AppSettings;
 
 /**
- * Запускает обработку согласно расписанию.
+ * Application scheduler that starts processing according to the settings.
  */
 public class AppScheduler {
     private static final Logger LOG = LoggerFactory.getLogger(AppScheduler.class);
@@ -18,11 +18,20 @@ public class AppScheduler {
     private final Class <? extends Job> jobClass;
     private final AppSettings appSettings;
 
+    /**
+     * Initializes scheduler with job and application settings.
+     * @param jobClass class for the job that will be started
+     * @param appSettings application settings used by the job
+     */
     public AppScheduler(Class <? extends Job> jobClass, AppSettings appSettings) {
         this.jobClass = jobClass;
         this.appSettings = appSettings;
     }
 
+    /**
+     * Starts processing.
+     * @throws SchedulerException if error within the Quartz scheduler
+     */
     public void start() throws SchedulerException {
         SchedulerFactory schedulerFactory = new StdSchedulerFactory();
         Scheduler quartzScheduler = schedulerFactory.getScheduler();

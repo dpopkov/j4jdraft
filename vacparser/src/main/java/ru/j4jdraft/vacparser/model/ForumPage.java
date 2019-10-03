@@ -3,10 +3,12 @@ package ru.j4jdraft.vacparser.model;
 import java.util.List;
 
 /**
- * Result of forum page parsing which encapsulates vacancies and link to next forum page.
+ * Represents the result of forum page parsing which encapsulates vacancies and link to next forum page.
  */
 public class ForumPage {
+    /** List of vacancies. */
     private List<Vacancy> vacancies;
+    /** Link to the next forum page. */
     private String nextPage;
 
     public List<Vacancy> getVacancies() {

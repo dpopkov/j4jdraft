@@ -7,6 +7,9 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+/**
+ * Utility class that contains methods for reading resources.
+ */
 public class ResourceReader {
     private static final Charset CHARSET_WIN_1251 = Charset.forName("windows-1251");
 
