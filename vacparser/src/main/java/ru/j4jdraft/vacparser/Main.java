@@ -3,6 +3,7 @@ package ru.j4jdraft.vacparser;
 import org.quartz.SchedulerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.j4jdraft.vacparser.util.AppSettings;
 
 public class Main {
     private static final String DEFAULT_PROP_NAME = "vacparser_app.properties";

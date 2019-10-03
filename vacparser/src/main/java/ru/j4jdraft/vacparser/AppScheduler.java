@@ -4,6 +4,7 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.j4jdraft.vacparser.util.AppSettings;
 
 /**
  * Запускает обработку согласно расписанию.

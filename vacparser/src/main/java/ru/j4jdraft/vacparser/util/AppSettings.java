@@ -1,7 +1,8 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.j4jdraft.vacparser.Main;
 
 import java.io.IOException;
 import java.io.InputStream;

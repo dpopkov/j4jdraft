@@ -11,6 +11,8 @@ import ru.j4jdraft.vacparser.storage.DbStorage;
 import ru.j4jdraft.vacparser.model.Vacancy;
 import ru.j4jdraft.vacparser.parsers.ForumPageParser;
 import ru.j4jdraft.vacparser.storage.Storage;
+import ru.j4jdraft.vacparser.util.AppSettings;
+import ru.j4jdraft.vacparser.util.DocumentLoader;
 
 import java.sql.Connection;
 import java.sql.SQLException;

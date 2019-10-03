@@ -2,7 +2,7 @@ package ru.j4jdraft.vacparser.storage;
 
 import org.hamcrest.Matchers;
 import org.junit.Test;
-import ru.j4jdraft.vacparser.AppSettings;
+import ru.j4jdraft.vacparser.util.AppSettings;
 import ru.j4jdraft.vacparser.ConnectionRollback;
 import ru.j4jdraft.vacparser.model.Vacancy;
 

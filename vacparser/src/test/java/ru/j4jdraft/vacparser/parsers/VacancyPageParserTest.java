@@ -3,7 +3,7 @@ package ru.j4jdraft.vacparser.parsers;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.junit.Test;
-import ru.j4jdraft.vacparser.ResourceReader;
+import ru.j4jdraft.vacparser.util.ResourceReader;
 import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package ru.j4jdraft.vacparser;
+package ru.j4jdraft.vacparser.util;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

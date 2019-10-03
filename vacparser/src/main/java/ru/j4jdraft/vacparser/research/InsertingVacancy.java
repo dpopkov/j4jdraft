@@ -1,6 +1,6 @@
 package ru.j4jdraft.vacparser.research;
 
-import ru.j4jdraft.vacparser.AppSettings;
+import ru.j4jdraft.vacparser.util.AppSettings;
 import ru.j4jdraft.vacparser.storage.DbHelper;
 import ru.j4jdraft.vacparser.model.Vacancy;
 
