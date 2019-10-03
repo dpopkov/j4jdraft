@@ -8,13 +8,17 @@ import ru.j4jdraft.vacparser.model.ForumPage;
 import ru.j4jdraft.vacparser.model.Vacancy;
 
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class ForumPageParserTest {
-    public static final String TEST_PAGE = "html/forum_page_test.html";
+    private static final String TEST_PAGE = "html/forum_page_test.html";
+    private static final LocalDate TODAY = LocalDate.now();
 
     @Test
     public void whenParseThenCanFindAllVacancies() throws IOException {
@@ -26,9 +30,11 @@ public class ForumPageParserTest {
         Vacancy vacancy1 = vacancies.get(0);
         assertThat(vacancy1.getName(), is("SQL разработчик в отчетность (Москва)"));
         assertThat(vacancy1.getLink(), is("https://www.sql.ru/forum/1317171/sql-razrabotchik-v-otchetnost-moskva"));
+        assertThat(vacancy1.getModified(), is(LocalDateTime.of(TODAY, LocalTime.of(16, 5))));
         Vacancy vacancy2 = vacancies.get(1);
         assertThat(vacancy2.getName(), is("DBA mariaDB Москва"));
         assertThat(vacancy2.getLink(), is("https://www.sql.ru/forum/1317271/dba-mariadb-moskva"));
+        assertThat(vacancy2.getModified(), is(LocalDateTime.of(TODAY, LocalTime.of(15, 40))));
     }
 
     @Test

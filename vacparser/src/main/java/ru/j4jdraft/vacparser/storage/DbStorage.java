@@ -6,14 +6,15 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@SuppressWarnings("SqlResolve")
+//@SuppressWarnings("SqlResolve")
 public class DbStorage implements Storage {
-    public static final String ADD_VACANCY = "insert into vacancy (name, description, link, created) values (?, ?, ?, ?)";
-    public static final String SELECT_VACANCY = "select id, name, description, link, created from vacancy";
+    public static final String ADD_VACANCY =
+            "insert into vacancy (name, description, link, created, modified) values (?, ?, ?, ?, ?)";
+    public static final String SELECT_VACANCY = "select id, name, description, link, created, modified from vacancy";
     public static final String FIND_BY_ID = SELECT_VACANCY + " where id = ?";
     public static final String FIND_BY_NAME = SELECT_VACANCY + " where name = ?";
     public static final String SELECT_ALL = SELECT_VACANCY;
-    public static final String FIND_LAST = SELECT_VACANCY + " order by created desc limit 1";
+    public static final String FIND_LAST = SELECT_VACANCY + " order by modified desc limit 1";
 
     private final Connection connection;
 
@@ -100,6 +101,7 @@ public class DbStorage implements Storage {
         stmt.setString(2, vacancy.getDescription());
         stmt.setString(3, vacancy.getLink());
         stmt.setTimestamp(4, Timestamp.valueOf(vacancy.getCreated()));
+        stmt.setTimestamp(5, Timestamp.valueOf(vacancy.getModified()));
     }
 
     private Vacancy getVacancy(ResultSet rs) throws SQLException {
@@ -114,8 +116,9 @@ public class DbStorage implements Storage {
         String name = rs.getString("name");
         String description = rs.getString("description");
         String link = rs.getString("link");
-        Timestamp timestamp = rs.getTimestamp("created");
-        Vacancy vacancy = new Vacancy(name, description, link, timestamp.toLocalDateTime());
+        Timestamp created = rs.getTimestamp("created");
+        Timestamp modified = rs.getTimestamp("modified");
+        Vacancy vacancy = new Vacancy(name, description, link, created.toLocalDateTime(), modified.toLocalDateTime());
         vacancy.setId(id);
         return vacancy;
     }

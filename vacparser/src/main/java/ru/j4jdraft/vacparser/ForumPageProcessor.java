@@ -24,11 +24,11 @@ public class ForumPageProcessor {
     private static final Logger LOG = LoggerFactory.getLogger(ForumPageProcessor.class);
     private static final int SKIP_ROWS = 4;
 
-    private Storage storage;
-    private Predicate<Vacancy> skipByTime;
-    private Predicate<String> passByName;
-    private Consumer<Vacancy> vacancyLoader;
-    private ForumPageParser pageParser;
+    private final Storage storage;
+    private final Predicate<Vacancy> skipByTime;
+    private final Predicate<String> passByName;
+    private final Consumer<Vacancy> vacancyLoader;
+    private final ForumPageParser pageParser;
 
     public ForumPageProcessor(Storage storage, ForumPageParser pageParser, Predicate<String> passByName,
                               Predicate<Vacancy> skipByTime, Consumer<Vacancy> vacancyLoader) {
@@ -48,25 +48,19 @@ public class ForumPageProcessor {
         ForumPage forumPage = pageParser.parse(forumPageDoc, SKIP_ROWS);
         List<Vacancy> allVacancies = forumPage.getVacancies();
         boolean finishProcessing = false;
-        List<Vacancy> filteredByName = new ArrayList<>();
+        List<Vacancy> filtered = new ArrayList<>();
         for (Vacancy vacancy : allVacancies) {
-            if (passByName.test(vacancy.getName()) && storage.findByName(vacancy.getName()) == null) {
-                filteredByName.add(vacancy);
-            }
-        }
-        for (Vacancy vacancy : filteredByName) {
-            vacancyLoader.accept(vacancy);
-        }
-        List<Vacancy> filteredByTime = new ArrayList<>();
-        for (Vacancy vacancy : filteredByName) {
             if (skipByTime.test(vacancy)) {
                 LOG.trace("Skipping at vacancy {}", vacancy);
                 finishProcessing = true;
-            } else {
-                filteredByTime.add(vacancy);
+            } else if (passByName.test(vacancy.getName()) && storage.findByName(vacancy.getName()) == null) {
+                filtered.add(vacancy);
             }
         }
-        storage.addAll(filteredByTime);
+        for (Vacancy vacancy : filtered) {
+            vacancyLoader.accept(vacancy);
+        }
+        storage.addAll(filtered);
         if (finishProcessing) {
             LOG.info("Finishing processing");
             return Optional.empty();

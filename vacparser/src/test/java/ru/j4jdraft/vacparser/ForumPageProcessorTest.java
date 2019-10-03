@@ -9,6 +9,9 @@ import ru.j4jdraft.vacparser.parsers.ForumPageParser;
 import ru.j4jdraft.vacparser.storage.Storage;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -19,6 +22,8 @@ import static org.mockito.Mockito.*;
 
 public class ForumPageProcessorTest {
     private static final int SKIP_ROWS = 4;
+    private static final LocalDateTime TODAY = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+    private static final LocalDateTime YESTERDAY = LocalDateTime.of(LocalDate.now().minusDays(1), LocalTime.of(0, 0));
 
     private ForumPage forumPage;
     private Vacancy vacJava1;
@@ -27,9 +32,9 @@ public class ForumPageProcessorTest {
     @Before
     public void setupPage() {
         forumPage = new ForumPage();
-        vacJava1 = new Vacancy("Java", "link1");
-        Vacancy vacJs = new Vacancy("JavaScript", "link2");
-        vacJava2 = new Vacancy("Java", "link3");
+        vacJava1 = new Vacancy("Java", "link1", TODAY);
+        Vacancy vacJs = new Vacancy("JavaScript", "link2", TODAY);
+        vacJava2 = new Vacancy("Java", "link3", YESTERDAY);
         forumPage.setVacancies(List.of(vacJava1, vacJs, vacJava2));
         forumPage.setNextPage("nextPageUrl");
     }
@@ -58,7 +63,7 @@ public class ForumPageProcessorTest {
         when(pageParser.parse(fakeDoc, SKIP_ROWS)).thenReturn(forumPage);
         Storage storage = mock(Storage.class);
         when(storage.findByName(anyString())).thenReturn(null);
-        Predicate<Vacancy> skipByTime = vac -> vac == vacJava2;
+        Predicate<Vacancy> skipByTime = vac -> vac.getModified().equals(YESTERDAY);
         ForumPageProcessor processor = new ForumPageProcessor(storage, pageParser,
                 "Java"::equals, skipByTime, vac -> {});
 

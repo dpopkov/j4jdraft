@@ -6,11 +6,14 @@ import org.jsoup.select.Elements;
 import ru.j4jdraft.vacparser.model.ForumPage;
 import ru.j4jdraft.vacparser.model.Vacancy;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 public class ForumPageParser {
+    private final DateTimeParser dateTimeParser = new DateTimeParser();
+
     /**
      * Парсит страницу форума и возвращает результат в виде списка вакансий и ссылки на следующую страницу.
      * @param document document representing forum page
@@ -36,7 +39,9 @@ public class ForumPageParser {
             String name = a.text();
             if (!map.containsKey(name)) {
                 String href = a.attr("href");
-                Vacancy vacancy = new Vacancy(name, href);
+                String dateStr = row.selectFirst("td:nth-child(6)").text();
+                LocalDateTime modified = dateTimeParser.parse(dateStr);
+                Vacancy vacancy = new Vacancy(name, href, modified);
                 map.put(name, vacancy);
             }
         }

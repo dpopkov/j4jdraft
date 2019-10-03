@@ -4,30 +4,34 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
- * Содержит данные о вакансии
+ * Contains all vacancy information.
  */
 public class Vacancy {
     /** Primary key in database. */
     private Integer id;
     /** Name or title of the vacancy. */
-    private String name;
+    private final String name;
     /** Description of the vacancy. */
     private String description;
     /** Link to the vacancy. */
-    private String link;
-    /** Time of the vacancy's creation */
+    private final String link;
+    /** Time of the vacancy's creation. */
     private LocalDateTime created;
+    /** Time of the vacancy's modification. */
+    private final LocalDateTime modified;
 
-    public Vacancy(String name, String link) {
+    public Vacancy(String name, String link, LocalDateTime modified) {
         this.name = name;
         this.link = link;
+        this.modified = modified;
     }
 
-    public Vacancy(String name, String description, String link, LocalDateTime created) {
+    public Vacancy(String name, String description, String link, LocalDateTime created, LocalDateTime modified) {
         this.name = name;
         this.description = description;
         this.link = link;
         this.created = created;
+        this.modified = modified;
     }
 
     public Integer getId() {
@@ -42,10 +46,6 @@ public class Vacancy {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -58,16 +58,16 @@ public class Vacancy {
         return link;
     }
 
-    public void setLink(String link) {
-        this.link = link;
-    }
-
     public LocalDateTime getCreated() {
         return created;
     }
 
     public void setCreated(LocalDateTime created) {
         this.created = created;
+    }
+
+    public LocalDateTime getModified() {
+        return modified;
     }
 
     @Override
@@ -79,18 +79,22 @@ public class Vacancy {
             return false;
         }
         Vacancy vacancy = (Vacancy) obj;
-        return id.equals(vacancy.id) && name.equals(vacancy.name) && description.equals(vacancy.description)
-                && link.equals(vacancy.link) && created.equals(vacancy.created);
+        return Objects.equals(id, vacancy.id) &&
+                Objects.equals(name, vacancy.name) &&
+                Objects.equals(description, vacancy.description) &&
+                Objects.equals(link, vacancy.link) &&
+                Objects.equals(created, vacancy.created) &&
+                Objects.equals(modified, vacancy.modified);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, link, created);
+        return Objects.hash(id, name, description, link, created, modified);
     }
 
     @Override
     public String toString() {
-        return "Vacancy{id=" + id + ", name='" + name + "', description='" + description
-                + "', link='" + link + "', created=" + created + '}';
+        return "Vacancy{id=" + id + ", name='" + name + '\'' + ", description='" + description + '\''
+                + ", link='" + link + '\'' + ", created=" + created + ", modified=" + modified + '}';
     }
 }

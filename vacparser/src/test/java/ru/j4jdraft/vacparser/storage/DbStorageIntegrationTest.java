@@ -16,14 +16,14 @@ import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class DbStorageIntegrationTest {
-    private static final LocalDateTime DATE_TIME = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
+    private static final LocalDateTime TODAY = LocalDateTime.of(LocalDate.now(), LocalTime.of(0, 0));
     private static final AppSettings CONFIG = new AppSettings("test_vacparser_app.properties");
 
     @Test
     public void whenAddThenCanFindById() throws SQLException {
         try (Connection connection = ConnectionRollback.create(DbHelper.getConnection(CONFIG))) {
             Storage storage = new DbStorage(connection);
-            Vacancy vacancy = new Vacancy("Java trainee", "Skills: Java", "example.com", DATE_TIME);
+            Vacancy vacancy = new Vacancy("Java trainee", "Skills: Java", "example.com", TODAY, TODAY);
             assertNull(vacancy.getId());
             vacancy = storage.add(vacancy);
             assertNotNull(vacancy.getId());
@@ -37,7 +37,7 @@ public class DbStorageIntegrationTest {
     public void whenAddThenCanFindByName() throws SQLException {
         try (Connection connection = ConnectionRollback.create(DbHelper.getConnection(CONFIG))) {
             Storage storage = new DbStorage(connection);
-            Vacancy vacancy = new Vacancy("Java trainee", "Skills: Java", "link", DATE_TIME);
+            Vacancy vacancy = new Vacancy("Java trainee", "Skills: Java", "link", TODAY, TODAY);
             vacancy = storage.add(vacancy);
             Vacancy found = storage.findByName("Java trainee");
             assertThat(found, is(vacancy));
@@ -48,9 +48,9 @@ public class DbStorageIntegrationTest {
     public void whenAddAllThenAllCanBeFound() throws SQLException {
         try (Connection connection = ConnectionRollback.create(DbHelper.getConnection(CONFIG))) {
             Storage storage = new DbStorage(connection);
-            Vacancy vacancy1 = new Vacancy("Java trainee 1", "Skills: Java", "link", DATE_TIME);
-            Vacancy vacancy2 = new Vacancy("Java trainee 2", "Skills: Java", "link", DATE_TIME);
-            Vacancy vacancy3 = new Vacancy("Java trainee 3", "Skills: Java", "link", DATE_TIME);
+            Vacancy vacancy1 = new Vacancy("Java trainee 1", "Skills: Java", "link", TODAY, TODAY);
+            Vacancy vacancy2 = new Vacancy("Java trainee 2", "Skills: Java", "link", TODAY, TODAY);
+            Vacancy vacancy3 = new Vacancy("Java trainee 3", "Skills: Java", "link", TODAY, TODAY);
             List<Vacancy> vacancies = List.of(vacancy3, vacancy2, vacancy1);
             storage.addAll(vacancies);
             List<Vacancy> found = storage.findAll();
@@ -65,11 +65,11 @@ public class DbStorageIntegrationTest {
     public void whenFindLastThenReturnsItemWithTheLastCreationTime() throws SQLException {
         try (Connection connection = ConnectionRollback.create(DbHelper.getConnection(CONFIG))) {
             Storage storage = new DbStorage(connection);
-            LocalDateTime dayBefore = DATE_TIME.minusDays(1L);
-            LocalDateTime dayAfter = DATE_TIME.plusDays(1L);
-            Vacancy vacancy1 = new Vacancy("Java trainee 1", "Skills: Java", "link", dayBefore);
-            Vacancy vacancy2 = new Vacancy("Java trainee 2", "Skills: Java", "link", dayAfter);
-            Vacancy vacancy3 = new Vacancy("Java trainee 3", "Skills: Java", "link", DATE_TIME);
+            LocalDateTime dayBefore = TODAY.minusDays(1L);
+            LocalDateTime dayAfter = TODAY.plusDays(1L);
+            Vacancy vacancy1 = new Vacancy("Java trainee 1", "Skills: Java", "link", dayBefore, dayBefore);
+            Vacancy vacancy2 = new Vacancy("Java trainee 2", "Skills: Java", "link", dayAfter, dayAfter);
+            Vacancy vacancy3 = new Vacancy("Java trainee 3", "Skills: Java", "link", TODAY, TODAY);
             List<Vacancy> vacancies = List.of(vacancy3, vacancy2, vacancy1);
             storage.addAll(vacancies);
             Vacancy last = storage.findLast();

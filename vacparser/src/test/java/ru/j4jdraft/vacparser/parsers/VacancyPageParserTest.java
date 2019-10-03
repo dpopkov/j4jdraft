@@ -20,7 +20,7 @@ public class VacancyPageParserTest {
         String html = ResourceReader.readWin1251(TEST_PAGE);
         Document doc = Jsoup.parse(html);
         VacancyPageParser parser = new VacancyPageParser();
-        Vacancy vacancy = new Vacancy("name", "link");
+        Vacancy vacancy = new Vacancy("name", "link", null);
         String expectedDescription = "<b>Вакансия: Администратор Oracle</b><br>"
                 + "Вакансия в городе: Москва, м. \"Чистые пруды\"";
         LocalDateTime expectedCreated = LocalDateTime.of(2019, 9, 25, 15, 0);

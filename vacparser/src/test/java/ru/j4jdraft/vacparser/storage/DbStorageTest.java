@@ -30,7 +30,7 @@ public class DbStorageTest {
         when(rs.next()).thenReturn(true);
 
         Storage storage = new DbStorage(connection);
-        Vacancy vacancy = new Vacancy("Bob", "Java trainee", "example.com", NOW);
+        Vacancy vacancy = new Vacancy("Bob", "Java trainee", "example.com", NOW, NOW);
         assertNull(vacancy.getId());
         Vacancy added = storage.add(vacancy);
         assertNotNull(added.getId());
@@ -39,22 +39,7 @@ public class DbStorageTest {
         verify(statement).setString(2, "Java trainee");
         verify(statement).setString(3, "example.com");
         verify(statement).setObject(4, NOW);
+        verify(statement).setObject(5, NOW);
         verify(statement).executeUpdate();
-    }
-
-    @Test
-    public void addAll() {
-    }
-
-    @Test
-    public void findAll() {
-    }
-
-    @Test
-    public void findByName() {
-    }
-
-    @Test
-    public void findLast() {
     }
 }

@@ -3,7 +3,6 @@ package ru.j4jdraft.vacparser;
 import org.jsoup.nodes.Document;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import ru.j4jdraft.vacparser.parsers.VacancyPageParser;
@@ -28,7 +27,7 @@ public class VacanciesScraper implements Job {
 
     /** Contains the main logic of page loading and processing cycle. */
     @Override
-    public void execute(JobExecutionContext context) throws JobExecutionException {
+    public void execute(JobExecutionContext context) {
         AppSettings settings = (AppSettings) context.getJobDetail().getJobDataMap().get("appSettings");
         Connection connection = null;
         try {
@@ -38,11 +37,8 @@ public class VacanciesScraper implements Job {
             LocalDateTime temporalBoundary = calculateDateTimeLimit(storage);
             LOG.info("Using temporal boundary {}", temporalBoundary);
             Predicate<Vacancy> skipByTime = vacancy -> {
-
-                // todo: change skipping to skip by modification time
-
-                boolean after = vacancy.getCreated().isAfter(temporalBoundary);
-                return !after;
+                boolean afterBoundary = vacancy.getModified().isAfter(temporalBoundary);
+                return !afterBoundary;
             };
             Predicate<String> passByName = name -> name.contains("Java") && !name.toLowerCase().contains("script");
             DocumentLoader loader = new DocumentLoader(settings.crawlDelay());
@@ -83,7 +79,7 @@ public class VacanciesScraper implements Job {
     /**
      * Calculates time limit based on on the fact whether the storage contains any records.
      * If the storage contains no records then time limit is the start of the previous year,
-     * otherwise the time limit is the creation time of the last stored vacancy.
+     * otherwise the time limit is the modification time of the last vacancy.
      * @param storage the storage
      * @return date time limit after which no scraping should be performed
      * @throws SQLException if db access error occurs
@@ -92,8 +88,8 @@ public class VacanciesScraper implements Job {
         LocalDateTime temporalBoundary;
         Vacancy lastVacancy = storage.findLast();
         if (lastVacancy == null) {
-            int previousYear = LocalDate.now().minusYears(1L).getYear();
-            temporalBoundary = LocalDateTime.of(previousYear, 1, 1, 0, 0);
+            int prevYear = LocalDate.now().minusYears(1L).getYear();
+            temporalBoundary = LocalDateTime.of(prevYear, 12, 31, 23, 59, 59);
         } else {
             temporalBoundary = lastVacancy.getCreated();
         }
