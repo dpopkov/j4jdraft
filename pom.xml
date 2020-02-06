@@ -4,7 +4,7 @@
   <artifactId>junior</artifactId>
   <packaging>pom</packaging>
   <version>2.0</version>
-  <name>junior</name>
+  <name>j4jdraft</name>
   <url>http://job4j.ru/</url>
   
   <properties>
@@ -21,6 +21,7 @@
     <module>find</module>
     <module>chapter_007_db</module>
     <module>vacparser</module>
+    <module>chapter_008</module>
   </modules>
   
   <dependencies>
