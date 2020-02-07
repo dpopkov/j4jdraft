@@ -7,6 +7,7 @@ import java.util.function.Supplier;
  * Interactive text input driven calculator.
  * It can solves a simple arithmetic expression, e.g 3 + 2.
  * or an expression using the previous result, e.g. Result + 42
+ * Uses empty input (press Enter) to start interaction loop from the beginning.
  * Uses command 'exit' to quit.
  */
 public class InteractCalc {
@@ -52,9 +53,14 @@ public class InteractCalc {
      * Starts the loop of interaction.
      */
     public void start() {
-        output.accept("Enter expression: ");
+        prompt();
         while (true) {
             String expression = input.get();
+            if (expression.isEmpty()) {
+                firstExpression = true;
+                prompt();
+                continue;
+            }
             if ("exit".equals(expression)) {
                 break;
             }
@@ -66,5 +72,9 @@ public class InteractCalc {
             }
             output.accept(result + " ");
         }
+    }
+
+    private void prompt() {
+        output.accept("Enter expression: ");
     }
 }

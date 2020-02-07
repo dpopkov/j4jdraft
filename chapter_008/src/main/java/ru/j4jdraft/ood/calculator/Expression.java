@@ -1,0 +1,6 @@
+package ru.j4jdraft.ood.calculator;
+
+public interface Expression {
+    boolean isFull();
+    double evaluate();
+}
