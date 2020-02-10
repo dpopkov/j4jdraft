@@ -23,11 +23,8 @@ public class SimpleExpressionEvaluator implements ExpressionEvaluator {
      */
     @Override
     public double evaluate(String expr) {
-        Expression result = parser.parse(expr);
-        if (!result.isFull()) {
-            throw new IllegalArgumentException("The expression is not full: " + expr);
-        }
-        return result.evaluate();
+        Expression expression = parser.parse(expr);
+        return expression.evaluate();
     }
 
     /**
@@ -38,6 +35,7 @@ public class SimpleExpressionEvaluator implements ExpressionEvaluator {
      */
     @Override
     public double evaluate(double firstOperand, String expr) {
-        return evaluate(firstOperand + " " + expr);
+        String fullExpression = firstOperand + " " + expr;
+        return evaluate(fullExpression);
     }
 }

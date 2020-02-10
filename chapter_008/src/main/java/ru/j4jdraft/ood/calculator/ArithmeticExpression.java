@@ -14,19 +14,6 @@ public class ArithmeticExpression implements Expression {
         this.calculator = calculator;
     }
 
-    public boolean hasFirst() {
-        return first != null;
-    }
-
-    public void setFirst(Expression first) {
-        this.first = first;
-    }
-
-    @Override
-    public boolean isFull() {
-        return first != null && operation != null && second != null;
-    }
-
     @Override
     public double evaluate() {
         return calculator.calculate(first.evaluate(), operation, second.evaluate());

@@ -27,17 +27,6 @@ public class SimpleExpressionParserTest {
     }
 
     @Test
-    public void whenParseOneOperandThenReturnsNotCompleteArithmeticExpression() {
-        SimpleExpressionParser parser = new SimpleExpressionParser(
-                (op1, operation, op2) -> op1 * op2,
-                null);
-        ArithmeticExpression result = (ArithmeticExpression) parser.parse("* 42.3");
-        assertFalse(result.hasFirst());
-        result.setFirst(new NumberExpression(10.0));
-        assertThat(result.evaluate(), closeTo(423.0, DELTA));
-    }
-
-    @Test
     public void whenParseFunctionThenReturnsFunctionExpression() {
         SimpleExpressionParser parser = new SimpleExpressionParser(
                 null,

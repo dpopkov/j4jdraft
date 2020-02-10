@@ -12,11 +12,6 @@ public class FunctionExpression implements Expression {
     }
 
     @Override
-    public boolean isFull() {
-        return true;
-    }
-
-    @Override
     public double evaluate() {
         return calculator.calculate(functionName, argument.evaluate());
     }

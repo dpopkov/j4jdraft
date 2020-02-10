@@ -33,10 +33,8 @@ public class SimpleExpressionParser implements ExpressionParser {
     public Expression parse(String expression) {
         Scanner scanner = new Scanner(expression);
         scanner.useLocale(Locale.US);
-        boolean hasFirst = false;
         double first = -1;
         if (scanner.hasNextDouble()) {
-            hasFirst = true;
             first = scanner.nextDouble();
             if (!scanner.hasNext()) {
                 return new NumberExpression(first);
@@ -53,7 +51,7 @@ public class SimpleExpressionParser implements ExpressionParser {
             } else {
                 double second = scanner.nextDouble();
                 return new ArithmeticExpression(
-                        hasFirst ? new NumberExpression(first) : null,
+                        new NumberExpression(first),
                         new NumberExpression(second),
                         ArithmeticOperation.from(operation),
                         arithmeticCalculator);
