@@ -10,11 +10,6 @@ public class NumberExpression implements Expression {
     }
 
     @Override
-    public boolean isFull() {
-        return true;
-    }
-
-    @Override
     public double evaluate() {
         return value;
     }

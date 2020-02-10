@@ -5,7 +5,7 @@ import java.util.function.Supplier;
 
 /**
  * Interactive text input driven calculator.
- * It can solves a simple arithmetic expression, e.g 3 + 2.
+ * It can solve a simple arithmetic expression, e.g 3 + 2.
  * or an expression using the previous result, e.g. Result + 42
  * Uses empty input (press Enter) to start interaction loop from the beginning.
  * Uses command 'exit' to quit.
@@ -53,18 +53,18 @@ public class InteractCalc {
      * Starts the loop of interaction.
      */
     public void start() {
+        if (input == null) {
+            throw new IllegalStateException("Input is not initialized yet.");
+        }
         prompt();
         while (true) {
             String expression = input.get();
             if (expression.isEmpty()) {
-                firstExpression = true;
-                prompt();
+                restartInteraction();
                 continue;
-            }
-            if ("exit".equals(expression)) {
+            } else if ("exit".equals(expression)) {
                 break;
-            }
-            if (firstExpression) {
+            } else if (firstExpression) {
                 result = evaluator.evaluate(expression);
                 firstExpression = false;
             } else {
@@ -76,5 +76,10 @@ public class InteractCalc {
 
     private void prompt() {
         output.accept("Enter expression: ");
+    }
+
+    private void restartInteraction() {
+        firstExpression = true;
+        prompt();
     }
 }
