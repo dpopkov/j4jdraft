@@ -1,36 +1,39 @@
 package ru.j4jdraft.ood.warehouse;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Распределяет продукты по приемникам в зависимости от состояния.
  */
 public class ControlQuality {
-    // todo: учесть будущее "Динамическое перераспределение продуктов [#854]"
-    private Distribution distribution;
-    private StoreCycleCalculator calculator;
+    private final Map<StoreCycle, FoodConsumer> destinations = new HashMap<>();
+    private StoreCycleCalculator stateCalculator;
 
-    public ControlQuality(Distribution distribution, StoreCycleCalculator calculator) {
-        this.distribution = distribution;
-        this.calculator = calculator;
+    public ControlQuality(StoreCycleCalculator stateCalculator) {
+        this.stateCalculator = stateCalculator;
     }
 
-    public void setDistribution(Distribution distribution) {
-        this.distribution = distribution;
+    // todo: how to encapsulate foodAction -- make Strategy than encapsulates state and action
+    public void addDestination(StoreCycle state, FoodConsumer destination, FoodConsumer foodAction) {
+        destinations.put(state, destination);
     }
 
     // todo: test change of strategy
-    public void setCalculator(StoreCycleCalculator calculator) {
-        this.calculator = calculator;
+    public void setStateCalculator(StoreCycleCalculator stateCalculator) {
+        this.stateCalculator = stateCalculator;
     }
 
-    public void distribute(List<Food> foodList) {
+    public void sort(List<Food> foodList) {
         for (Food food : foodList) {
-            StoreCycle lifeCycle = calculator.calculate(food);
-            distribution.accept(lifeCycle, food);
+            StoreCycle foodState = stateCalculator.calculate(food);
+            FoodConsumer consumer = destinations.get(foodState);
+            consumer.accept(food);
         }
     }
 
+    // todo: учесть будущее "Динамическое перераспределение продуктов [#854]"
     /* извлекать все продукты и перераспределять их заново. */
     /*public void reSort() {
 
