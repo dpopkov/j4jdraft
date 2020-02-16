@@ -2,6 +2,10 @@ package ru.j4jdraft.ood.warehouse;
 
 import org.junit.Test;
 
+import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
+
 import static org.junit.Assert.*;
 
 public class ControlQualityTest {
@@ -9,6 +13,8 @@ public class ControlQualityTest {
     @Test
     public void whenShelfLifeLessThan25ThenMoveToWarehouse() {
         // todo: implement
+        List<Food> foods = List.of(new Milk(new Date(), new Date(), BigDecimal.valueOf(90)));
+
     }
 
     @Test

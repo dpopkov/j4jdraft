@@ -1,34 +1,33 @@
 package ru.j4jdraft.ood.warehouse;
 
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
 
 /**
- * Распределяет продукты по приемникам в зависимости от состояния.
+ * Распределяет продукты по приемникам используя внешний алгоритм сортировки продуктов.
  */
 public class ControlQuality {
-    private final Map<StoreCycle, FoodConsumer> destinations = new HashMap<>();
-    private StoreCycleCalculator stateCalculator;
+    private final Map<DestId, FoodConsumer> destinations = new EnumMap<>(DestId.class);
+    private FoodSorter sortingStrategy;
 
-    public ControlQuality(StoreCycleCalculator stateCalculator) {
-        this.stateCalculator = stateCalculator;
-    }
-
-    // todo: how to encapsulate foodAction -- make Strategy than encapsulates state and action
-    public void addDestination(StoreCycle state, FoodConsumer destination, FoodConsumer foodAction) {
-        destinations.put(state, destination);
+    public ControlQuality(FoodSorter sortingStrategy) {
+        this.sortingStrategy = sortingStrategy;
     }
 
     // todo: test change of strategy
-    public void setStateCalculator(StoreCycleCalculator stateCalculator) {
-        this.stateCalculator = stateCalculator;
+    public void setSortingStrategy(FoodSorter sortingStrategy) {
+        this.sortingStrategy = sortingStrategy;
+    }
+
+    public void addDestination(DestId id, FoodConsumer destination) {
+        destinations.put(id, destination);
     }
 
     public void sort(List<Food> foodList) {
         for (Food food : foodList) {
-            StoreCycle foodState = stateCalculator.calculate(food);
-            FoodConsumer consumer = destinations.get(foodState);
+            DestId id = sortingStrategy.sort(food);
+            FoodConsumer consumer = destinations.get(id);
             consumer.accept(food);
         }
     }
