@@ -1,4 +1,4 @@
-package ru.j4jdraft.ood.warehouse;
+package ru.j4jdraft.ood.warehouse.quality;
 
 /** Identifies destination. */
 public enum DestId {
