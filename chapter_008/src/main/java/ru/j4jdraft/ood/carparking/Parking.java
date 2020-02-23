@@ -1,25 +1,34 @@
 package ru.j4jdraft.ood.carparking;
 
-import java.util.List;
-
+/**
+ * Represents parking service that can serve vehicles of different sizes.
+ */
 public class Parking {
-    private List<ParkingSpot> spots;
-    private final SpaceFinder finder;
+    /**
+     * Initializes the parking with the specified number of parking spots.
+     * @param numCarPlaces number of car parking spots
+     * @param numTruckPlaces number of truck parking spots
+     * @param finder finder that helps to find free spots
+     */
+    public Parking(int numCarPlaces, int numTruckPlaces, SpaceFinder finder) {
 
-    public Parking(int numPlaces, SpaceFinder finder) {
-        spots = initSpots(numPlaces);
-        this.finder = finder;
     }
 
+    /**
+     * Accepts the parking vehicle.
+     * @param vehicle vehicle to park
+     * @return ticket that should be used for getting the vehicle back
+     */
     public Ticket driveIn(Vehicle vehicle) {
         return null;
     }
 
+    /**
+     * Gives back the parked vehicle using info from the specified ticket.
+     * @param ticket ticket received when driving in the parking
+     * @return vehicle
+     */
     public Vehicle leave(Ticket ticket) {
-        return null;
-    }
-
-    private List<ParkingSpot> initSpots(int numPlaces) {
         return null;
     }
 }

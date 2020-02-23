@@ -1,7 +1,8 @@
 package ru.j4jdraft.ood.carparking;
 
-import java.util.List;
-
+/** Finds space for any type of vehicle. */
 public interface SpaceFinder {
-    List<ParkingSpot> find(int size, List<ParkingSpot> allSpots);
+
+    /** Returns parking space for the specified vehicle. */
+    ParkingSpace findSpaceFor(Vehicle vehicle);
 }

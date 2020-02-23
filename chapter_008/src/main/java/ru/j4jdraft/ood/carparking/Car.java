@@ -1,9 +1,9 @@
 package ru.j4jdraft.ood.carparking;
 
 /**
- * Represents truck.
+ * Represents passenger car.
  */
-public class Truck implements Vehicle {
+public class Car implements Vehicle {
     @Override
     public String getId() {
         return null;

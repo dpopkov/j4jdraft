@@ -1,8 +1,14 @@
 package ru.j4jdraft.ood.carparking;
 
-import java.util.List;
-
+/**
+ * Ticket that unites information about the parked vehicle and parking space.
+ */
 public class Ticket {
-    private long ticketId;
-    private List<Long> spotIds;
+    public String getVehicleId() {
+        return null;
+    }
+
+    public long getParkingSpaceId() {
+        return -1;
+    }
 }
