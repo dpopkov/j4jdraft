@@ -5,8 +5,8 @@
         <entries>
             <xsl:for-each select="entries/entry">
                 <entry>
-                    <xsl:attribute name="field">
-                        <xsl:value-of select="field"/>
+                    <xsl:attribute name="grid">
+                        <xsl:value-of select="grid"/>
                     </xsl:attribute>
                 </entry>
             </xsl:for-each>

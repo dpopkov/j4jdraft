@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <entries>
     <entry>
-        <field>10</field>
+        <grid>10</grid>
     </entry>
     <entry>
-        <field>20</field>
+        <grid>20</grid>
     </entry>
 </entries>
