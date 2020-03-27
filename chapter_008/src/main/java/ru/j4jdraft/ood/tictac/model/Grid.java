@@ -1,4 +1,4 @@
-package ru.j4jdraft.ood.tictac;
+package ru.j4jdraft.ood.tictac.model;
 
 public interface Grid {
     Mark getMark(int row, int col);

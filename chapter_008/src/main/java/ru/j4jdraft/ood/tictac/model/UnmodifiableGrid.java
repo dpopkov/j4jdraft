@@ -1,4 +1,4 @@
-package ru.j4jdraft.ood.tictac;
+package ru.j4jdraft.ood.tictac.model;
 
 public class UnmodifiableGrid implements Grid {
     private final GameGrid decorated;

@@ -1,4 +1,4 @@
-package ru.j4jdraft.ood.tictac;
+package ru.j4jdraft.ood.tictac.model;
 
 public class Move {
     public int row() {
