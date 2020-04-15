@@ -1,5 +1,7 @@
 package ru.j4jdraft.ood.tictac;
 
+import ru.j4jdraft.ood.tictac.fx.MainWindow;
+
 public class Main {
     /*
     Привести default конфигурацию.
@@ -14,7 +16,13 @@ public class Main {
         // 4) Enter who starts
         // Example: starts=player1
         // 5) Enter UI type for human
-        // Example: ui=console OR ui=gui
+        // Example: ui=console OR ui=fx
+        Config.instance().init(args);
+        if ("fx".equals(Config.instance().uiType())) {
+            MainWindow.main(args);
+        } else {
+            System.err.println("Other types of UI not implemented yet");
+        }
 
         // Create model (модель не зависит от интерфейса)
         // Create controller (зависит от интерфейса)
