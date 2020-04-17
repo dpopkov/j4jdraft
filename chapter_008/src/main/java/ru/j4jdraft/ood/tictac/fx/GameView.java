@@ -13,9 +13,9 @@ public class GameView {
     private static final int CELL_SIZE = 40;
 
     private final Pane root;
-    private final GameController controller;
+    private final HumanGameController controller;
 
-    public GameView(GameController controller) {
+    public GameView(HumanGameController controller) {
         this.controller = controller;
         root = createNodeHierarchy();
     }

@@ -1,6 +1,6 @@
 package ru.j4jdraft.ood.tictac.model;
 
 public interface Player {
-    int getId();
+    PlayerId getPlayerId();
     Move makeMove(Grid grid);
 }

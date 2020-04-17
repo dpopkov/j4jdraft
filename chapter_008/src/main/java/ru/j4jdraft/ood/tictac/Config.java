@@ -8,6 +8,7 @@ public class Config {
     private static final String DEFAULT_UI_TYPE = "fx";
 
     private static final Config instance = new Config();
+    public static final int DEFAULT_STARTING_ID = 1;
 
     public static Config instance() {
         return instance;
@@ -20,10 +21,13 @@ public class Config {
     private boolean initialized = false;
     private String uiType = DEFAULT_UI_TYPE;
     private int gridSize = DEFAULT_GRID_SIZE;
+    private int startingId = DEFAULT_STARTING_ID;
+
     /** Actions used to receive values of the arguments. */
     private final Map<String, Supplier<Object>> actions = Map.of(
             "-u", () -> uiType = nextArg(),
-            "-s", () -> gridSize = Integer.parseInt(nextArg())
+            "-s", () -> gridSize = Integer.parseInt(nextArg()),
+            "-i", () -> startingId = Integer.parseInt(nextArg())
     );
 
     private String nextArg() {
@@ -51,6 +55,10 @@ public class Config {
     public int gridSize() {
         checkInitialized();
         return gridSize;
+    }
+
+    public int getStartingId() {
+        return startingId;
     }
 
     /** Produces parsed arguments. */

@@ -2,8 +2,8 @@ package ru.j4jdraft.ood.tictac.model;
 
 public class HumanPlayer implements Player {
     @Override
-    public int getId() {
-        return 0;
+    public PlayerId getPlayerId() {
+        return null;
     }
 
     @Override

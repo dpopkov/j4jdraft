@@ -22,21 +22,27 @@ public class GameModel {
         return gridView;
     }
 
-    /*
-    Ввод хода игрока.
-    true - выигрыш (игра закончена)
-     */
-    public boolean move(int playerId, Move move) {
+    public void start(PlayerId startingPlayer) {
+        notifyObservers(GameEvent.GAME_STARTED, startingPlayer);
+    }
+
+    // todo: может быть стоит заменить int id на класс PlayerId, который будет хранить id и mark.
+    public void move(PlayerId playerId, Move move) {
         // поставить символ соответствующего игрока на поле
         int row = move.getRow();
         int col = move.getCol();
-        Mark mark = null;   // determine mark
         if (grid.isFreeAt(row, col)) {
-            grid.setMark(row, col, mark);
+            grid.setMark(row, col, playerId.getMark());
         } else {
             throw new IllegalMoveException("Cell at position " + move + " is not free");
         }
-        // проверить не закончена ли игра
+        // check state of the game
+        GameEvent event = gameFinished() ? GameEvent.GAME_FINISHED : GameEvent.PLAYER_MOVED;
+        notifyObservers(event, playerId);
+    }
+
+    private boolean gameFinished() {
+        // todo: implement
         return false;
     }
 
@@ -53,9 +59,9 @@ public class GameModel {
         observers.add(observer);
     }
 
-    public void notifyObservers(GameEvent event) {
+    public void notifyObservers(GameEvent event, PlayerId activePlayer) {
         for (GameObserver observer : observers) {
-            observer.update(event);
+            observer.update(event, activePlayer);
         }
     }
 }
