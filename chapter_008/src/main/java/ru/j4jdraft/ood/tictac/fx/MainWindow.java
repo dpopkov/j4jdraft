@@ -10,9 +10,8 @@ import ru.j4jdraft.ood.tictac.computer.RandomPlayer;
 import ru.j4jdraft.ood.tictac.model.*;
 
 public class MainWindow extends Application {
-    private Pane gridPane;
+    private Pane mainPane;
     private GameModel game;
-    private PlayerId startingPlayer;
 
     @Override
     public void init() {
@@ -20,21 +19,22 @@ public class MainWindow extends Application {
         game = new GameModel(grid);
         PlayerId human = new PlayerId(1, Mark.X);
         PlayerId computer = new PlayerId(2, Mark.O);
-        startingPlayer = Config.instance().getStartingId() == 1 ? human : computer;
+        game.addPlayer(human);
+        game.addPlayer(computer);
         HumanGameController controllerForHuman = new HumanGameController(game, human);
         ComputerGameController controllerForComputer = new ComputerGameController(game, new RandomPlayer(computer));
         game.addObserver(controllerForHuman);
         game.addObserver(controllerForComputer);
         GameView view = new GameView(controllerForHuman);
-        gridPane = view.getRoot();
+        mainPane = view.getRoot();
     }
 
     @Override
     public void start(Stage stage) {
-        stage.setScene(new Scene(gridPane));
+        stage.setScene(new Scene(mainPane));
         stage.setTitle("MainWindow - Test");
         stage.show();
-        game.start(startingPlayer);
+        game.start(Config.instance().getStartingId());
     }
 
     public static void main(String[] args) {

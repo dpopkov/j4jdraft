@@ -13,10 +13,10 @@ public class ComputerGameController implements GameObserver {
 
     @Override
     public void update(GameEvent event, PlayerId activePlayer) {
-        boolean isMe = activePlayer.equals(player.getPlayerId());
-        if (event == GameEvent.GAME_STARTED && isMe || event == GameEvent.PLAYER_MOVED && !isMe) {
-            Move move = player.makeMove(model.getGrid());
-            model.move(player.getPlayerId(), move);
+        boolean forMe = activePlayer.equals(player.getPlayerId());
+        if (forMe && event == GameEvent.NEXT_MOVE) {
+            Position position = player.makeMove(model.getGrid());
+            model.move(player.getPlayerId(), position);
         }
     }
 }

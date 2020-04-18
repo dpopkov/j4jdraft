@@ -7,7 +7,7 @@ public class HumanPlayer implements Player {
     }
 
     @Override
-    public Move makeMove(Grid grid) {
+    public Position makeMove(Grid grid) {
         return null;
     }
 }

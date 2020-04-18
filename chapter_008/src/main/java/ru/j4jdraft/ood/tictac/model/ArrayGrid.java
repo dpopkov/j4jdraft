@@ -13,21 +13,21 @@ public class ArrayGrid implements GameGrid {
     }
 
     @Override
-    public Mark getMark(int row, int col) {
-        return cells[row][col];
+    public Mark getMark(Position position) {
+        return cells[position.getRow()][position.getCol()];
     }
 
     @Override
-    public void setMark(int row, int col, Mark mark) {
-        if (!isFreeAt(row, col)) {
+    public void setMark(Position position, Mark mark) {
+        if (!isFreeAt(position)) {
             throw new IllegalStateException("This cell is busy");
         }
-        cells[row][col] = mark;
+        cells[position.getRow()][position.getCol()] = mark;
     }
 
     @Override
-    public boolean isFreeAt(int row, int col) {
-        return cells[row][col] == Mark.EMPTY;
+    public boolean isFreeAt(Position position) {
+        return cells[position.getRow()][position.getCol()] == Mark.EMPTY;
     }
 
     @Override

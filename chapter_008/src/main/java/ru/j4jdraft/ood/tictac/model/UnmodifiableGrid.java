@@ -8,13 +8,13 @@ public class UnmodifiableGrid implements Grid {
     }
 
     @Override
-    public Mark getMark(int row, int col) {
-        return decorated.getMark(row, col);
+    public Mark getMark(Position position) {
+        return decorated.getMark(position);
     }
 
     @Override
-    public boolean isFreeAt(int row, int col) {
-        return decorated.isFreeAt(row, col);
+    public boolean isFreeAt(Position position) {
+        return decorated.isFreeAt(position);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package ru.j4jdraft.ood.tictac.computer;
 
 import ru.j4jdraft.ood.tictac.model.Grid;
-import ru.j4jdraft.ood.tictac.model.Move;
+import ru.j4jdraft.ood.tictac.model.Position;
 import ru.j4jdraft.ood.tictac.model.Player;
 import ru.j4jdraft.ood.tictac.model.PlayerId;
 
@@ -18,7 +18,7 @@ public class RandomPlayer implements Player {
     }
 
     @Override
-    public Move makeMove(Grid grid) {
+    public Position makeMove(Grid grid) {
         // todo: produce random move
         return null;
     }

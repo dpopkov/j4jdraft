@@ -12,6 +12,7 @@ public class GameModel {
     private final Grid gridView;
     private boolean finished;
     private List<GameObserver> observers = new ArrayList<>();
+    private PlayersCarousel players = new PlayersCarousel();
 
     public GameModel(GameGrid grid) {
         this.grid = grid;
@@ -22,23 +23,29 @@ public class GameModel {
         return gridView;
     }
 
-    public void start(PlayerId startingPlayer) {
-        notifyObservers(GameEvent.GAME_STARTED, startingPlayer);
+    public void addPlayer(PlayerId player) {
+        players.add(player);
     }
 
-    // todo: может быть стоит заменить int id на класс PlayerId, который будет хранить id и mark.
-    public void move(PlayerId playerId, Move move) {
-        // поставить символ соответствующего игрока на поле
-        int row = move.getRow();
-        int col = move.getCol();
-        if (grid.isFreeAt(row, col)) {
-            grid.setMark(row, col, playerId.getMark());
-        } else {
-            throw new IllegalMoveException("Cell at position " + move + " is not free");
+    public void start(int startingId) {
+        players.setCurrentById(startingId);
+        notifyObservers(GameEvent.NEXT_MOVE, players.next());
+    }
+
+    /**
+     * Makes move for the specified player.
+     * @param playerId player that tries to make a move
+     * @param position position for the move
+     * @return true if the move was allowed, false otherwise
+     */
+    public boolean move(PlayerId playerId, Position position) {
+        if (!grid.isFreeAt(position)) {
+            return false;
         }
-        // check state of the game
-        GameEvent event = gameFinished() ? GameEvent.GAME_FINISHED : GameEvent.PLAYER_MOVED;
-        notifyObservers(event, playerId);
+        grid.setMark(position, playerId.getMark());
+        GameEvent event = gameFinished() ? GameEvent.GAME_FINISHED : GameEvent.NEXT_MOVE;
+        notifyObservers(event, players.next());
+        return true;
     }
 
     private boolean gameFinished() {
