@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class PlayersCarousel {
-    private final List<PlayerId> players = new ArrayList<>();
+    private final List<PlayerId> players;
     private int currentIdx;
+
+    public PlayersCarousel() {
+        players = new ArrayList<>();
+    }
+
+    public PlayersCarousel(int numPlayers) {
+        players = new ArrayList<>(numPlayers);
+    }
 
     public void add(PlayerId player) {
         players.add(player);

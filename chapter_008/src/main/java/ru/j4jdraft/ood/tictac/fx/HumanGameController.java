@@ -2,7 +2,7 @@ package ru.j4jdraft.ood.tictac.fx;
 
 import ru.j4jdraft.ood.tictac.model.*;
 
-public class HumanGameController implements GameObserver {
+public class HumanGameController implements GameObserver, GridObserver {
     private final GameModel model;
     private final PlayerId playerId;
     private GameView view;
@@ -11,14 +11,15 @@ public class HumanGameController implements GameObserver {
     public HumanGameController(GameModel model, PlayerId playerId) {
         this.model = model;
         this.playerId = playerId;
+        model.getGrid().addObserver(this);
     }
 
     public void setView(GameView view) {
         this.view = view;
     }
 
-    public Grid getGrid() {
-        return model.getGrid();
+    public int getGridSize() {
+        return model.getGrid().size();
     }
 
     public boolean move(int row, int col) {
@@ -33,14 +34,19 @@ public class HumanGameController implements GameObserver {
     public void update(GameEvent event, PlayerId activePlayer) {
         if (event == GameEvent.NEXT_MOVE) {
             if (playerId.equals(activePlayer)) {
-                view.showStateMessage("Your turn");
+                view.displayStateMessage("Your turn");
                 yourTurn = true;
             } else {
-                view.showStateMessage("");
+                view.displayStateMessage("");
                 yourTurn = false;
             }
         } else if (event == GameEvent.GAME_FINISHED) {
-            view.showStateMessage("Game finished");
+            view.displayStateMessage("Game finished");
         }
+    }
+
+    @Override
+    public void update(Position position, Mark mark) {
+        view.updateCell(position.getRow(), position.getCol(), mark.toString());
     }
 }

@@ -21,4 +21,9 @@ public class UnmodifiableGrid implements Grid {
     public int size() {
         return decorated.size();
     }
+
+    @Override
+    public void addObserver(GridObserver observer) {
+        decorated.addObserver(observer);
+    }
 }

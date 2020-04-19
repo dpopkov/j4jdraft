@@ -4,4 +4,5 @@ public interface Grid {
     Mark getMark(Position position);
     boolean isFreeAt(Position position);
     int size();
+    void addObserver(GridObserver observer);
 }

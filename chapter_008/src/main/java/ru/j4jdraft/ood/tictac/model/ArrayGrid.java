@@ -1,7 +1,11 @@
 package ru.j4jdraft.ood.tictac.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArrayGrid implements GameGrid {
     private final Mark[][] cells;
+    private final List<GridObserver> observers = new ArrayList<>();
 
     public ArrayGrid(int size) {
         cells = new Mark[size][size];
@@ -23,6 +27,18 @@ public class ArrayGrid implements GameGrid {
             throw new IllegalStateException("This cell is busy");
         }
         cells[position.getRow()][position.getCol()] = mark;
+        notifyObservers(position, mark);
+    }
+
+    @Override
+    public void addObserver(GridObserver observer) {
+        observers.add(observer);
+    }
+
+    private void notifyObservers(Position position, Mark mark) {
+        for (GridObserver ob : observers) {
+            ob.update(position, mark);
+        }
     }
 
     @Override

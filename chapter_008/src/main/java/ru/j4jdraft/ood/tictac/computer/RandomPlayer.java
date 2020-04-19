@@ -19,7 +19,13 @@ public class RandomPlayer implements Player {
 
     @Override
     public Position makeMove(Grid grid) {
-        // todo: produce random move
-        return null;
+        while (true) {
+            int row = (int) (Math.random() * grid.size());
+            int col = (int) (Math.random() * grid.size());
+            Position pos = new Position(row, col);
+            if (grid.isFreeAt(pos)) {
+                return pos;
+            }
+        }
     }
 }
