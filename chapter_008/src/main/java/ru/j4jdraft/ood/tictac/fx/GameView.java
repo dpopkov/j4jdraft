@@ -14,7 +14,7 @@ public class GameView {
     private static final String EMPTY_CELL_REPRESENTATION = "   ";
 
     private final Pane root;
-    private final Label messageLabel = new Label();
+    private Label messageLabel;
     private final GridPane buttonsPane = new GridPane();
     private Button[][] buttons;
 
@@ -36,6 +36,8 @@ public class GameView {
     }
 
     private Pane createNodeHierarchy(HumanGameController controller) {
+        messageLabel = new Label();
+        messageLabel.setPadding(new Insets(20, 20, 0, 20));
         buttonsPane.setPadding(new Insets(20));
         EventHandler<ActionEvent> buttonEventHandler = event -> {
             if (!controller.isYourTurn()) {

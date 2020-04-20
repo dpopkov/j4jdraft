@@ -2,18 +2,11 @@ package ru.j4jdraft.ood.tictac.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 public class PlayersCarousel {
-    private final List<PlayerId> players;
+    private final List<PlayerId> players = new ArrayList<>();
     private int currentIdx;
-
-    public PlayersCarousel() {
-        players = new ArrayList<>();
-    }
-
-    public PlayersCarousel(int numPlayers) {
-        players = new ArrayList<>(numPlayers);
-    }
 
     public void add(PlayerId player) {
         players.add(player);
@@ -31,6 +24,15 @@ public class PlayersCarousel {
         if (!found) {
             throw new IllegalArgumentException("Can not find player with id: " + id);
         }
+    }
+
+    public PlayerId findBy(Predicate<PlayerId> predicate) {
+        for (PlayerId p : players) {
+            if (predicate.test(p)) {
+                return p;
+            }
+        }
+        return null;
     }
 
     public PlayerId next() {

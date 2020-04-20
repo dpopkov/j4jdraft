@@ -16,7 +16,7 @@ public class MainWindow extends Application {
     @Override
     public void init() {
         GameGrid grid = new ArrayGrid(Config.instance().gridSize());
-        game = new GameModel(grid);
+        game = new GameModel(grid, Config.instance().getWinLineLength());
         PlayerId human = new PlayerId(1, Mark.X);
         PlayerId computer = new PlayerId(2, Mark.O);
         game.addPlayer(human);

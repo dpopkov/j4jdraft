@@ -11,11 +11,14 @@ public class GameModel {
     private final GameGrid grid;
     private final Grid gridView;
     private boolean finished;
-    private List<GameObserver> observers = new ArrayList<>();
-    private PlayersCarousel players = new PlayersCarousel();
+    private final int winLineLength;
+    private Mark winner;
+    private final List<GameObserver> observers = new ArrayList<>();
+    private final PlayersCarousel players = new PlayersCarousel();
 
-    public GameModel(GameGrid grid) {
+    public GameModel(GameGrid grid, int winLineLength) {
         this.grid = grid;
+        this.winLineLength = winLineLength;
         gridView = new UnmodifiableGrid(grid);
     }
 
@@ -49,14 +52,21 @@ public class GameModel {
     }
 
     private boolean gameFinished() {
-        // todo: implement
-        return false;
+        Mark mark = grid.getWinner(winLineLength);
+        if (mark != null) {
+            finished = true;
+            winner = mark;
+        }
+        return finished;
     }
 
     public int getWinnerId() {
         if (finished) {
-            // если игра закончена, то вернуть айди победителя
-            return -1;
+            PlayerId player = players.findBy(p -> p.getMark() == winner);
+            if (player != null) {
+                return player.getId();
+            }
+            throw new IllegalStateException("Can not find winner with mark " + winner);
         } else {
             throw new IllegalStateException("Can not get winner because the game is not finished yet");
         }

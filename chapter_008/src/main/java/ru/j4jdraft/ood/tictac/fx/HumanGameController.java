@@ -41,7 +41,8 @@ public class HumanGameController implements GameObserver, GridObserver {
                 yourTurn = false;
             }
         } else if (event == GameEvent.GAME_FINISHED) {
-            view.displayStateMessage("Game finished");
+            String result = playerId.getId() == model.getWinnerId() ? "You won!" : "You lost";
+            view.displayStateMessage("Game finished. " + result);
         }
     }
 
