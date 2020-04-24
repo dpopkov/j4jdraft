@@ -45,7 +45,7 @@ public class MainWindow extends Application {
         if (appConfig.isInitialized()) {
             config = appConfig;
         } else {
-            throw new IllegalStateException("Config is not initialized yet");
+            throw new IllegalArgumentException("Config is not initialized yet");
         }
     }
 

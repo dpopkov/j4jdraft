@@ -5,6 +5,7 @@ import ru.j4jdraft.ood.tictac.model.*;
 public class HumanCliController implements GameObserver {
     private final GameModel model;
     private final PlayerId playerId;
+    private GridFormatter formatter; // todo: implement class PseudoTextGridFormatter
 
     public HumanCliController(GameModel model, PlayerId playerId) {
         this.model = model;
@@ -15,7 +16,7 @@ public class HumanCliController implements GameObserver {
         return "";
     }
 
-    public boolean move(String coords) {
+    public boolean move(String coordinates) {
         return false;
     }
 

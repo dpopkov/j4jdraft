@@ -16,7 +16,7 @@ public class CliMain {
             this.config = config;
             init();
         } else {
-            throw new IllegalStateException("Config is not initialized yet");
+            throw new IllegalArgumentException("Config is not initialized yet");
         }
     }
 
