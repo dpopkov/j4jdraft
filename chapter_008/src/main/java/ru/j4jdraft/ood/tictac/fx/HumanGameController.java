@@ -42,7 +42,7 @@ public class HumanGameController implements GameObserver, GridObserver {
             }
         } else if (event == GameEvent.GAME_FINISHED) {
             String result = playerId.getId() == model.getWinnerId() ? "You won!" : "You lost";
-            view.displayStateMessage("Game finished. " + result);
+            view.displayStateMessage(result);
         }
     }
 

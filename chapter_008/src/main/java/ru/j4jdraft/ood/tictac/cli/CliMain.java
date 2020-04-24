@@ -1,19 +1,23 @@
 package ru.j4jdraft.ood.tictac.cli;
 
-import ru.j4jdraft.ood.tictac.Config;
 import ru.j4jdraft.ood.tictac.computer.ComputerGameController;
 import ru.j4jdraft.ood.tictac.computer.RandomPlayer;
 import ru.j4jdraft.ood.tictac.model.*;
 
 public class CliMain {
+    private final Config config;
     private GameModel game;
 
-    private CliMain() {
-        init();
-    }
-
-    private void start() {
-        game.start(Config.instance().getStartingId());
+    public CliMain(Config config) {
+        if (config == null) {
+            throw new IllegalArgumentException("Config is null");
+        }
+        if (config.isInitialized()) {
+            this.config = config;
+            init();
+        } else {
+            throw new IllegalStateException("Config is not initialized yet");
+        }
     }
 
     private void init() {
@@ -27,17 +31,13 @@ public class CliMain {
         game.addPlayer(human);
         game.addPlayer(computer);
         // create controllers
-        HumanCliController controllerForHuman = new HumanCliController(game);
+        HumanCliController controllerForHuman = new HumanCliController(game, human);
         ComputerGameController controllerForComputer = new ComputerGameController(game, new RandomPlayer(computer));
         game.addObserver(controllerForHuman);
         game.addObserver(controllerForComputer);
     }
 
-    public static void main(String[] args) {
-        if (!Config.instance().isInitialized()) {
-            Config.instance().init(args);
-        }
-        CliMain cli = new CliMain();
-        cli.start();
+    public void start() {
+        game.start(config.getStartingId());
     }
 }

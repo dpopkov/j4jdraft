@@ -2,6 +2,7 @@ package ru.j4jdraft.ood.tictac;
 
 import ru.j4jdraft.ood.tictac.cli.CliMain;
 import ru.j4jdraft.ood.tictac.fx.MainWindow;
+import ru.j4jdraft.ood.tictac.model.Config;
 
 public class Main {
     /*
@@ -18,12 +19,14 @@ public class Main {
         // Example: starts=player1
         // 5) Enter UI type for human
         // Example: ui=console OR ui=fx
-        Config.instance().init(args);
-        String uiType = Config.instance().uiType();
+        ArgsConfig.instance().init(args);
+        Config config = ArgsConfig.instance();
+        String uiType = config.uiType();
         if ("fx".equals(uiType)) {
+            MainWindow.setConfig(config);
             MainWindow.main(args);
         } else if ("console".equals(uiType)) {
-            CliMain.main(args);
+            new CliMain(config).start();
         } else {
             System.err.println("Other types of UI not implemented yet");
         }
