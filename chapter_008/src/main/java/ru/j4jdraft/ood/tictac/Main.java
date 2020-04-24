@@ -1,5 +1,6 @@
 package ru.j4jdraft.ood.tictac;
 
+import ru.j4jdraft.ood.tictac.cli.CliMain;
 import ru.j4jdraft.ood.tictac.fx.MainWindow;
 
 public class Main {
@@ -18,8 +19,11 @@ public class Main {
         // 5) Enter UI type for human
         // Example: ui=console OR ui=fx
         Config.instance().init(args);
-        if ("fx".equals(Config.instance().uiType())) {
+        String uiType = Config.instance().uiType();
+        if ("fx".equals(uiType)) {
             MainWindow.main(args);
+        } else if ("console".equals(uiType)) {
+            CliMain.main(args);
         } else {
             System.err.println("Other types of UI not implemented yet");
         }
