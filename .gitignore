@@ -37,3 +37,9 @@ target/
 db/
 !chapter_007_db/db/
 !vacparser/db/
+
+# Office files
+/**/docs/*.txt
+/**/docs/*.ods#
+/**/docs/TicTac-CRC.ods
+/**/docs/Wareshouse-CRC.ods
