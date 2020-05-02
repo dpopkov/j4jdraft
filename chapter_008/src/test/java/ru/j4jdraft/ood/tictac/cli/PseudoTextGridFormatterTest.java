@@ -16,13 +16,15 @@ public class PseudoTextGridFormatterTest {
     public void whenFormatEmptyGridThenReturnBlankCells() {
         Grid grid = mock(Grid.class);
         when(grid.getMark(any())).thenReturn(Mark.EMPTY);
-        when(grid.size()).thenReturn(2);
+        when(grid.size()).thenReturn(3);
         String expected = String.join(NL,
-                "┌───┬───┐",
-                "│   │   │",
-                "├───┼───┤",
-                "│   │   │",
-                "└───┴───┘", "");
+                "┌───┬───┬───┐",
+                "│   │   │   │",
+                "├───┼───┼───┤",
+                "│   │   │   │",
+                "├───┼───┼───┤",
+                "│   │   │   │",
+                "└───┴───┴───┘", "");
         GridFormatter formatter = new PseudoTextGridFormatter();
         String result = formatter.format(grid);
         assertThat(result, is(expected));
