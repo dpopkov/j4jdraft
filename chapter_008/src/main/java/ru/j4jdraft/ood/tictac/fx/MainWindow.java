@@ -33,7 +33,7 @@ public class MainWindow extends Application {
     @Override
     public void start(Stage stage) {
         stage.setScene(new Scene(mainPane));
-        stage.setTitle("MainWindow - Test");
+        stage.setTitle("TicTacToe");
         stage.show();
         game.start(config.getStartingId());
     }
