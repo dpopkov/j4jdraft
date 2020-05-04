@@ -1,5 +1,7 @@
 package ru.j4jdraft.ood.tictaccli;
 
+import java.util.Scanner;
+
 /*
 Игровой цикл
 ------------
@@ -12,22 +14,34 @@ package ru.j4jdraft.ood.tictaccli;
 4. Переход на начало цикла - п.1.
  */
 public class TicTacCliMain {
+    private static final Scanner scanner = new Scanner(System.in);
+
     public static void main(String[] args) {
         ArgsConfig config = ArgsConfig.instance();
         config.init(args);
-        GameGrid grid = new ArrayGrid(config.gridSize());
-        Player dummy = new Player() {
-            @Override
-            public Position makeMove(GridView view) {
-                return new Position(0, 0);
-            }
-
-            @Override
-            public Mark getMark() {
-                return Mark.X;
-            }
-        };
-        GameCycle cycle = new GameCycle(grid, dummy, dummy, config.getWinLineLength());
+        GameCycle cycle = createGameCycle(config);
         cycle.start();
+        System.out.println(cycle.getWinner() + " is the winner");
+    }
+
+    private static GameCycle createGameCycle(ArgsConfig config) {
+        GameGrid grid = new ArrayGrid(config.gridSize());
+        Output output = System.out::print;
+        Input input = prompt -> {
+            System.out.print(prompt);
+            return scanner.nextLine();
+        };
+        Player human = new HumanPlayer(Mark.X, output, input);
+        Player computer = new RandomComputerPlayer(Mark.O, output, 500L);
+        Player first;
+        Player second;
+        if (config.getStartingId() == 1) {
+            first = human;
+            second = computer;
+        } else {
+            first = computer;
+            second = human;
+        }
+        return new GameCycle(grid, first, second, config.getWinLineLength());
     }
 }

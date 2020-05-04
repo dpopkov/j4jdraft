@@ -17,13 +17,11 @@ public class GameCycle {
     }
 
     public void start() {
-        boolean playing = true;
-        while (playing) {
+        while (winner == null) {
             Position move = current.makeMove(grid);
             grid.setMark(move, current.getMark());
             changeCurrentPlayer();
             winner = grid.getWinner(winningLength);
-            playing = winner == null;
         }
     }
 
