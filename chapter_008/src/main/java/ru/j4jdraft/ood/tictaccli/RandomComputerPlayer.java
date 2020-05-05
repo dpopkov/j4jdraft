@@ -15,7 +15,7 @@ public class RandomComputerPlayer implements Player {
 
     @Override
     public Position makeMove(GridView view) {
-        output.print(view);
+        output.printGrid(view);
         pause();
         int count = 0;
         int numPositions = view.size() * view.size();

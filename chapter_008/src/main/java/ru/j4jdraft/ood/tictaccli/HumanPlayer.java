@@ -13,9 +13,8 @@ public class HumanPlayer implements Player {
 
     @Override
     public Position makeMove(GridView view) {
-        // todo: display grid
-        // todo: receive input
-        return null;
+        output.printGrid(view);
+        return input.requestPosition("Enter row and column: ");
     }
 
     @Override
