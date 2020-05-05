@@ -2,31 +2,35 @@ package ru.j4jdraft.ood.tictaccli;
 
 public class GameCycle {
     private final GameGrid grid;
+    private final Output output;
     private final Player first;
     private final Player second;
     private final int winningLength;
-    private Player current;
+    private Player currentPlayer;
     private Mark winner;
 
-    public GameCycle(GameGrid grid, Player first, Player second, int winningLength) {
+    public GameCycle(GameGrid grid, Output output, Player first, Player second, int winningLength) {
         this.grid = grid;
+        this.output = output;
         this.first = first;
         this.second = second;
         this.winningLength = winningLength;
-        current = first;
+        currentPlayer = first;
     }
 
     public void start() {
+        output.printGrid(grid);
         while (winner == null) {
-            Position move = current.makeMove(grid);
-            grid.setMark(move, current.getMark());
-            changeCurrentPlayer();
+            Position move = currentPlayer.makeMove(grid);
+            grid.setMark(move, currentPlayer.getMark());
+            output.printGrid(grid);
+            swapPlayers();
             winner = grid.getWinner(winningLength);
         }
     }
 
-    private void changeCurrentPlayer() {
-        current = current == first ? second : first;
+    private void swapPlayers() {
+        currentPlayer = currentPlayer == first ? second : first;
     }
 
     public Mark getWinner() {

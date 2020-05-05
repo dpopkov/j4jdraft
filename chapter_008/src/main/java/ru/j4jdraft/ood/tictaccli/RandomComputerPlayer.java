@@ -4,18 +4,15 @@ import java.util.BitSet;
 
 public class RandomComputerPlayer implements Player {
     private final Mark mark;
-    private final Output output;
     private final long delay;
 
-    public RandomComputerPlayer(Mark mark, Output output, long delay) {
+    public RandomComputerPlayer(Mark mark, long delay) {
         this.mark = mark;
-        this.output = output;
         this.delay = delay;
     }
 
     @Override
     public Position makeMove(GridView view) {
-        output.printGrid(view);
         pause();
         int count = 0;
         int numPositions = view.size() * view.size();

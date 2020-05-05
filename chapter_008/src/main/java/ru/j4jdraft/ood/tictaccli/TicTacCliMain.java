@@ -21,11 +21,11 @@ public class TicTacCliMain {
         System.out.println(cycle.getWinner() + " is the winner");
     }
 
-    private static GameCycle createGameCycle(ArgsConfig config) {
+    private static GameCycle createGameCycle(Config config) {
         Output output = new ConsoleOutput(new PseudoTextGridFormatter(), System.out);
         Input input = new ConsoleInput(output, System.in);
-        Player human = new HumanPlayer(Mark.X, output, input);
-        Player computer = new RandomComputerPlayer(Mark.O, output, 500L);
+        Player human = new HumanPlayer(Mark.X, input);
+        Player computer = new RandomComputerPlayer(Mark.O, config.getAnswerDelay());
         Player first;
         Player second;
         if (config.getStartingId() == 1) {
@@ -36,6 +36,6 @@ public class TicTacCliMain {
             second = human;
         }
         GameGrid grid = new ArrayGrid(config.gridSize());
-        return new GameCycle(grid, first, second, config.getWinLineLength());
+        return new GameCycle(grid, output, first, second, config.getWinLineLength());
     }
 }

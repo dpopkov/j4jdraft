@@ -5,4 +5,5 @@ public interface Config {
     int gridSize();
     int getStartingId();
     int getWinLineLength();
+    long getAnswerDelay();
 }
