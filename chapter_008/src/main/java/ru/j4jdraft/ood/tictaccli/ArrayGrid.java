@@ -1,8 +1,12 @@
 package ru.j4jdraft.ood.tictaccli;
 
+/**
+ * Game grid that stores marks in a two-dimensional array of cells.
+ */
 public class ArrayGrid implements GameGrid {
     private final Mark[][] cells;
 
+    /** Constructs the grid using the specified grid size. */
     public ArrayGrid(int size) {
         cells = new Mark[size][size];
         for (int i = 0; i < size; i++) {
@@ -12,11 +16,13 @@ public class ArrayGrid implements GameGrid {
         }
     }
 
+    /** Returns mark at the specified position. */
     @Override
     public Mark getMark(Position position) {
         return cells[position.getRow()][position.getCol()];
     }
 
+    /** Sets the specified mark at the specified position. */
     @Override
     public void setMark(Position position, Mark mark) {
         if (!isFreeAt(position)) {
@@ -25,6 +31,12 @@ public class ArrayGrid implements GameGrid {
         cells[position.getRow()][position.getCol()] = mark;
     }
 
+    /**
+     * Checks whether the grid has a winner having the specified number
+     * of adjacent marks.
+     * @param lineLength number of adjacent marks that should be on one line.
+     * @return mark of the winner or null if there is no winner yet
+     */
     @Override
     public Mark getWinner(int lineLength) {
         Mark result = checkVerticalsAndHorizontals(lineLength);
@@ -32,6 +44,31 @@ public class ArrayGrid implements GameGrid {
             return result;
         }
         return checkSlopes(lineLength);
+    }
+
+    /** Checks whether the cell the specified position is free or busy. */
+    @Override
+    public boolean isFreeAt(Position position) {
+        return cells[position.getRow()][position.getCol()] == Mark.EMPTY;
+    }
+
+    /** Returns true if all cells in the grid are busy, false otherwise. */
+    @Override
+    public boolean isFull() {
+        for (Mark[] row : cells) {
+            for (Mark mark : row) {
+                if (mark == Mark.EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /** Returns size of the grid. */
+    @Override
+    public int size() {
+        return cells.length;
     }
 
     private Mark checkVerticalsAndHorizontals(int lineLength) {
@@ -130,27 +167,5 @@ public class ArrayGrid implements GameGrid {
             }
         }
         return null;
-    }
-
-    @Override
-    public boolean isFreeAt(Position position) {
-        return cells[position.getRow()][position.getCol()] == Mark.EMPTY;
-    }
-
-    @Override
-    public boolean isFull() {
-        for (Mark[] row : cells) {
-            for (Mark mark : row) {
-                if (mark == Mark.EMPTY) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public int size() {
-        return cells.length;
     }
 }

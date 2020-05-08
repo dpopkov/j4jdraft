@@ -17,10 +17,19 @@ public class Game {
     private GameCycle initCycle(Config config) {
         Player human = new HumanPlayer(Mark.X, input);
         Player computer = new RandomComputerPlayer(Mark.O, config.getAnswerDelay());
-        int startingId = config.getStartingId();
-        Player first = startingId == 1 ? human : computer;
-        Player second = startingId == 1 ? computer : human;
-        GameGrid grid = new ArrayGrid(config.gridSize());
+        Player first;
+        Player second;
+        Config.PlayerType starting = config.getFirstPlayer();
+        if (starting == Config.PlayerType.HUMAN) {
+            first = human;
+            second = computer;
+        } else if (starting == Config.PlayerType.COMPUTER) {
+            first = computer;
+            second = human;
+        } else {
+            throw new IllegalStateException("Unknown type: " + starting);
+        }
+        GameGrid grid = new ArrayGrid(config.getGridSize());
         return new GameCycle(grid, output, first, second, config.getWinLineLength());
     }
 
