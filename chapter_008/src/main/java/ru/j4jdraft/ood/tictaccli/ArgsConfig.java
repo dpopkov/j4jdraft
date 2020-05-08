@@ -46,11 +46,6 @@ public class ArgsConfig implements Config {
     }
 
     @Override
-    public boolean isInitialized() {
-        return initialized;
-    }
-
-    @Override
     public int gridSize() {
         checkInitialized();
         return gridSize;

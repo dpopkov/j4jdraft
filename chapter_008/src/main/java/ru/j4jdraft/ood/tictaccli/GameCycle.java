@@ -20,12 +20,16 @@ public class GameCycle {
 
     public void start() {
         output.printGrid(grid);
-        while (winner == null) {
+        while (winner == null && !grid.isFull()) {
             Position move = currentPlayer.makeMove(grid);
-            grid.setMark(move, currentPlayer.getMark());
-            output.printGrid(grid);
-            swapPlayers();
-            winner = grid.getWinner(winningLength);
+            if (!grid.isFreeAt(move)) {
+                output.print("This cell is busy. ");
+            } else {
+                grid.setMark(move, currentPlayer.getMark());
+                output.printGrid(grid);
+                swapPlayers();
+                winner = grid.getWinner(winningLength);
+            }
         }
     }
 

@@ -20,4 +20,9 @@ public class ConsoleOutput implements Output {
     public void print(String message) {
         printStream.print(message);
     }
+
+    @Override
+    public void println(String message) {
+        printStream.println(message);
+    }
 }

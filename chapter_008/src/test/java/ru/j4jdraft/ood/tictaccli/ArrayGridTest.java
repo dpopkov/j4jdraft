@@ -81,6 +81,19 @@ public class ArrayGridTest {
         assertThat(grid.getWinner(3), is(Mark.O));
     }
 
+    @Test
+    public void whenAllCellsAreBusyThenGridIsFull() {
+        grid = new ArrayGrid(2);
+        assertFalse(grid.isFull());
+        setMark(0, 0, Mark.O);
+        assertFalse(grid.isFull());
+        setMark(0, 1, Mark.X);
+        setMark(1, 0, Mark.O);
+        assertFalse(grid.isFull());
+        setMark(1, 1, Mark.X);
+        assertTrue(grid.isFull());
+    }
+
     private void setMark(int r, int c, Mark m) {
         grid.setMark(new Position(r, c), m);
     }

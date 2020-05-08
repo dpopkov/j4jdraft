@@ -138,6 +138,18 @@ public class ArrayGrid implements GameGrid {
     }
 
     @Override
+    public boolean isFull() {
+        for (Mark[] row : cells) {
+            for (Mark mark : row) {
+                if (mark == Mark.EMPTY) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    @Override
     public int size() {
         return cells.length;
     }
