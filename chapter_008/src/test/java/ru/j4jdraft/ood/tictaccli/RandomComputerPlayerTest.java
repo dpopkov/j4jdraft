@@ -19,7 +19,7 @@ public class RandomComputerPlayerTest {
     }
 
     @Test(timeout = 100)
-    public void whenMakeMoveOnFullGridThenReturnNull() {
+    public void whenMakeMoveOnFullGridThenReturnsNull() {
         when(gridView.isFreeAt(any(Position.class))).thenReturn(false);
         when(gridView.size()).thenReturn(3);
         Player computer = new RandomComputerPlayer(Mark.O, 0L);

@@ -3,15 +3,20 @@ package ru.j4jdraft.ood.tictaccli;
 import java.io.InputStream;
 import java.util.Scanner;
 
+/**
+ * Input that can be used on standard console.
+ */
 public class ConsoleInput implements Input {
     private final Output output;
     private final Scanner scanner;
 
+    /** Constructs the input instance using the specified output and inputStream. */
     public ConsoleInput(Output output, InputStream inputStream) {
         this.output = output;
         scanner = new Scanner(inputStream);
     }
 
+    /** Requests position for the next move using the specified prompt. */
     @Override
     public Position requestPosition(String prompt) {
         while (true) {

@@ -4,7 +4,7 @@ package ru.j4jdraft.ood.tictaccli;
  * Represents configuration of the application.
  */
 public interface Config {
-    /** Type of player that is used in configuration. */
+    /** Type of player used in configuration. */
     enum PlayerType {
         HUMAN,
         COMPUTER

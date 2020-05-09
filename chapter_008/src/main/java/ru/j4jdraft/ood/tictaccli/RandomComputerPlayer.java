@@ -2,6 +2,9 @@ package ru.j4jdraft.ood.tictaccli;
 
 import java.util.BitSet;
 
+/**
+ * Computer player that makes random moves.
+ */
 public class RandomComputerPlayer implements Player {
     private final Mark mark;
     private final long delay;
@@ -11,6 +14,7 @@ public class RandomComputerPlayer implements Player {
         this.delay = delay;
     }
 
+    /** Make the next move in the game using the specified grid view. */
     @Override
     public Position makeMove(GridView view) {
         pause();
@@ -31,16 +35,17 @@ public class RandomComputerPlayer implements Player {
         return null;
     }
 
+    /** Returns mark used by this player. */
+    @Override
+    public Mark getMark() {
+        return mark;
+    }
+
     private void pause() {
         try {
             Thread.sleep(delay);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-    }
-
-    @Override
-    public Mark getMark() {
-        return mark;
     }
 }
