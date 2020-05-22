@@ -12,10 +12,11 @@ public class HumanPlayerTest {
 
     @Test
     public void whenMakeMoveThenRequestsPosition() {
-        when(input.requestPosition("Enter row and column: ")).thenReturn(new Position(1, 2));
+        String prompt = "Enter row and column for next X: ";
+        when(input.requestPosition(prompt)).thenReturn(new Position(1, 2));
         Player human = new HumanPlayer(Mark.X, input);
         Position pos = human.makeMove(grid);
-        verify(input).requestPosition("Enter row and column: ");
+        verify(input).requestPosition(prompt);
         assertThat(pos.getRow(), is(1));
         assertThat(pos.getCol(), is(2));
     }

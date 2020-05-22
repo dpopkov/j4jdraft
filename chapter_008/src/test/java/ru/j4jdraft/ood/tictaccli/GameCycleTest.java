@@ -37,12 +37,14 @@ public class GameCycleTest {
 
     @Test
     public void whenCycleStartedThenBothPlayersMakeMoves() {
+        when(first.makeMove(grid)).thenReturn(new Position(0, 0));
+        when(second.makeMove(grid)).thenReturn(new Position(0, 1));
         when(grid.isFreeAt(any())).thenReturn(true);
         when(grid.getWinner(anyInt())).thenReturn(null).thenReturn(Mark.X);
         GameCycle cycle = new GameCycle(grid, output, first, second, 3);
         cycle.start();
-        verify(first).makeMove(any(GameGrid.class));
-        verify(second).makeMove(any(GameGrid.class));
+        verify(first).makeMove(grid);
+        verify(second).makeMove(grid);
     }
 
     @Test

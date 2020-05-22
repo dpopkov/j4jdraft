@@ -12,17 +12,17 @@ public class RandomComputerPlayerTest {
     public void whenMakeMoveThenUsesFreeCells() {
         when(gridView.isFreeAt(any(Position.class))).thenReturn(true);
         when(gridView.size()).thenReturn(3);
-        Player computer = new RandomComputerPlayer(Mark.O, 0L);
+        Player computer = new RandomComputerPlayer(Mark.X, 0L);
         Position position = computer.makeMove(gridView);
         assertNotNull(position);
         verify(gridView).isFreeAt(any(Position.class));
     }
 
-    @Test(timeout = 100)
+    @Test
     public void whenMakeMoveOnFullGridThenReturnsNull() {
-        when(gridView.isFreeAt(any(Position.class))).thenReturn(false);
+        when(gridView.isFull()).thenReturn(true);
         when(gridView.size()).thenReturn(3);
-        Player computer = new RandomComputerPlayer(Mark.O, 0L);
+        Player computer = new RandomComputerPlayer(Mark.O, 1L);
         Position position = computer.makeMove(gridView);
         assertNull(position);
     }

@@ -16,7 +16,7 @@ public class HumanPlayer implements Player {
     /** Make the next move in the game using the specified grid view. */
     @Override
     public Position makeMove(GridView view) {
-        return input.requestPosition("Enter row and column: ");
+        return input.requestPosition("Enter row and column for next " + mark + ": ");
     }
 
     /** Returns mark used by this player. */

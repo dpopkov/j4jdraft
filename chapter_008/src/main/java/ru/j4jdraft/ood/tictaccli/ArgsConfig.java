@@ -8,9 +8,8 @@ import java.util.function.Supplier;
  */
 public class ArgsConfig implements Config {
     private static final int DEFAULT_GRID_SIZE = 3;
-    private static final PlayerType DEFAULT_PLAYER_TYPE = PlayerType.HUMAN;
     private static final int DEFAULT_WINNING_LINE_LENGTH = 3;
-    private static final long DEFAULT_ANSWER_DELAY = 700L;
+
     private static final ArgsConfig INSTANCE = new ArgsConfig();
 
     public static ArgsConfig instance() {
@@ -23,16 +22,16 @@ public class ArgsConfig implements Config {
     private int idx;
     private boolean initialized = false;
     private int gridSize = DEFAULT_GRID_SIZE;
-    private PlayerType firstPlayer = DEFAULT_PLAYER_TYPE;
+    private PlayerType firstPlayer = PlayerType.HUMAN;
+    private PlayerType secondPlayer = PlayerType.COMPUTER;
     private int winLineLength = DEFAULT_WINNING_LINE_LENGTH;
-    private long answerDelay = DEFAULT_ANSWER_DELAY;
 
     /** Actions used to receive values of the arguments. */
     private final Map<String, Supplier<Object>> actions = Map.of(
             "-s", () -> gridSize = Integer.parseInt(nextArg()),
-            "-f", () -> firstPlayer = parsePlayerType(nextArg()),
-            "-w", () -> winLineLength = Integer.parseInt(nextArg()),
-            "-d", () -> answerDelay = Integer.parseInt(nextArg())
+            "-p1", () -> firstPlayer = parsePlayerType(nextArg()),
+            "-p2", () -> secondPlayer = parsePlayerType(nextArg()),
+            "-w", () -> winLineLength = Integer.parseInt(nextArg())
     );
 
     private String nextArg() {
@@ -56,11 +55,16 @@ public class ArgsConfig implements Config {
         return gridSize;
     }
 
-    /** Returns type of the player that starts the game. */
+    /** Returns type of the first player. */
     @Override
     public PlayerType getFirstPlayer() {
         checkInitialized();
         return firstPlayer;
+    }
+
+    @Override
+    public PlayerType getSecondPlayer() {
+        return secondPlayer;
     }
 
     /** Returns number of marks in line that wins the game. */
@@ -68,13 +72,6 @@ public class ArgsConfig implements Config {
     public int getWinLineLength() {
         checkInitialized();
         return winLineLength;
-    }
-
-    /** Returns delay in milliseconds used by computer player. */
-    @Override
-    public long getAnswerDelay() {
-        checkInitialized();
-        return answerDelay;
     }
 
     /** Produces parsed arguments. */
@@ -97,7 +94,7 @@ public class ArgsConfig implements Config {
         try {
             return PlayerType.valueOf(arg.toUpperCase());
         } catch (IllegalArgumentException exception) {
-            return DEFAULT_PLAYER_TYPE;
+            return PlayerType.COMPUTER;
         }
     }
 }

@@ -4,17 +4,20 @@ import java.io.InputStream;
 import java.io.PrintStream;
 
 /**
- * Tic-tac-toe game that uses random computer player.
+ * Tic-tac-toe game that uses pseudo text console output.
+ * Starts the game cycle and shows the winner.
  */
 public class Game {
     private final Output output;
     private final Input input;
     private final GameCycle cycle;
+    private final PlayerFactory playerFactory;
 
-    /** Constructs the game instance using the specified config and I/O streams. */
-    public Game(Config config, PrintStream out, InputStream in) {
+    /** Constructs the game instance using the specified config, player factory, and I/O streams. */
+    public Game(Config config, PlayerFactory factory, PrintStream out, InputStream in) {
         output = new ConsoleOutput(new PseudoTextGridFormatter(), out);
         input = new ConsoleInput(output, in);
+        playerFactory = factory;
         cycle = initCycle(config);
     }
 
@@ -30,21 +33,9 @@ public class Game {
     }
 
     private GameCycle initCycle(Config config) {
-        Player human = new HumanPlayer(Mark.X, input);
-        Player computer = new RandomComputerPlayer(Mark.O, config.getAnswerDelay());
-        Player first;
-        Player second;
-        Config.PlayerType starting = config.getFirstPlayer();
-        if (starting == Config.PlayerType.HUMAN) {
-            first = human;
-            second = computer;
-        } else if (starting == Config.PlayerType.COMPUTER) {
-            first = computer;
-            second = human;
-        } else {
-            throw new IllegalStateException("Unknown type: " + starting);
-        }
         GameGrid grid = new ArrayGrid(config.getGridSize());
+        Player first = playerFactory.create(Mark.X, config.getFirstPlayer(), input);
+        Player second = playerFactory.create(Mark.O, config.getSecondPlayer(), input);
         return new GameCycle(grid, output, first, second, config.getWinLineLength());
     }
 }

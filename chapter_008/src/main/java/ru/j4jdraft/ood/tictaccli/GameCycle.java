@@ -1,7 +1,7 @@
 package ru.j4jdraft.ood.tictaccli;
 
 /**
- * The game cycle supporting a change of players.
+ * The game cycle that shows state of the grid and swaps the players.
  */
 public class GameCycle {
     private final GameGrid grid;
@@ -32,8 +32,11 @@ public class GameCycle {
     /** Starts the game cycle. */
     public void start() {
         output.printGrid(grid);
-        while (winner == null && !grid.isFull()) {
+        while (stillPlaying()) {
             Position move = currentPlayer.makeMove(grid);
+            if (move == null) {
+                throw new IllegalStateException("Current player could not find a free cell");
+            }
             if (!grid.isFreeAt(move)) {
                 output.print("This cell is busy. ");
             } else {
@@ -48,6 +51,10 @@ public class GameCycle {
     /** Returns the winning mark or null if there is no winner. */
     public Mark getWinner() {
         return winner;
+    }
+
+    private boolean stillPlaying() {
+        return winner == null && !grid.isFull();
     }
 
     private void swapPlayers() {

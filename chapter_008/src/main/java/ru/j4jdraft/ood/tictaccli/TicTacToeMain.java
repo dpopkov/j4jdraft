@@ -5,16 +5,20 @@ package ru.j4jdraft.ood.tictaccli;
  * It can use command line arguments:<br>
  * <pre>
  * -s sizeOfGrid (default value is 3)
- * -f firstPlayerStartingTheGame ('human' or 'computer')
+ * -p1 firstPlayer ('human' or 'computer')
+ * -p2 secondPlayer ('computer' or 'human')
  * -w winningLineLength (default value is 3)
- * -d computerDelayInMilliseconds (default value is 700)
  * </pre>
+ * For example, these arguments allow human play vs computer on 3 x 3 grid:<br>
+ * -s 3 -p1 human -p2 computer<br>
+ * and these arguments allow computer play vs computer on 5 x 5 grid:<br>
+ * -s 5 -p1 computer -p2 computer
  */
 public class TicTacToeMain {
     public static void main(String[] args) {
         ArgsConfig config = ArgsConfig.instance();
         config.init(args);
-        Game game = new Game(config, System.out, System.in);
+        Game game = new Game(config, new HumanVsRandomPlayerFactory(), System.out, System.in);
         game.run();
     }
 }
