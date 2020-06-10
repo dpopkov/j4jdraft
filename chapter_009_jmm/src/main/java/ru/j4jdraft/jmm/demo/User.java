@@ -20,6 +20,6 @@ class User {
     @Override
     protected void finalize() throws Throwable {
         super.finalize();
-        System.out.println("finalizing User #" + id);
+        System.out.println("Thread: " + Thread.currentThread().getName() + ", finalizing User #" + id);
     }
 }
