@@ -86,7 +86,8 @@ public class VerboseGcOutputParser {
 
     public static void main(String[] args) throws IOException {
         if (args.length == 0) {
-            System.err.println("Usage: java " + VerboseGcOutputParser.class.getName() + " path-to-log-file");
+            System.err.println("Usage: java "
+                    + VerboseGcOutputParser.class.getName() + " path-to-log-file");
             System.exit(1);
         }
         List<String> lines = Files.readAllLines(Path.of(args[0]));
@@ -99,6 +100,7 @@ public class VerboseGcOutputParser {
         System.out.printf("Time of pauses      = %9.2f ms%n", pausesTime);
         System.out.printf("Time total          = %9.2f ms%n", totalTime);
         System.out.printf("Time of application = %9.2f ms%n", appTime);
-        System.out.printf("Time spent in garbage collection was %.1f%% of total time%n", (pausesRate * 100));
+        System.out.printf("Time spent in garbage collection was %.1f%% of total time%n",
+                (pausesRate * 100));
     }
 }

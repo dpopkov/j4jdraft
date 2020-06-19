@@ -12,7 +12,7 @@ import java.util.function.Function;
  * @param <K> type of key
  * @param <V> type of value
  */
-public class Cache <K, V> {
+public class Cache<K, V> {
     /**
      * Загружает значение в кэш, если его там нет.
      */

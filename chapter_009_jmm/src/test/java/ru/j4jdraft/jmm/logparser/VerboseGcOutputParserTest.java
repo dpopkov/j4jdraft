@@ -13,7 +13,8 @@ public class VerboseGcOutputParserTest {
     @Test
     public void testTimeOfPausesParsing() {
         List<String> lines = List.of(
-                "[0,185s][info][gc] GC(2) Pause Young (Concurrent Start) (G1 Evacuation Pause) 3M->2M(8M) 1,142ms",
+                "[0,185s][info][gc] GC(2) Pause Young (Concurrent Start) "
+                        + "(G1 Evacuation Pause) 3M->2M(8M) 1,142ms",
                 "[0,185s][info][gc] GC(3) Concurrent Cycle",
                 "[0,187s][info][gc] GC(3) Pause Remark 2M->2M(8M) 0,603ms"
         );
