@@ -13,11 +13,14 @@ public class GameCycle {
         Dice dice = new Dice();
         while (running()) {
             int n = dice.rollTwo();
-            int nextPosition = (player.position() + n) % spaces.size();
-            Space space = spaces.get(nextPosition);
+            Space space = nextSpace(player.getCurrentSpace(), n);
             space.enter(player);
             player = nextPlayer();
         }
+    }
+
+    private Space nextSpace(Space currentSpace, int steps) {
+        return null;
     }
 
     private Player chooseStartingPlayer() {

@@ -1,4 +1,9 @@
-package ru.j4jdraft.ood.mnpoly;
+package ru.j4jdraft.ood.mnpoly.spaces;
+
+import ru.j4jdraft.ood.mnpoly.Chance;
+import ru.j4jdraft.ood.mnpoly.ChanceCard;
+import ru.j4jdraft.ood.mnpoly.Player;
+import ru.j4jdraft.ood.mnpoly.Space;
 
 public class ChanceSpace implements Space {
     private final Chance chance;
