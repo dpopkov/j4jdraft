@@ -24,6 +24,7 @@
     <module>chapter_008</module>
     <module>chapter_009_jmm</module>
     <module>howto</module>
+      <module>chapter_010_mt</module>
   </modules>
   
   <dependencies>
