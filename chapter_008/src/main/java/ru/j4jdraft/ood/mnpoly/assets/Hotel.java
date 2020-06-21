@@ -1,4 +1,7 @@
-package ru.j4jdraft.ood.mnpoly;
+package ru.j4jdraft.ood.mnpoly.assets;
+
+import ru.j4jdraft.ood.mnpoly.Asset;
+import ru.j4jdraft.ood.mnpoly.Owner;
 
 public class Hotel implements Asset {
     @Override
@@ -9,5 +12,10 @@ public class Hotel implements Asset {
     @Override
     public Owner getOwner() {
         return null;
+    }
+
+    @Override
+    public void setOwner(Owner owner) {
+
     }
 }

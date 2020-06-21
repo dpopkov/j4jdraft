@@ -1,4 +1,4 @@
-package ru.j4jdraft.ood.mnpoly.chances;
+package ru.j4jdraft.ood.mnpoly.actions;
 
 import ru.j4jdraft.ood.mnpoly.Action;
 import ru.j4jdraft.ood.mnpoly.BankNote;

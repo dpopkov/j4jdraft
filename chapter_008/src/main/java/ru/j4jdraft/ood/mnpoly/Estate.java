@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Estate implements Asset {
-    private int group;
+    private EstateGroup group;
+    private String name;
     private boolean mortgaged;
     private int price;
     private Owner owner;
-    private List<House> houses = new ArrayList<>();
-    private Hotel hotel;
+    private List<Asset> assets = new ArrayList<>();
 
     public int calculateRent() {
         return -1;
@@ -22,6 +22,11 @@ public class Estate implements Asset {
     @Override
     public Owner getOwner() {
         return owner;
+    }
+
+    @Override
+    public void setOwner(Owner owner) {
+        this.owner = owner;
     }
 
     @Override

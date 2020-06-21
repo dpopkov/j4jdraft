@@ -4,4 +4,6 @@ public interface Asset {
     int price();
 
     Owner getOwner();
+
+    void setOwner(Owner owner);
 }
