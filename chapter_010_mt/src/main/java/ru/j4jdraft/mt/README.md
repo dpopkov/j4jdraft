@@ -1,5 +1,7 @@
 Tasks
 -----
+MT-Task 0.  
+[Ping-Pong](pingpong)
 
 MT-Task 1. Создание Thread.  
 [ConcurrentOutput](demo/ConcurrentOutput.java)
