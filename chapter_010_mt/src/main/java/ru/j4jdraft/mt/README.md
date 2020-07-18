@@ -1,14 +1,20 @@
 Tasks
 -----
-MT-Task 0.  
-[Ping-Pong](pingpong)
 
-MT-Task 1. Создание Thread.  
+
+
+Создание Thread: 
 [ConcurrentOutput](demo/ConcurrentOutput.java)
+
+Состояние Нити:
+[ThreadState](demo/ThreadState.java) 
  
-MT-Task 2. Остановка потока.  
+Остановка потока: 
 [ConsoleProgress](demo/ConsoleProgress.java)
 
-MT-Task 3.  1. Visibility. Общий ресурс вне критической секции.  
-[ParseFileInitial](synchr/ParseFileInitial.java)  
+Пинг-Понг:
+[Ping-Pong](pingpong)
+
+Visibility. Общий ресурс вне критической секции.  
+[ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
