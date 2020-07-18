@@ -1,13 +1,14 @@
 Tasks
 -----
 
-
-
 Создание Thread: 
 [ConcurrentOutput](demo/ConcurrentOutput.java)
 
 Состояние Нити:
 [ThreadState](demo/ThreadState.java) 
+
+Режим ожидания:
+[Wget](demo/Wget.java) 
  
 Остановка потока: 
 [ConsoleProgress](demo/ConsoleProgress.java)
