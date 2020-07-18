@@ -2,8 +2,13 @@ package ru.j4jdraft.mt.demo;
 
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Prints rotating bar symbols in cycle in secondary thread.
+ * Then interrupts the secondary thread after specified timeout.
+ */
 public class ConsoleProgress implements Runnable {
-    private final char[] symbols = {'-', '\\', '|', '/'};
+    private static final char[] SYMBOLS = {'-', '\\', '|', '/'};
+
     private final long delay;
 
     public ConsoleProgress(long delay) {
@@ -12,12 +17,11 @@ public class ConsoleProgress implements Runnable {
 
     @Override
     public void run() {
-        int charIdx = 0;
+        int i = 0;
         try {
             while (!Thread.currentThread().isInterrupted()) {
-                char symbol = symbols[charIdx++];
-                charIdx = charIdx % symbols.length;
-                System.out.println("Loading ... " + symbol);
+                System.out.println("Loading ... " + SYMBOLS[i++]);
+                i = i % SYMBOLS.length;
                 TimeUnit.MILLISECONDS.sleep(delay);
             }
         } catch (InterruptedException e) {
@@ -26,9 +30,17 @@ public class ConsoleProgress implements Runnable {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Thread progress = new Thread(new ConsoleProgress(500L));
+        long duration = 2000L;
+        long progressDelay = 500L;
+        if (args.length > 0) {
+            duration = Long.parseLong(args[0]);
+        }
+        if (args.length > 1) {
+            progressDelay = Long.parseLong(args[1]);
+        }
+        Thread progress = new Thread(new ConsoleProgress(progressDelay));
         progress.start();
-        Thread.sleep(2000L);
+        Thread.sleep(duration);
         progress.interrupt();
     }
 }

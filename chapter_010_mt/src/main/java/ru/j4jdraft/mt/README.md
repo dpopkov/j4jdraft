@@ -10,7 +10,7 @@ Tasks
 Режим ожидания:
 [Wget](demo/Wget.java) 
  
-Остановка потока: 
+Остановка потока (Прерывание нити): 
 [ConsoleProgress](demo/ConsoleProgress.java)
 
 Пинг-Понг:
