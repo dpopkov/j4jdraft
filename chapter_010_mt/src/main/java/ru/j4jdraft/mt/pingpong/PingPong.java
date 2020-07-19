@@ -27,7 +27,7 @@ public class PingPong extends Application {
         Thread movingThread = new Thread(rectangleMove, "Moving Thread");
         movingThread.start();
         primaryStage.setScene(new Scene(group, limitX, limitY));
-        primaryStage.setTitle("PingPong");
+        primaryStage.setTitle("PingPong " + (interrupting ? "Interrupting" : "Flagged"));
         primaryStage.setResizable(false);
         primaryStage.setOnCloseRequest(e -> rectangleMove.stop());
         primaryStage.show();
