@@ -22,6 +22,9 @@ Tasks
 Проблемы с многопоточностью (пример):
 [RaceCondition](demo/RaceCondition.java)
 
+Синхронизация общих ресурсов:
+[Cache](demo/Cache.java)
+
 Visibility. Общий ресурс вне критической секции.  
 [ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
