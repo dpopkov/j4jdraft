@@ -13,6 +13,9 @@ Tasks
 Остановка потока (Прерывание нити): 
 [ConsoleProgress](demo/ConsoleProgress.java)
 
+Остановка блокированной (ожидающей) нити:
+[StoppingThread](demo/StoppingThread.java)
+
 Пинг-Понг:
 [Ping-Pong](pingpong)
 
