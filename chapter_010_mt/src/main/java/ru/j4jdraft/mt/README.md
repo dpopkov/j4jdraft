@@ -19,6 +19,9 @@ Tasks
 Пинг-Понг:
 [Ping-Pong](pingpong)
 
+Проблемы с многопоточностью (пример):
+[RaceCondition](demo/RaceCondition.java)
+
 Visibility. Общий ресурс вне критической секции.  
 [ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
