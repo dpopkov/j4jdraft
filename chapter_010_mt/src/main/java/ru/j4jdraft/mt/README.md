@@ -25,6 +25,10 @@ Tasks
 Синхронизация общих ресурсов:
 [Cache](demo/Cache.java)
 
+Модель памяти Java, double checked lock Singleton:
+[NaiveSingleton](demo/NaiveSingleton.java), 
+[DclSingleton](demo/DclSingleton.java)
+
 Visibility. Общий ресурс вне критической секции.  
 [ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
