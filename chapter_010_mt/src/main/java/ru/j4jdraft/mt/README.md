@@ -29,6 +29,9 @@ Tasks
 [NaiveSingleton](demo/NaiveSingleton.java), 
 [DclSingleton](demo/DclSingleton.java)
 
+JCIP. Настройка библиотеки:
+[Count](demo/Count.java), CountTest
+
 Visibility. Общий ресурс вне критической секции.  
 [ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
