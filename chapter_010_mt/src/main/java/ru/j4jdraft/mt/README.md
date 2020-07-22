@@ -32,6 +32,9 @@ Tasks
 JCIP. Настройка библиотеки:
 [Count](demo/Count.java), CountTest
 
+Thread без общих ресурсов:
+[User](resources/User.java), [UserCache](resources/UserCache.java)
+
 Visibility. Общий ресурс вне критической секции.  
 [ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
