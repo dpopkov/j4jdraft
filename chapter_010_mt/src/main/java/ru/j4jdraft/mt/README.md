@@ -38,3 +38,7 @@ Thread без общих ресурсов:
 Visibility. Общий ресурс вне критической секции.  
 [ParseFileInitial](synchr/ParseFileInitial.java), 
 [ParseFileNew](synchr/ParseFileNew.java)
+
+Класс хранилища пользователей UserStorage:
+[User](userstorage/User.java),
+[UserStorage](userstorage/UserStorage.java), UserStorageTest
