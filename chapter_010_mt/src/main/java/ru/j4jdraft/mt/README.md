@@ -25,7 +25,7 @@ Tasks
 Синхронизация общих ресурсов:
 [Cache](demo/Cache.java)
 
-Модель памяти Java, double checked lock Singleton:
+Модель памяти Java, double-checked lock Singleton:
 [NaiveSingleton](demo/NaiveSingleton.java), 
 [DclSingleton](demo/DclSingleton.java)
 
@@ -42,3 +42,8 @@ Visibility. Общий ресурс вне критической секции.
 Класс хранилища пользователей UserStorage:
 [User](userstorage/User.java),
 [UserStorage](userstorage/UserStorage.java), UserStorageTest
+
+Thread safe динамический список (SingleLockList в обновленном задании):
+[ThreadSafeArrayList](list/ThreadSafeArrayList.java), ThreadSafeArrayListTest
+
+ 
