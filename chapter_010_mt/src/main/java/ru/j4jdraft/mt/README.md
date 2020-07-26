@@ -46,4 +46,9 @@ Visibility. Общий ресурс вне критической секции.
 Thread safe динамический список (SingleLockList в обновленном задании):
 [ThreadSafeArrayList](list/ThreadSafeArrayList.java), ThreadSafeArrayListTest
 
- 
+Wait/Notify example:
+[Latch](notification/Latch.java),
+[RandomizedActor](notification/RandomizedActor.java),
+[Closer](notification/Closer.java),
+[Opener](notification/Opener.java),
+[LatchDemo](notification/LatchDemo.java)
