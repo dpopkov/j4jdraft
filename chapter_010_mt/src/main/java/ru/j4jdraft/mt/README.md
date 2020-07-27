@@ -52,3 +52,6 @@ Wait/Notify example:
 [Closer](notification/Closer.java),
 [Opener](notification/Opener.java),
 [LatchDemo](notification/LatchDemo.java)
+
+Управление нитью через wait:  
+[CountBarrier](waitnotify/CountBarrier.java), CountBarrierTest
