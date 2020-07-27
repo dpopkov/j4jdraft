@@ -55,3 +55,6 @@ Wait/Notify example:
 
 Управление нитью через wait:  
 [CountBarrier](waitnotify/CountBarrier.java), CountBarrierTest
+
+Реализация шаблона Producer/Consumer (реализация блокирующей очереди для шаблона):  
+[BoundedBlockingQueue](producerconsumer/BoundedBlockingQueue.java), BoundedBlockingQueueTest
