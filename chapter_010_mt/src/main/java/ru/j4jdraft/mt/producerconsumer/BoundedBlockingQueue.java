@@ -25,13 +25,9 @@ public class BoundedBlockingQueue<E> {
      * or waits otherwise until consumer of this thread takes element from it.
      * @param element element to add to tail
      */
-    public synchronized void put(E element) {
+    public synchronized void put(E element) throws InterruptedException {
         while (queue.size() == boundedCapacity) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+            wait();
         }
         queue.add(element);
         notifyAll();
@@ -41,13 +37,9 @@ public class BoundedBlockingQueue<E> {
      * or waits until producer puts an element to the queue.
      * @return element from the head
      */
-    public synchronized E take() {
+    public synchronized E take() throws InterruptedException {
         while (queue.isEmpty()) {
-            try {
-                wait();
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-            }
+            wait();
         }
         E e = queue.remove();
         notifyAll();

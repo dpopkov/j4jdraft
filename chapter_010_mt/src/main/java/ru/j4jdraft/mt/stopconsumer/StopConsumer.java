@@ -14,20 +14,25 @@ public class StopConsumer {
     private static void consumerStopsByInterrupting() throws InterruptedException {
         BoundedBlockingQueue<Integer> queue = new BoundedBlockingQueue<>(3);
         Thread producer = new Thread(() -> {
-            for (int i = 0; i < 7; i++) {
-                queue.put(i);
-                System.out.println("Produced: " + i);
+            try {
+                for (int i = 0; i < 7; i++) {
+                    queue.put(i);
+                    System.out.println("Produced: " + i);
+                }
+            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() + " interrupted");
             }
         }, "Producer-Thread");
         Thread consumer = new Thread(() -> {
-            while (!queue.isEmpty() || !Thread.currentThread().isInterrupted()) {
+            while (!(queue.isEmpty() && Thread.currentThread().isInterrupted())) {
                 try {
+                    Integer value = queue.take();
+                    System.out.println("\t\t\tConsumed: " + value);
+                    System.out.println("\t\t\tImitating work");
                     TimeUnit.SECONDS.sleep(1);
                 } catch (InterruptedException e) {
                     Thread.currentThread().interrupt();
                 }
-                Integer value = queue.take();
-                System.out.println("\t\t\tConsumed: " + value);
             }
         }, "Consumer-Thread");
         producer.start();
@@ -45,9 +50,13 @@ public class StopConsumer {
     private static void consumerStopsAfterProducerIsNotAlive() {
         BoundedBlockingQueue<Integer> queue = new BoundedBlockingQueue<>(3);
         Thread producer = new Thread(() -> {
-            for (int i = 0; i < 5; i++) {
-                queue.put(i);
-                System.out.println("Produced: " + i);
+            try {
+                for (int i = 0; i < 7; i++) {
+                    queue.put(i);
+                    System.out.println("Produced: " + i);
+                }
+            } catch (InterruptedException e) {
+                System.out.println(Thread.currentThread().getName() + " interrupted");
             }
         }, "Producer-Thread");
         Thread consumer = new Thread(() -> {
@@ -59,8 +68,12 @@ public class StopConsumer {
                         break;
                     }
                 }
-                Integer value = queue.take();
-                System.out.println("\t\t\tConsumed: " + value);
+                try {
+                    Integer value = queue.take();
+                    System.out.println("\t\t\tConsumed: " + value);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
             }
         }, "Consumer-Thread");
         producer.start();
