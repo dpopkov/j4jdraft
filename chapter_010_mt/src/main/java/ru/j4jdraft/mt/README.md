@@ -58,3 +58,6 @@ Wait/Notify example:
 
 Реализация шаблона Producer/Consumer (реализация блокирующей очереди для шаблона):  
 [BoundedBlockingQueue](producerconsumer/BoundedBlockingQueue.java), BoundedBlockingQueueTest
+
+Обеспечить остановку потребителя:
+[StopConsumer](stopconsumer/StopConsumer.java)

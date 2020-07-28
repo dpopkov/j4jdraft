@@ -53,4 +53,8 @@ public class BoundedBlockingQueue<E> {
         notifyAll();
         return e;
     }
+
+    public synchronized boolean isEmpty() {
+        return queue.isEmpty();
+    }
 }
