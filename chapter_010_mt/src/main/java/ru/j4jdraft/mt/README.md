@@ -61,3 +61,5 @@ Wait/Notify example:
 
 Обеспечить остановку потребителя:
 [StopConsumer](stopconsumer/StopConsumer.java)
+
+Junit тест для блокирующей очереди: BoundedBlockingQueueTest#whenTakeAllThenReceivesAll

@@ -2,6 +2,9 @@ package ru.j4jdraft.mt.producerconsumer;
 
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -11,7 +14,7 @@ import static org.junit.Assert.*;
 public class BoundedBlockingQueueTest {
 
     @Test
-    public void whenPutAndTakeThenReturnsInFirstInFirstOut() {
+    public void whenPutAndTakeThenReturnsInFirstInFirstOut() throws InterruptedException {
         BoundedBlockingQueue<Integer> queue = new BoundedBlockingQueue<>(3);
         queue.put(1);
         queue.put(2);
@@ -28,13 +31,21 @@ public class BoundedBlockingQueueTest {
         AtomicBoolean afterConsumer = new AtomicBoolean(false);
         AtomicBoolean consumed = new AtomicBoolean(false);
         Thread producer = new Thread(() -> {
-            queue.put(22);
+            try {
+                queue.put(22);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (consumed.get()) {
                 afterConsumer.set(true);
             }
         });
         Thread consumer = new Thread(() -> {
-            queue.take();
+            try {
+                queue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             consumed.set(true);
         });
         producer.start();
@@ -50,13 +61,21 @@ public class BoundedBlockingQueueTest {
         AtomicBoolean produced = new AtomicBoolean(false);
         AtomicBoolean afterProducer = new AtomicBoolean(false);
         Thread consumer = new Thread(() -> {
-            queue.take();
+            try {
+                queue.take();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             if (produced.get()) {
                 afterProducer.set(true);
             }
         });
         Thread producer = new Thread(() -> {
-            queue.put(11);
+            try {
+                queue.put(11);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             produced.set(true);
         });
         consumer.start();
@@ -64,5 +83,35 @@ public class BoundedBlockingQueueTest {
         producer.start();
         consumer.join();
         assertThat(afterProducer.get(), is(true));
+    }
+
+    @Test
+    public void whenTakeAllThenReceivesAll() throws InterruptedException {
+        List<Integer> buffer = Collections.synchronizedList(new ArrayList<>());
+        BoundedBlockingQueue<Integer> queue = new BoundedBlockingQueue<>(2);
+        Thread producer = new Thread(() -> {
+            try {
+                for (int i = 0; i < 5; i++) {
+                    queue.put(i);
+                }
+            } catch (InterruptedException e) {
+                throw new RuntimeException("Not planning interrupting, so this should no happen");
+            }
+        }, "Producer");
+        Thread consumer = new Thread(() -> {
+            while (!(queue.isEmpty() && Thread.currentThread().isInterrupted())) {
+                try {
+                    buffer.add(queue.take());
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            }
+        }, "Consumer");
+        producer.start();
+        consumer.start();
+        producer.join();
+        consumer.interrupt();
+        consumer.join();
+        assertThat(buffer, is(List.of(0, 1, 2, 3, 4)));
     }
 }
