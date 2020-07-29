@@ -63,3 +63,6 @@ Wait/Notify example:
 [StopConsumer](stopconsumer/StopConsumer.java)
 
 Junit тест для блокирующей очереди: BoundedBlockingQueueTest#whenTakeAllThenReceivesAll
+
+CAS (Compare and Swap) операции:
+[CasCount](cas/CasCount.java), CasCountTest
