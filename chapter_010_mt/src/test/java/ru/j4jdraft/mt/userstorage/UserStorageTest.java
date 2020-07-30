@@ -42,8 +42,8 @@ public class UserStorageTest {
         UserStorage storage = new UserStorage();
         User user1 = new User(1, 100);
         User user2 = new User(2, 200);
-        storage.add(user1);
-        storage.add(user2);
+        assertTrue(storage.add(user1));
+        assertTrue(storage.add(user2));
         boolean ok = storage.transfer(1, 2, 50);
         assertTrue(ok);
         assertThat(user1.getAmount(), is(50));
@@ -57,14 +57,15 @@ public class UserStorageTest {
         User user2 = new User(2, 200);
         storage.add(user1);
         storage.add(user2);
-        ExecutorService exec = Executors.newCachedThreadPool();
+        ExecutorService exec = Executors.newFixedThreadPool(10);
+        final int numTransfers = 100;
         Runnable from1to2 = () -> {
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < numTransfers; j++) {
                 storage.transfer(1, 2, 10);
             }
         };
         Runnable from2to1 = () -> {
-            for (int j = 0; j < 10; j++) {
+            for (int j = 0; j < numTransfers; j++) {
                 storage.transfer(2, 1, 10);
             }
         };
@@ -72,7 +73,8 @@ public class UserStorageTest {
             exec.submit(from1to2);
             exec.submit(from2to1);
         }
-        exec.awaitTermination(200, TimeUnit.MILLISECONDS);
+        exec.shutdown();
+        assertTrue(exec.awaitTermination(200, TimeUnit.MILLISECONDS));
         assertThat(user1.getAmount(), is(100));
         assertThat(user2.getAmount(), is(200));
     }
