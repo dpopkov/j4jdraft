@@ -66,3 +66,6 @@ Junit тест для блокирующей очереди: BoundedBlockingQueu
 
 CAS (Compare and Swap) операции:
 [CasCount](cas/CasCount.java), CasCountTest
+
+CAS stack (реализовать потокобезопасный стек использую Compare-and-Swap операции):
+[CasStack](cas/CasStack.java), CasStackTest
