@@ -69,3 +69,9 @@ CAS (Compare and Swap) операции:
 
 CAS stack (реализовать потокобезопасный стек использую Compare-and-Swap операции):
 [CasStack](cas/CasStack.java), CasStackTest
+
+Неблокирующий кеш:
+[Base](nonblockingcache/Base.java),
+[NonBlockingCache](nonblockingcache/NonBlockingCache.java),
+[OptimisticException](nonblockingcache/OptimisticException.java),
+NonBlockingCacheTest
