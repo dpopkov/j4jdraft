@@ -78,3 +78,7 @@ NonBlockingCacheTest
 
 Реализовать ThreadPool:
 [ThreadPool](pool/ThreadPool.java), ThreadPoolTest
+
+ExecutorService рассылка почты:
+[User](email/User.java),
+[EmailNotification](email/EmailNotification.java)
