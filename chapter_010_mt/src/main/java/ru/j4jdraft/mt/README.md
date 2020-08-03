@@ -75,3 +75,6 @@ CAS stack (реализовать потокобезопасный стек ис
 [NonBlockingCache](nonblockingcache/NonBlockingCache.java),
 [OptimisticException](nonblockingcache/OptimisticException.java),
 NonBlockingCacheTest
+
+Реализовать ThreadPool:
+[ThreadPool](pool/ThreadPool.java), ThreadPoolTest
