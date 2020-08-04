@@ -82,3 +82,7 @@ NonBlockingCacheTest
 ExecutorService рассылка почты:
 [User](email/User.java),
 [EmailNotification](email/EmailNotification.java)
+
+Thread switcher:
+[FirstSecondBarrier](switcher/FirstSecondBarrier.java),
+[Switcher](switcher/Switcher.java)
