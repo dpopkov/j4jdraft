@@ -13,9 +13,14 @@ public class Board {
     private final ReentrantLock[][] locks;
     private final int size;
 
-    public Board(int size) {
+    public Board(int size, int numBlocks) {
         this.size = size;
         locks = initLocks(size);
+        placeBlocks(numBlocks);
+    }
+
+    private void placeBlocks(int numBlocks) {
+        // TODO implement
     }
 
     private ReentrantLock[][] initLocks(int size) {

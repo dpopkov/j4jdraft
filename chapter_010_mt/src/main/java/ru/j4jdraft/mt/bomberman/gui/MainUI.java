@@ -16,6 +16,7 @@ import ru.j4jdraft.mt.bomberman.HeroThread;
 public class MainUI extends Application {
 
     private static final int SIZE = 10;
+    private static final int NUM_BLOCKS = 8;
     private static long heroDelay = 1000;
 
     public static void main(String[] args) {
@@ -28,11 +29,13 @@ public class MainUI extends Application {
     @Override
     public void start(Stage primaryStage) {
         GridView grid = new GridView(SIZE);
-        Board board = new Board(SIZE);
+        Board board = new Board(SIZE, NUM_BLOCKS);
         Gui gui = new Gui() {
             @Override
-            public void occupyOnGui(Cell cell) {
-                Platform.runLater(() -> grid.getLabel(cell.getRow(), cell.getCol()).flip());
+            public void occupyOnGui(Cell cell, LabelState state) {
+                Platform.runLater(
+                        () -> grid.getLabel(cell.getRow(), cell.getCol()).changeState(state)
+                );
             }
 
             @Override
@@ -40,8 +43,7 @@ public class MainUI extends Application {
                 Platform.runLater(() -> {
                     GridView.GridLabel source = grid.getLabel(from.getRow(), from.getCol());
                     GridView.GridLabel target = grid.getLabel(to.getRow(), to.getCol());
-                    target.flip();
-                    source.flip();
+                    source.transitionTo(target);
                 });
             }
         };

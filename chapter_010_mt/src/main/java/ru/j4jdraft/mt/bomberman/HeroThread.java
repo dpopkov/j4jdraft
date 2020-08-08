@@ -1,5 +1,7 @@
 package ru.j4jdraft.mt.bomberman;
 
+import ru.j4jdraft.mt.bomberman.gui.LabelState;
+
 public class HeroThread extends Thread {
     private final Board board;
     private final long delay;
@@ -17,7 +19,7 @@ public class HeroThread extends Thread {
         Cell current = new Cell(board.size() / 2, board.size() / 2);
         board.occupy(current);
         if (gui != null) {
-            gui.occupyOnGui(current);
+            gui.occupyOnGui(current, LabelState.HERO);
         }
         boolean moving = true;
         while (!Thread.interrupted() && moving) {
