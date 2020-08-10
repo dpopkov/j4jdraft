@@ -2,13 +2,15 @@ package ru.j4jdraft.mt.bomberman;
 
 import ru.j4jdraft.mt.bomberman.gui.LabelState;
 
-public class HeroThread extends Thread {
+public class HeroTask implements Runnable {
     private final Board board;
+    private final Position initialPosition;
     private final long delay;
     private final Gui gui;
 
-    public HeroThread(Board board, long delay, Gui gui) {
+    public HeroTask(Board board, Position initialPosition, long delay, Gui gui) {
         this.board = board;
+        this.initialPosition = initialPosition;
         this.delay = delay;
         this.gui = gui;
     }
@@ -16,16 +18,16 @@ public class HeroThread extends Thread {
     @SuppressWarnings("BusyWait")
     @Override
     public void run() {
-        Cell current = new Cell(board.size() / 2, board.size() / 2);
+        Position current = initialPosition;
         board.occupy(current);
         if (gui != null) {
             gui.occupyOnGui(current, LabelState.HERO);
         }
         boolean moving = true;
         while (!Thread.interrupted() && moving) {
-            Cell to = current.inDirection(Direction.random());
+            Position to = current.inDirection(Direction.random());
             try {
-                Cell newPos = board.move(current, to);
+                Position newPos = board.move(current, to);
                 if (newPos == null) {
                     moving = false;
                 } else {
@@ -36,7 +38,8 @@ public class HeroThread extends Thread {
                 }
                 Thread.sleep(delay);
             } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                System.out.println(Thread.currentThread().getName() + " Interrupted");
+                moving = false;
             }
         }
     }

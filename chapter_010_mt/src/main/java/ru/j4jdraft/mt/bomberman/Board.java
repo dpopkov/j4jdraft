@@ -3,6 +3,7 @@ package ru.j4jdraft.mt.bomberman;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -13,14 +14,16 @@ public class Board {
     private final ReentrantLock[][] locks;
     private final int size;
 
-    public Board(int size, int numBlocks) {
+    public Board(int size, List<Position> blocks) {
         this.size = size;
         locks = initLocks(size);
-        placeBlocks(numBlocks);
+        placeBlocks(blocks);
     }
 
-    private void placeBlocks(int numBlocks) {
-        // TODO implement
+    private void placeBlocks(List<Position> blocks) {
+        for (Position block : blocks) {
+            occupy(block);
+        }
     }
 
     private ReentrantLock[][] initLocks(int size) {
@@ -41,7 +44,7 @@ public class Board {
      * Occupy the specified cell during initial setup.
      * This method is not supposed to be used when moving on board.
      */
-    public void occupy(Cell position) {
+    public void occupy(Position position) {
         ReentrantLock lock = getLockAt(position);
         if (!lock.tryLock()) {
             throw new IllegalStateException("Failed to occupy position: " + position);
@@ -60,13 +63,13 @@ public class Board {
      * or null otherwise if failed to find a free cell
      * @throws InterruptedException if the operation was interrupted when trying to acquire lock
      */
-    public Cell move(Cell from, Cell to) throws InterruptedException {
+    public Position move(Position from, Position to) throws InterruptedException {
         if (isInside(to) && getLockAt(to).tryLock(LOCK_TIMEOUT, TimeUnit.MILLISECONDS)) {
             unlockSource(from);
             return to;
         } else {
             // TODO make more attempts to move
-            Cell another = findAnother(from, from.directionTo(to));
+            Position another = findAnother(from, from.directionTo(to));
             if (another == null) {
                 return null;
             }
@@ -79,18 +82,18 @@ public class Board {
         }
     }
 
-    private void unlockSource(Cell source) {
+    private void unlockSource(Position source) {
         ReentrantLock lock = getLockAt(source);
         LOG.trace("Unlocking: {}", source);
         lock.unlock();
         LOG.trace("Unlocked: {}", source);
     }
 
-    private Cell findAnother(Cell from, Direction blocked) {
+    private Position findAnother(Position from, Direction blocked) {
         DirectionChooser chooser = new ClockwiseDirectionChooser(blocked);
         Direction dir = chooser.next();
         while (dir != null) {
-            Cell candidate = from.inDirection(dir);
+            Position candidate = from.inDirection(dir);
             if (isInside(candidate)) {
                 return candidate;
             }
@@ -99,17 +102,17 @@ public class Board {
         return null;
     }
 
-    private boolean isInside(Cell cell) {
-        int row = cell.getRow();
-        int col = cell.getCol();
+    private boolean isInside(Position position) {
+        int row = position.getRow();
+        int col = position.getCol();
         return col >= 0 && col < size && row >= 0 && row < size;
     }
 
-    private ReentrantLock getLockAt(Cell cell) {
-        int row = cell.getRow();
-        int col = cell.getCol();
+    private ReentrantLock getLockAt(Position position) {
+        int row = position.getRow();
+        int col = position.getCol();
         if (row < 0 || row == size || col < 0 || col == size) {
-            throw new IllegalArgumentException("This cell is outside the boundaries: " + cell);
+            throw new IllegalArgumentException("This cell is outside the boundaries: " + position);
         }
         return locks[row][col];
     }

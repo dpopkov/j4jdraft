@@ -3,11 +3,11 @@ package ru.j4jdraft.mt.bomberman;
 /**
  * Represents position of a cell on board.
  */
-public class Cell {
+public class Position {
     private final int row;
     private final int col;
 
-    public Cell(int row, int col) {
+    public Position(int row, int col) {
         this.row = row;
         this.col = col;
     }
@@ -25,7 +25,7 @@ public class Cell {
         return "(" + row + "," + col + ")";
     }
 
-    public Direction directionTo(Cell target) {
+    public Direction directionTo(Position target) {
         int dX = target.col - col;
         int dY = target.row - row;
         if (dX == 0 ^ dY == 0) {
@@ -34,9 +34,9 @@ public class Cell {
         return null;
     }
 
-    public Cell inDirection(Direction direction) {
+    public Position inDirection(Direction direction) {
         int row = this.row + direction.getDy();
         int col = this.col + direction.getDx();
-        return new Cell(row, col);
+        return new Position(row, col);
     }
 }
