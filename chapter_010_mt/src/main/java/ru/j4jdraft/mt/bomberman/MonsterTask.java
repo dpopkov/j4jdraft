@@ -2,13 +2,13 @@ package ru.j4jdraft.mt.bomberman;
 
 import ru.j4jdraft.mt.bomberman.gui.LabelState;
 
-public class HeroTask implements Runnable {
+public class MonsterTask implements Runnable {
     private final Board board;
     private final Position initialPosition;
     private final long delay;
     private final Gui gui;
 
-    public HeroTask(Board board, Position initialPosition, long delay, Gui gui) {
+    public MonsterTask(Board board, Position initialPosition, long delay, Gui gui) {
         this.board = board;
         this.initialPosition = initialPosition;
         this.delay = delay;
@@ -21,7 +21,7 @@ public class HeroTask implements Runnable {
         Position current = initialPosition;
         board.occupy(current);
         if (gui != null) {
-            gui.occupyOnGui(current, LabelState.HERO);
+            gui.occupyOnGui(current, LabelState.MONSTER);
         }
         boolean moving = true;
         while (!Thread.interrupted() && moving) {
