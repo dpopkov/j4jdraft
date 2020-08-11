@@ -84,8 +84,8 @@ public class MainUI extends Application {
     }
 
     private Position getPositionFrom(KeyCode keyCode) {
-        int row = hero.getCol();
-        int col = hero.getRow();
+        int col = hero.getCol();
+        int row = hero.getRow();
         switch (keyCode) {
             case UP:
                 row--;

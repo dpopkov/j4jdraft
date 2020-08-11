@@ -19,12 +19,12 @@ public class GridView extends GridPane {
             GridLabel gl = (GridLabel) e.getSource();
             System.out.println("col=" + gl.getCol() + ", row=" + gl.getRow());
         };
-        for (int i = 0; i < size; i++) {
-            for (int j = 0; j < size; j++) {
-                GridLabel label = new GridLabel(i, j);
+        for (int row = 0; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                GridLabel label = new GridLabel(row, col);
                 label.setOnMouseClicked(lblHandler);
-                labels[i][j] = label;
-                this.add(label, i, j);
+                labels[row][col] = label;
+                this.add(label, col, row);
             }
         }
         return labels;
