@@ -25,6 +25,7 @@
     <module>chapter_009_jmm</module>
     <module>howto</module>
     <module>chapter_010_mt</module>
+    <module>chapter_011_web</module>
   </modules>
   
   <dependencies>
