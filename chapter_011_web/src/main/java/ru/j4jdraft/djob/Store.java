@@ -1,5 +1,7 @@
 package ru.j4jdraft.djob;
 
+import ru.j4jdraft.djob.model.Post;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;

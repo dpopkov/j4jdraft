@@ -1,4 +1,4 @@
-package ru.j4jdraft.djob;
+package ru.j4jdraft.djob.model;
 
 import java.time.LocalDate;
 

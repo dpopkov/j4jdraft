@@ -24,29 +24,32 @@
 </head>
 <body>
 
-<div class="container">
+<div class="container pt-3">
 
     <h1>Dream Job</h1>
 
     <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Created</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (Post post : Store.getInstance().findAll()) { %>
-            <tr>
-                <th scope="row"><%= post.getId() %></th>
-                <td><%= post.getName() %></td>
-                <td><%= post.getCreated() %></td>
-            </tr>
-            <% } %>
-            </tbody>
-        </table>
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Vacancies
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <% for (Post post : Store.getInstance().findAll()) { %>
+                    <tr>
+                        <td><%= post.getName() %></td>
+                    </tr>
+                    <% } %>
+                    </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 </div>
 
