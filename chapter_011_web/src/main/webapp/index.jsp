@@ -38,7 +38,7 @@
             </tr>
             </thead>
             <tbody>
-            <% for (Post post : Store.getInstance().findAll()) { %>
+            <% for (Post post : Store.getInstance().findAllPosts()) { %>
             <tr>
                 <th scope="row"><%= post.getId() %></th>
                 <td><%= post.getName() %></td>

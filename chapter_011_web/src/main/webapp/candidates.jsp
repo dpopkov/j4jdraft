@@ -1,5 +1,5 @@
-<%@ page import="ru.j4jdraft.djob.model.Post" %>
 <%@ page import="ru.j4jdraft.djob.Store" %>
+<%@ page import="ru.j4jdraft.djob.model.Candidate" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -31,7 +31,7 @@
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Vacancies
+                Candidates
             </div>
             <div class="card-body">
                 <table class="table">
@@ -41,9 +41,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Post post : Store.getInstance().findAllPosts()) { %>
+                    <% for (Candidate candidate : Store.getInstance().findAllCandidates()) { %>
                     <tr>
-                        <td><%= post.getName() %></td>
+                        <td><%= candidate.getName() %></td>
                     </tr>
                     <% } %>
                     </tbody>

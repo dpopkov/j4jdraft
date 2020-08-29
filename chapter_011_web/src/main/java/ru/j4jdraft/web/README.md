@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+5 - candidates.jps - Список кандидатов.
+
 4 - posts.jsp - Список вакансий.
 
 3 - Scriptlet. Динамическая таблица.
