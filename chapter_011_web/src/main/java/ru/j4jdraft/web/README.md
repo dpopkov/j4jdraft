@@ -1,9 +1,11 @@
 Servlets and JSP tasks
 ----------------------
 
-2 - HTML Table
+3 - Scriptlet. Динамическая таблица.
 
-1 - JSP - Java Server Page
+2 - HTML Table.
 
-0 - Создать web проект (HelloServlet, web.xml)
+1 - JSP - Java Server Page.
+
+0 - Создать web проект (HelloServlet, web.xml).
 

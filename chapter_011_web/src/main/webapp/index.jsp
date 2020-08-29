@@ -1,3 +1,5 @@
+<%@ page import="ru.j4jdraft.djob.Post" %>
+<%@ page import="ru.j4jdraft.djob.Store" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -22,38 +24,31 @@
 </head>
 <body>
 
-<h1>Dream Job</h1>
+<div class="container">
 
-<table class="table">
-    <thead>
-    <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Second</th>
-        <th scope="col">Handle</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-    </tr>
-    <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-    </tr>
-    <tr>
-        <th scope="row">3</th>
-        <td>Larry</td>
-        <td>the Bird</td>
-        <td>@twitter</td>
-    </tr>
-    </tbody>
-</table>
+    <h1>Dream Job</h1>
+
+    <div class="row">
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">Id</th>
+                <th scope="col">Name</th>
+                <th scope="col">Created</th>
+            </tr>
+            </thead>
+            <tbody>
+            <% for (Post post : Store.getInstance().findAll()) { %>
+            <tr>
+                <th scope="row"><%= post.getId() %></th>
+                <td><%= post.getName() %></td>
+                <td><%= post.getCreated() %></td>
+            </tr>
+            <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
 
 </body>
 </html>
