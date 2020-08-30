@@ -36,6 +36,24 @@
             </li>
         </ul>
     </div>
+    <div class="row">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Today's Vacancies
+            </div>
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
+    <div class="row pt-3">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Today's Candidates
+            </div>
+            <div class="card-body">
+            </div>
+        </div>
+    </div>
 </div>
 
 </body>
