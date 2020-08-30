@@ -19,6 +19,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>Dream Job</title>
 </head>
@@ -43,7 +44,12 @@
                     <tbody>
                     <% for (Post post : Store.getInstance().findAllPosts()) { %>
                     <tr>
-                        <td><%= post.getName() %></td>
+                        <td>
+                            <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%= post.getId()%>">
+                                <i class="fa fa-edit mr-3"></i>
+                            </a>
+                            <%= post.getName() %>
+                        </td>
                     </tr>
                     <% } %>
                     </tbody>

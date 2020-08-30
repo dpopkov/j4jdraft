@@ -1,3 +1,5 @@
+<%@ page import="ru.j4jdraft.djob.model.Candidate" %>
+<%@ page import="ru.j4jdraft.djob.Store" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -21,18 +23,31 @@
     <title>Dream Job</title>
 </head>
 <body>
+<%
+    String idParam = request.getParameter("id");
+    int id = 0;
+    Candidate candidate;
+    if (idParam != null) {
+        id = Integer.parseInt(idParam);
+        candidate = Store.getInstance().findCandidateById(id);
+    } else {
+        candidate = new Candidate(0, "");
+    }
+%>
 <div class="container pt-3">
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                New Candidate
+                <%= id == 0 ? "New" : "Edit" %> Candidate
             </div>
             <div class="card-body">
                 <form action="${pageContext.request.contextPath}/candidate/save" method="post">
+                    <input type="hidden" name="id" value="<%=candidate.getId()%>">
                     <div class="form-group">
                         <label>
                             Name
-                            <input type="text" class="form-control" name="name">
+                            <input type="text" class="form-control" name="name"
+                                   value="<%=candidate.getName()%>" required>
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>

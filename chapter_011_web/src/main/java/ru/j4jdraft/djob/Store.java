@@ -3,7 +3,6 @@ package ru.j4jdraft.djob;
 import ru.j4jdraft.djob.model.Candidate;
 import ru.j4jdraft.djob.model.Post;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
@@ -19,9 +18,9 @@ public class Store {
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private Store() {
-        posts.put(1, new Post(1, "Junior Java Job", LocalDate.now()));
-        posts.put(2, new Post(2, "Middle Java Job", LocalDate.now()));
-        posts.put(3, new Post(3, "Senior Java Job", LocalDate.now()));
+        posts.put(1, new Post(1, "Junior Java Job"));
+        posts.put(2, new Post(2, "Middle Java Job"));
+        posts.put(3, new Post(3, "Senior Java Job"));
         candidates.put(1, new Candidate(1, "Junior Java"));
         candidates.put(2, new Candidate(2, "Middle Java"));
         candidates.put(3, new Candidate(3, "Senior Java"));
@@ -40,12 +39,24 @@ public class Store {
     }
 
     public void save(Post post) {
-        post.setId(NEXT_POST_ID.getAndIncrement());
+        if (post.getId() == 0) {
+            post.setId(NEXT_POST_ID.getAndIncrement());
+        }
         posts.put(post.getId(), post);
     }
 
     public void save(Candidate candidate) {
-        candidate.setId(NEXT_CANDIDATE_ID.getAndIncrement());
+        if (candidate.getId() == 0) {
+            candidate.setId(NEXT_CANDIDATE_ID.getAndIncrement());
+        }
         candidates.put(candidate.getId(), candidate);
+    }
+
+    public Post findPostById(int id) {
+        return posts.get(id);
+    }
+
+    public Candidate findCandidateById(int id) {
+        return candidates.get(id);
     }
 }

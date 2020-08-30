@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+12 - Редактирование Вакансии и Кандидата.
+
 11 - CandidateServlet. Создание кандадата.
 
 10 - PostServlet. Web.xml.

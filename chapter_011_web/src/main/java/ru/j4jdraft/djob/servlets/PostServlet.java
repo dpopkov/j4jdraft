@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.time.LocalDate;
 
 public class PostServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
-        Post post = new Post(0, name, LocalDate.now());
+        Post post = new Post(id, name);
         Store.getInstance().save(post);
         resp.sendRedirect(req.getContextPath() + "/posts.jsp");
     }
