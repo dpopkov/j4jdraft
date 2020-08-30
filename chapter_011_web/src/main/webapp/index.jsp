@@ -1,5 +1,3 @@
-<%@ page import="ru.j4jdraft.djob.model.Post" %>
-<%@ page import="ru.j4jdraft.djob.Store" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -29,24 +27,14 @@
     <h1>Dream Job</h1>
 
     <div class="row">
-        <table class="table">
-            <thead>
-            <tr>
-                <th scope="col">Id</th>
-                <th scope="col">Name</th>
-                <th scope="col">Created</th>
-            </tr>
-            </thead>
-            <tbody>
-            <% for (Post post : Store.getInstance().findAllPosts()) { %>
-            <tr>
-                <th scope="row"><%= post.getId() %></th>
-                <td><%= post.getName() %></td>
-                <td><%= post.getCreated() %></td>
-            </tr>
-            <% } %>
-            </tbody>
-        </table>
+        <ul class="nav">
+            <li class="nav-item">
+                <a class="nav-link" href="posts.jsp">Vacancies</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="candidates.jsp">Candidates</a>
+            </li>
+        </ul>
     </div>
 </div>
 

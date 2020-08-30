@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+6 - HTML Link.
+
 5 - candidates.jps - Список кандидатов.
 
 4 - posts.jsp - Список вакансий.
