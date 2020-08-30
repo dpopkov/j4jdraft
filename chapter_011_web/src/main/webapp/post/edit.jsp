@@ -21,43 +21,25 @@
     <title>Dream Job</title>
 </head>
 <body>
-
-<div class="container">
-
-    <h1>Dream Job</h1>
-
-    <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="posts.jsp">Vacancies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="candidates.jsp">Candidates</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="post/edit.jsp">Add Vacancy</a>
-            </li>
-        </ul>
-    </div>
-    <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                Today's Vacancies
-            </div>
-            <div class="card-body">
+    <div class="container pt-3">
+        <div class="row">
+            <div class="card" style="width: 100%">
+                <div class="card-header">
+                    New Vacancy
+                </div>
+                <div class="card-body">
+                    <form>
+                        <div class="form-group">
+                            <label>
+                                Name
+                                <input type="text" class="form-control">
+                            </label>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
-    <div class="row pt-3">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                Today's Candidates
-            </div>
-            <div class="card-body">
-            </div>
-        </div>
-    </div>
-</div>
-
 </body>
 </html>
