@@ -1,7 +1,7 @@
 package ru.j4jdraft.djob.model;
 
 public class Candidate {
-    private final int id;
+    private int id;
     private final String name;
 
     public Candidate(int id, String name) {
@@ -11,6 +11,10 @@ public class Candidate {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {

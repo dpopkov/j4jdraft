@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+11 - CandidateServlet. Создание кандадата.
+
 10 - PostServlet. Web.xml.
 
 9 - HTML form. Создание кандидата.

@@ -16,6 +16,16 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
         <url-pattern>/post/save</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>candidateServlet</servlet-name>
+        <servlet-class>ru.j4jdraft.djob.servlets.CandidateServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>candidateServlet</servlet-name>
+        <url-pattern>/candidate/save</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.jsp</welcome-file>
         <welcome-file>hello</welcome-file>

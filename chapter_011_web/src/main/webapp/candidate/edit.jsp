@@ -28,11 +28,11 @@
                 New Candidate
             </div>
             <div class="card-body">
-                <form>
+                <form action="${pageContext.request.contextPath}/candidate/save" method="post">
                     <div class="form-group">
                         <label>
                             Name
-                            <input type="text" class="form-control">
+                            <input type="text" class="form-control" name="name">
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>
