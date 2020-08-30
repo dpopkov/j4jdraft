@@ -8,9 +8,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
     private static final Store INSTANCE = new Store();
+    private static final AtomicInteger NEXT_ID = new AtomicInteger(4);
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
     private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
@@ -34,5 +36,10 @@ public class Store {
 
     public Collection<Candidate> findAllCandidates() {
         return new ArrayList<>(candidates.values());
+    }
+
+    public void save(Post post) {
+        post.setId(NEXT_ID.getAndIncrement());
+        posts.put(post.getId(), post);
     }
 }

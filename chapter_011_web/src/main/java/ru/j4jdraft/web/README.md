@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+10 - PostServlet. Web.xml.
+
 9 - HTML form. Создание кандидата.
 
 8 - HTML form. Создание вакансии.

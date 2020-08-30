@@ -3,7 +3,7 @@ package ru.j4jdraft.djob.model;
 import java.time.LocalDate;
 
 public class Post {
-    private final int id;
+    private int id;
     private final String name;
     private final LocalDate created;
 
@@ -15,6 +15,10 @@ public class Post {
 
     public int getId() {
         return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
