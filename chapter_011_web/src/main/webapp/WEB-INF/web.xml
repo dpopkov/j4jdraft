@@ -7,13 +7,23 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
     <display-name>Ch11 Web Application</display-name>
 
     <servlet>
+        <servlet-name>indexServlet</servlet-name>
+        <servlet-class>ru.j4jdraft.djob.servlets.IndexServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>indexServlet</servlet-name>
+        <url-pattern>/index.do</url-pattern>
+    </servlet-mapping>
+
+    <servlet>
         <servlet-name>postServlet</servlet-name>
         <servlet-class>ru.j4jdraft.djob.servlets.PostServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>postServlet</servlet-name>
-        <url-pattern>/post/save</url-pattern>
+        <url-pattern>/posts.do</url-pattern>
     </servlet-mapping>
 
     <servlet>
@@ -23,11 +33,10 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 
     <servlet-mapping>
         <servlet-name>candidateServlet</servlet-name>
-        <url-pattern>/candidate/save</url-pattern>
+        <url-pattern>/candidates.do</url-pattern>
     </servlet-mapping>
 
     <welcome-file-list>
-        <welcome-file>index.jsp</welcome-file>
-        <welcome-file>hello</welcome-file>
+        <welcome-file>index.do</welcome-file>
     </welcome-file-list>
 </web-app>

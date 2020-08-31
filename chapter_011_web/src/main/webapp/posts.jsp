@@ -1,5 +1,5 @@
 <%@ page import="ru.j4jdraft.djob.model.Post" %>
-<%@ page import="ru.j4jdraft.djob.Store" %>
+<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -42,7 +42,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Post post : Store.getInstance().findAllPosts()) { %>
+                    <%
+                        @SuppressWarnings("unchecked")
+                        Collection<Post> posts = (Collection<Post>) request.getAttribute("posts");
+                        for (Post post : posts) {
+                    %>
                     <tr>
                         <td>
                             <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%= post.getId()%>">

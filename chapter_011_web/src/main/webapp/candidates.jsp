@@ -1,5 +1,5 @@
-<%@ page import="ru.j4jdraft.djob.Store" %>
 <%@ page import="ru.j4jdraft.djob.model.Candidate" %>
+<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -42,7 +42,11 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Candidate candidate : Store.getInstance().findAllCandidates()) { %>
+                    <%
+                        @SuppressWarnings("unchecked")
+                        Collection<Candidate> candidates = (Collection<Candidate>) request.getAttribute("candidates");
+                        for (Candidate candidate : candidates) {
+                    %>
                     <tr>
                         <td>
                             <a href="<%=request.getContextPath()%>/candidate/edit.jsp?id=<%= candidate.getId()%>">

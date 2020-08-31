@@ -41,7 +41,7 @@
                     <%= (id == 0) ? "New" : "Edit"%> Vacancy
                 </div>
                 <div class="card-body">
-                    <form action="${pageContext.request.contextPath}/post/save" method="post">
+                    <form action="${pageContext.request.contextPath}/posts.do" method="post">
                         <input type="hidden" name="id" value="<%=post.getId()%>">
                         <div class="form-group">
                             <label>
