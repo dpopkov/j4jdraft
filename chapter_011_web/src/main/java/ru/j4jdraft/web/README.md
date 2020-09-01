@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+14 - JSTL замена Scriptlets.
+
 13 - MVC в Servlet.
 
 12 - Редактирование Вакансии и Кандидата.

@@ -1,6 +1,5 @@
-<%@ page import="ru.j4jdraft.djob.model.Post" %>
-<%@ page import="java.util.Collection" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -42,20 +41,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <%
-                        @SuppressWarnings("unchecked")
-                        Collection<Post> posts = (Collection<Post>) request.getAttribute("posts");
-                        for (Post post : posts) {
-                    %>
-                    <tr>
-                        <td>
-                            <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%= post.getId()%>">
-                                <i class="fa fa-edit mr-3"></i>
-                            </a>
-                            <%= post.getName() %>
-                        </td>
-                    </tr>
-                    <% } %>
+                    <%--@elvariable id="posts" type="java.util.Collection<ru.j4jdraft.djob.model.Post>"--%>
+                    <c:forEach var="post" items="${posts}">
+                        <tr>
+                            <td>
+                                <a href="<c:url value="/post/edit.jsp?id=${post.id}" />">
+                                    <i class="fa fa-edit mr-3"></i>
+                                </a>
+                                <c:out value="${post.name}"/>
+                            </td
+                        </tr>
+                    </c:forEach>
                     </tbody>
                 </table>
             </div>
