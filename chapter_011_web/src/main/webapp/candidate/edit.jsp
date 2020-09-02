@@ -1,5 +1,5 @@
 <%@ page import="ru.j4jdraft.djob.model.Candidate" %>
-<%@ page import="ru.j4jdraft.djob.Store" %>
+<%@ page import="ru.j4jdraft.djob.store.MemStore" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -29,7 +29,7 @@
     Candidate candidate;
     if (idParam != null) {
         id = Integer.parseInt(idParam);
-        candidate = Store.getInstance().findCandidateById(id);
+        candidate = MemStore.getInstance().findCandidateById(id);
     } else {
         candidate = new Candidate(0, "");
     }

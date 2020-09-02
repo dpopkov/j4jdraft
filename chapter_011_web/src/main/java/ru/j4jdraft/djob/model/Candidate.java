@@ -20,4 +20,9 @@ public class Candidate {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Candidate{id=" + id + ", name='" + name + '\'' + '}';
+    }
 }

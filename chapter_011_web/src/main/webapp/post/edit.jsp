@@ -1,5 +1,5 @@
 <%@ page import="ru.j4jdraft.djob.model.Post" %>
-<%@ page import="ru.j4jdraft.djob.Store" %>
+<%@ page import="ru.j4jdraft.djob.store.MemStore" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
@@ -29,7 +29,7 @@
     int id = 0;
     if (idParam != null) {
         id = Integer.parseInt(idParam);
-        post = Store.getInstance().findPostById(id);
+        post = MemStore.getInstance().findPostById(id);
     } else {
         post = new Post(id, "");
     }

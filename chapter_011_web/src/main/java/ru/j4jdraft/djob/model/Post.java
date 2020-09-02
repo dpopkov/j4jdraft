@@ -20,4 +20,9 @@ public class Post {
     public String getName() {
         return name;
     }
+
+    @Override
+    public String toString() {
+        return "Post{id=" + id + ", name='" + name + '\'' + '}';
+    }
 }

@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+15 - PsqlStore
+
 14 - JSTL замена Scriptlets.
 
 13 - MVC в Servlet.

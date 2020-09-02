@@ -1,6 +1,6 @@
 package ru.j4jdraft.djob.servlets;
 
-import ru.j4jdraft.djob.Store;
+import ru.j4jdraft.djob.store.MemStore;
 import ru.j4jdraft.djob.model.Candidate;
 
 import javax.servlet.ServletException;
@@ -31,7 +31,7 @@ public class CandidateServlet extends HttpServlet {
     }
 
     private void listCandidates(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Collection<Candidate> candidates = Store.getInstance().findAllCandidates();
+        Collection<Candidate> candidates = MemStore.getInstance().findAllCandidates();
         req.setAttribute("candidates", candidates);
         req.getRequestDispatcher("candidates.jsp").forward(req, resp);
     }
@@ -40,6 +40,6 @@ public class CandidateServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         Candidate candidate = new Candidate(id, name);
-        Store.getInstance().save(candidate);
+        MemStore.getInstance().save(candidate);
     }
 }
