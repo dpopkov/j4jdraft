@@ -1,7 +1,7 @@
 package ru.j4jdraft.djob.servlets;
 
-import ru.j4jdraft.djob.store.MemStore;
 import ru.j4jdraft.djob.model.Post;
+import ru.j4jdraft.djob.store.PsqlStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -31,7 +31,7 @@ public class PostServlet extends HttpServlet {
     }
 
     private void listPosts(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Collection<Post> posts = MemStore.getInstance().findAllPosts();
+        Collection<Post> posts = PsqlStore.getInstance().findAllPosts();
         req.setAttribute("posts", posts);
         req.getRequestDispatcher("posts.jsp").forward(req, resp);
     }
@@ -40,6 +40,6 @@ public class PostServlet extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
         Post post = new Post(id, name);
-        MemStore.getInstance().save(post);
+        PsqlStore.getInstance().save(post);
     }
 }

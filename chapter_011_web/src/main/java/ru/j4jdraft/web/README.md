@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+16 - Замена MemStore на PsqlStore
+
 15 - PsqlStore
 
 14 - JSTL замена Scriptlets.

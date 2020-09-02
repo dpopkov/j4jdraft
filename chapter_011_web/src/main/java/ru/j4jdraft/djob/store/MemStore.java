@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
+@SuppressWarnings("unused")
 public class MemStore implements Store {
     private static final MemStore INSTANCE = new MemStore();
     private static final AtomicInteger NEXT_POST_ID = new AtomicInteger(4);
