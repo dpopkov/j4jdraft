@@ -1,5 +1,5 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -18,46 +18,55 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <title>Dream Job</title>
 </head>
 <body>
 
-<div class="container pt-3">
-
+<div class="container">
     <h1>Dream Job</h1>
+    <jsp:include page="nav.jsp"/>
 
-    <jsp:include page="nav.jsp" />
-
-    <div class="row">
-        <div class="card" style="width: 100%">
+    <div class="row justify-content-md-center mb-2">
+        <div class="card w-50">
             <div class="card-header">
-                Candidates
+                Upload Image
+            </div>
+            <div class="card-body">
+                <form action="<c:url value="/upload"/>" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Image file
+                            <input type="file" name="file" class="form-control-file">
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="row justify-content-md-center">
+        <div class="card w-50">
+            <div class="card-header">
+                Photos
             </div>
             <div class="card-body">
                 <table class="table">
                     <thead>
                     <tr>
-                        <th scope="col">Name</th>
-                        <th scope="col">Photo</th>
+                        <th>ID</th>
+                        <th>URL</th>
+                        <th class="text-center">Photo</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <%--@elvariable id="candidates" type="java.util.List<ru.j4jdraft.djob.model.Candidate>"--%>
-                    <c:forEach var="candidate" items="${candidates}">
+                    <%--@elvariable id="images" type="java.util.List<java.lang.String>"--%>
+                    <c:forEach var="image" items="${images}" varStatus="status">
                         <tr>
+                            <td><c:out value="${image}"/></td>
+                            <td><a href="<c:url value='/download?name=${image}'/>">Download</a></td>
                             <td>
-                                <a href="<c:url value="/candidate/edit.jsp?id=${candidate.id}" />">
-                                    <i class="fa fa-edit mr-3"></i>
-                                </a>
-                                <c:out value="${candidate.name}" />
-                            </td>
-                            <td>
-                                <c:if test="${not empty candidate.photoId}">
-                                    <img src="<c:url value="/download?name=${candidate.photoId}"/>"
-                                         width="100px" height="100px"  alt="photoId=${candidate.photoId}">
-                                </c:if>
+                                <img src="<c:url value='/download?name=${image}'/>"
+                                     width="100px" height="100px" alt="${image}"/>
                             </td>
                         </tr>
                     </c:forEach>
@@ -67,6 +76,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

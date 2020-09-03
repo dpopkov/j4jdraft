@@ -39,7 +39,8 @@ public class CandidateServlet extends HttpServlet {
     private void saveCandidate(HttpServletRequest req) {
         int id = Integer.parseInt(req.getParameter("id"));
         String name = req.getParameter("name");
-        Candidate candidate = new Candidate(id, name);
+        String photoId = req.getParameter("photoId");
+        Candidate candidate = new Candidate(id, name, photoId);
         PsqlStore.getInstance().save(candidate);
     }
 }

@@ -28,6 +28,8 @@
 
     <h1>Dream Job</h1>
 
+    <jsp:include page="nav.jsp" />
+
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">

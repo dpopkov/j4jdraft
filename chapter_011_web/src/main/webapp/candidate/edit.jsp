@@ -31,10 +31,13 @@
         id = Integer.parseInt(idParam);
         candidate = PsqlStore.getInstance().findCandidateById(id);
     } else {
-        candidate = new Candidate(0, "");
+        candidate = new Candidate(0, "", "");
     }
 %>
 <div class="container pt-3">
+    <h1>Dream Job</h1>
+    <jsp:include page="../nav.jsp"/>
+
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
@@ -48,6 +51,13 @@
                             Name
                             <input type="text" class="form-control" name="name"
                                    value="<%=candidate.getName()%>" required>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            Photo ID
+                            <input type="text" class="form-control" name="photoId"
+                                   value="<%=candidate.getPhotoId()%>">
                         </label>
                     </div>
                     <button type="submit" class="btn btn-primary">Save</button>

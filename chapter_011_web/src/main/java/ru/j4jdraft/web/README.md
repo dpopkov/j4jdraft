@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+17 - Загрузка и скачивание файла.
+
 16 - Замена MemStore на PsqlStore
 
 15 - PsqlStore

@@ -14,9 +14,9 @@ public class PsqlMain {
             "listPosts", s -> s.findAllPosts().forEach(System.out::println),
             "listCandidates", s -> s.findAllCandidates().forEach(System.out::println),
             "addPost", s -> s.save(new Post(0, readName())),
-            "addCandidate", s -> s.save(new Candidate(0, readName())),
+            "addCandidate", s -> s.save(new Candidate(0, readName(), readPhoto())),
             "updatePost", s -> s.save(new Post(readId(), readName())),
-            "updateCandidate", s -> s.save(new Candidate(readId(), readName())),
+            "updateCandidate", s -> s.save(new Candidate(readId(), readName(), readPhoto())),
             "findPost", s -> System.out.println(s.findPostById(readId())),
             "findCandidate", s -> System.out.println(s.findCandidateById(readId()))
     );
@@ -43,6 +43,11 @@ public class PsqlMain {
 
     private static String readName() {
         System.out.print("Name: ");
+        return scanner.nextLine();
+    }
+
+    private static String readPhoto() {
+        System.out.print("Photo: ");
         return scanner.nextLine();
     }
 }

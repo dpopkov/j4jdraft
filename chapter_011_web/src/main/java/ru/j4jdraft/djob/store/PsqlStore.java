@@ -76,11 +76,12 @@ public class PsqlStore implements Store {
         Collection<Candidate> posts = new ArrayList<>();
         try (Connection conn = pool.getConnection()) {
             Statement stmt = conn.createStatement();
-            ResultSet rs = stmt.executeQuery("SELECT id, name FROM candidate");
+            ResultSet rs = stmt.executeQuery("SELECT id, name, image_id FROM candidate");
             while (rs.next()) {
                 int id = rs.getInt("id");
                 String name = rs.getString("name");
-                posts.add(new Candidate(id, name));
+                String imageId = rs.getString("image_id");
+                posts.add(new Candidate(id, name, imageId));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -146,9 +147,10 @@ public class PsqlStore implements Store {
     }
 
     private void update(Connection conn, Candidate candidate) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("UPDATE candidate SET name = ? WHERE id = ?");
+        PreparedStatement stmt = conn.prepareStatement("UPDATE candidate SET name = ?, image_id = ? WHERE id = ?");
         stmt.setString(1, candidate.getName());
-        stmt.setInt(2, candidate.getId());
+        stmt.setString(2, candidate.getPhotoId());
+        stmt.setInt(3, candidate.getId());
         stmt.executeUpdate();
     }
 
@@ -172,15 +174,31 @@ public class PsqlStore implements Store {
     public Candidate findCandidateById(int id) {
         Candidate candidate = null;
         try (Connection conn = pool.getConnection()) {
-            PreparedStatement stmt = conn.prepareStatement("SELECT name FROM candidate WHERE id = ?");
+            PreparedStatement stmt = conn.prepareStatement("SELECT name, image_id FROM candidate WHERE id = ?");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
-                candidate = new Candidate(id, rs.getString(1));
+                candidate = new Candidate(id, rs.getString("name"), rs.getString("image_id"));
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return candidate;
+    }
+
+    @Override
+    public int nextPhotoId() {
+        try (Connection conn = pool.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO photo DEFAULT VALUES", Statement.RETURN_GENERATED_KEYS);
+            stmt.executeUpdate();
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

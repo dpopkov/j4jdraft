@@ -26,22 +26,8 @@
 
     <h1>Dream Job</h1>
 
-    <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="nav-link" href="posts.do">Vacancies</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="candidates.do">Candidates</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="posts.do?action=add">Add Vacancy</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="candidates.do?action=add">Add Candidate</a>
-            </li>
-        </ul>
-    </div>
+    <jsp:include page="nav.jsp" />
+
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
