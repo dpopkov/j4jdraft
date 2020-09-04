@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+18 - Страница Login.jsp
+
 17 - Загрузка и скачивание файла.
 
 16 - Замена MemStore на PsqlStore
