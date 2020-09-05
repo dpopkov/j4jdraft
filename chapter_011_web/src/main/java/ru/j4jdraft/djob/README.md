@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+19 - HttpSession
+
 18 - Страница Login.jsp
 
 17 - Загрузка и скачивание файла.
