@@ -20,7 +20,7 @@
             <c:choose>
                 <%--@elvariable id="user" type="ru.j4jdraft.djob.model.User"--%>
                 <c:when test="${empty user}">
-                    <a class="nav-link" href="auth.do">Log in</a>
+                    <a class="nav-link" href="auth.do">Login</a>
                 </c:when>
                 <c:otherwise>
                     <a class="nav-link" href="auth.do?logout"><c:out value="${user.name}"/> | Log out</a>

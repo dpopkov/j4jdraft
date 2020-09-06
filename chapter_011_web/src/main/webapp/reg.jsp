@@ -1,5 +1,4 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,21 +25,19 @@
 <div class="container pt-3">
     <h1>Dream Job</h1>
 
-    <jsp:include page="nav.jsp" />
-
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Log in
+                Register
             </div>
             <div class="card-body">
-                <form action="auth.do" method="post">
-                    <%--@elvariable id="authError" type="java.lang.String"--%>
-                    <c:if test="${not empty authError}">
-                        <div class="form-group">
-                            <p>${authError}</p>
-                        </div>
-                    </c:if>
+                <form action="reg.do" method="post">
+                    <div class="form-group">
+                        <label>
+                            Name:
+                            <input type="text" class="form-control" name="name" required>
+                        </label>
+                    </div>
                     <div class="form-group">
                         <label>
                             Email:
@@ -53,11 +50,8 @@
                             <input type="password" class="form-control" name="password" required>
                         </label>
                     </div>
-                    <button type="submit" class="btn btn-primary">Login</button>
+                    <button type="submit" class="btn btn-primary">Register</button>
                 </form>
-                <div class="mx-auto">
-                    <a href="<c:url value="/auth.do" />" class="card-link">Register</a>
-                </div>
             </div>
         </div>
     </div>

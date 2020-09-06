@@ -77,6 +77,16 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
         <url-pattern>/auth.do</url-pattern>
     </servlet-mapping>
 
+    <servlet>
+        <servlet-name>regServlet</servlet-name>
+        <servlet-class>ru.j4jdraft.djob.servlets.RegServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>regServlet</servlet-name>
+        <url-pattern>/reg.do</url-pattern>
+    </servlet-mapping>
+
     <welcome-file-list>
         <welcome-file>index.do</welcome-file>
     </welcome-file-list>
