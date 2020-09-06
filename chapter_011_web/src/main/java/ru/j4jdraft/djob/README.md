@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+20 - Filter
+
 19 - HttpSession
 
 18 - Страница Login.jsp

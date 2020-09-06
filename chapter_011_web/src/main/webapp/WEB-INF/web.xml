@@ -6,6 +6,17 @@ http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
          version="3.1">
     <display-name>Ch11 Web Application</display-name>
 
+    <filter>
+        <filter-name>authFilter</filter-name>
+        <filter-class>ru.j4jdraft.djob.filters.AuthFilter</filter-class>
+    </filter>
+
+    <filter-mapping>
+        <filter-name>authFilter</filter-name>
+        <url-pattern>*.do</url-pattern>
+        <url-pattern>/upload</url-pattern>
+    </filter-mapping>
+
     <servlet>
         <servlet-name>indexServlet</servlet-name>
         <servlet-class>ru.j4jdraft.djob.servlets.IndexServlet</servlet-class>
