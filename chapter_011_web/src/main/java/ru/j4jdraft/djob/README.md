@@ -1,6 +1,8 @@
 Servlets and JSP tasks
 ----------------------
 
+21 - Расширить Store для пользователя.
+
 20 - Filter
 
 19 - HttpSession

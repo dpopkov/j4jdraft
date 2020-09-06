@@ -3,6 +3,7 @@ package ru.j4jdraft.djob.store;
 import org.apache.commons.dbcp2.BasicDataSource;
 import ru.j4jdraft.djob.model.Candidate;
 import ru.j4jdraft.djob.model.Post;
+import ru.j4jdraft.djob.model.User;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -90,6 +91,25 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public Collection<User> findAllUsers() {
+        Collection<User> users = new ArrayList<>();
+        try (Connection conn = pool.getConnection()) {
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT id, name, email, password FROM users");
+            while (rs.next()) {
+                int id = rs.getInt("id");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                String password = rs.getString("password");
+                users.add(new User(id, name, email, password));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return users;
+    }
+
+    @Override
     public void save(Post post) {
         try (Connection conn = pool.getConnection()) {
             if (post.getId() == 0) {
@@ -155,6 +175,26 @@ public class PsqlStore implements Store {
     }
 
     @Override
+    public void save(User user) {
+        try (Connection conn = pool.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement(
+                    "INSERT INTO users (name, email, password) VALUES (?, ?, ?)",
+                    Statement.RETURN_GENERATED_KEYS);
+            stmt.setString(1, user.getName());
+            stmt.setString(2, user.getEmail());
+            stmt.setString(3, user.getPassword());
+            stmt.executeUpdate();
+            ResultSet keys = stmt.getGeneratedKeys();
+            if (keys.next()) {
+                int id = keys.getInt(1);
+                user.setId(id);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public Post findPostById(int id) {
         Post post = null;
         try (Connection conn = pool.getConnection()) {
@@ -184,6 +224,23 @@ public class PsqlStore implements Store {
             e.printStackTrace();
         }
         return candidate;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        User user = null;
+        try (Connection conn = pool.getConnection()) {
+            PreparedStatement stmt = conn.prepareStatement("SELECT id, name, password FROM users WHERE email = ?");
+            stmt.setString(1, email);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                user = new User(rs.getInt("id"), rs.getString("name"),
+                        email, rs.getString("password"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return user;
     }
 
     @Override

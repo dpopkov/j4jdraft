@@ -6,14 +6,20 @@ CREATE TABLE IF NOT EXISTS post
 
 CREATE TABLE IF NOT EXISTS candidate
 (
-    id   SERIAL PRIMARY KEY,
-    name TEXT,
+    id       SERIAL PRIMARY KEY,
+    name     TEXT,
     image_id VARCHAR(5)
 );
 
---ALTER TABLE candidate ADD COLUMN image_id VARCHAR(5);
-
 CREATE TABLE IF NOT EXISTS photo
 (
-    id   SERIAL PRIMARY KEY
+    id SERIAL PRIMARY KEY
 );
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id       SERIAL PRIMARY KEY,
+    name     VARCHAR(256) UNIQUE,
+    email    VARCHAR(256) UNIQUE,
+    password VARCHAR(256)
+)
