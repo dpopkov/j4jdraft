@@ -66,14 +66,11 @@ public class MainUI extends Application {
         startPersonages(board, exec, monstersPositions, gui);
         Scene scene = new Scene(grid);
         scene.setOnKeyPressed(e -> {
-            System.out.println("Pressed code: " + e.getCode());
             Position oldPos = hero;
             Position newPos = getPositionFrom(e.getCode());
-            System.out.println("Moving from " + oldPos + " to " + newPos);
             try {
                 hero = board.move(hero, newPos);
                 gui.updateGui(oldPos, hero);
-                System.out.println("Moved to " + hero);
             } catch (InterruptedException interruptedException) {
                 interruptedException.printStackTrace();
             }

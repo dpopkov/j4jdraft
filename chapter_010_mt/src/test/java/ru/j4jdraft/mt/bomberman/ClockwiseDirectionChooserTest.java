@@ -24,4 +24,13 @@ public class ClockwiseDirectionChooserTest {
         assertThat(chooser.next(), is(Direction.DOWN));
         assertNull(chooser.next());
     }
+
+    @Test
+    public void whenBlockedRightThenNextReturnsDown() {
+        DirectionChooser chooser = new ClockwiseDirectionChooser(Direction.RIGHT);
+        assertThat(chooser.next(), is(Direction.DOWN));
+        assertThat(chooser.next(), is(Direction.LEFT));
+        assertThat(chooser.next(), is(Direction.UP));
+        assertNull(chooser.next());
+    }
 }

@@ -4,22 +4,22 @@ package ru.j4jdraft.mt.bomberman;
  * Chooses directions in clockwise direction.
  */
 public class ClockwiseDirectionChooser implements DirectionChooser {
-    private final Direction[] options = Direction.values().clone();
+    private final Direction[] options = Direction.values();
     private int next;
 
     /**
      * Constructs the chooser that will not use the specified blocked direction.
      */
     public ClockwiseDirectionChooser(Direction blocked) {
-        initUsingBlockedOption(blocked);
+        next = 0;
+        nullBlockedDirection(blocked);
     }
 
-    private void initUsingBlockedOption(Direction blocked) {
+    private void nullBlockedDirection(Direction blocked) {
         for (int i = 0; i < options.length; i++) {
             if (options[i] == blocked) {
                 options[i] = null;
-                next = i + 1;
-                next = next % options.length;
+                next = (i + 1) % options.length;
                 break;
             }
         }
@@ -40,7 +40,6 @@ public class ClockwiseDirectionChooser implements DirectionChooser {
     }
 
     private void advanceNext() {
-        next++;
-        next = next % options.length;
+        next = (next + 1) % options.length;
     }
 }

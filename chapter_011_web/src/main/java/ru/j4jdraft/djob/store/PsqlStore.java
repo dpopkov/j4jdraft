@@ -51,7 +51,7 @@ public class PsqlStore implements Store {
         private static final PsqlStore INSTANCE = new PsqlStore();
     }
 
-    public static PsqlStore getInstance() {
+    public static Store getInstance() {
         return Lazy.INSTANCE;
     }
 
