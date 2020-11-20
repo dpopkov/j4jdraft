@@ -26,6 +26,7 @@
     <module>howto</module>
     <module>chapter_010_mt</module>
     <module>chapter_011_web</module>
+    <module>cinema</module>
   </modules>
   
   <dependencies>
